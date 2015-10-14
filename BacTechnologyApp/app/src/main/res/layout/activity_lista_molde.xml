@@ -20,7 +20,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText"
+                android:id="@+id/id_buscar_molde"
                 android:hint="Buscar Molde"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="0.08" />
