@@ -15,10 +15,10 @@
             android:paddingBottom="5dip">
             <!-- Logo Start-->
             <ImageView
-
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dip"/>
+
         </LinearLayout>
 
         <LinearLayout
@@ -29,34 +29,29 @@
             android:padding="10dip"
             android:layout_below="@id/header">
             <!--  Email Label -->
-            <TextView android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#372c24"
+            <TextView
+                style="@style/TextView"
                 android:text="Usuario"
                 android:id="@+id/idUsuario" />
-            <EditText android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:hint="Usuario"
-                android:layout_marginTop="5dip"
-                android:layout_marginBottom="20dip"
-                android:singleLine="true" />
+
+            <EditText
+                style="@style/EditView"
+                android:hint="Usuario"/>
+
             <!--  Password Label -->
-            <TextView android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#372c24"
+            <TextView
+                style="@style/TextView"
                 android:text="Contraseña"
                 android:id="@+id/idPass" />
-            <EditText android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dip"
-                android:singleLine="true"
-                android:hint="Contraseña"
-                android:password="true"/>
+
+            <EditText
+                style="@style/EditView"
+                android:hint="Contraseña"/>
+
             <!-- Login button -->
-            <Button android:id="@+id/btnLogin"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dip"
+            <Button
+                style="@style/btn"
+                android:id="@+id/btnLogin"
                 android:text="Ingresar"
                 android:onClick="ingresoLogin"/>
             <!-- Link to Registration Screen -->
