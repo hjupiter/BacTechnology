@@ -3,6 +3,7 @@ package com.bactechnologyapp;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -31,6 +32,16 @@ public class MaquinaMolde extends AppCompatActivity {
         TextView textId = (TextView) findViewById(R.id.textIdMaquinaMolde);
 
         textId.setText("Maquina : " + idMaquina + "\nMolde : " + idMolde);
+
+        imagenCamara.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent ventanaCamara = new Intent(MaquinaMolde.this, ImagenCamara.class);
+                ventanaCamara.putExtra("foto",bmp);
+                startActivity(ventanaCamara);
+            }
+        });
+
     }
 
     public void setBotonCamara(View v){
