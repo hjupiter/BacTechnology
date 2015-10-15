@@ -69,7 +69,6 @@ public class ListaMolde extends AppCompatActivity {
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
                 // TODO Auto-generated method stub
                 Toast.makeText(getApplicationContext(), "Ha pulsado el item " + moldes[position], Toast.LENGTH_SHORT).show();
-                //Toast.makeText(getApplicationContext(), "Maquina:" + idMaquina, Toast.LENGTH_SHORT).show();
                 String idMolde = moldes[position];
                 Intent ventanaMaquinaMolde = new Intent(ListaMolde.this, MaquinaMolde.class);
 
