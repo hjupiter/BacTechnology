@@ -1,6 +1,7 @@
 package com.bactechnologyapp;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -38,6 +39,13 @@ public class ListaMolde extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_molde);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+
+
+
+
         idMaquina = (String) getIntent().getExtras().getString("idMaquina");
 
         listaMoldes = (ListView)findViewById(R.id.id_lista_molde);
@@ -71,7 +79,6 @@ public class ListaMolde extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "Ha pulsado el item " + moldes[position], Toast.LENGTH_SHORT).show();
                 String idMolde = moldes[position];
                 Intent ventanaMaquinaMolde = new Intent(ListaMolde.this, MaquinaMolde.class);
-
                 ventanaMaquinaMolde.putExtra("idMolde", idMolde);
                 ventanaMaquinaMolde.putExtra("idMaquina", idMaquina);
                 startActivity(ventanaMaquinaMolde);

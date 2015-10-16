@@ -32,7 +32,7 @@ public class DialogoEnviar extends DialogFragment {
         // is pressed.
         builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-                Toast.makeText(getActivity(), "No", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "No", Toast.LENGTH_SHORT).show();
             }
         });
 

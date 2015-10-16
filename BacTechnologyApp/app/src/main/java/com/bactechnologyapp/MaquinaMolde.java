@@ -1,20 +1,22 @@
 package com.bactechnologyapp;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.provider.MediaStore;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.support.v4.app.DialogFragment;
 
 public class MaquinaMolde extends AppCompatActivity {
     private Intent ventanaCamara;
-    private Button botonImagen;
+    private Button botonAtras,botonEnviar;
     private ImageView imagenCamara;
     private String idMolde;
     private String idMaquina;
@@ -25,9 +27,13 @@ public class MaquinaMolde extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maquina_molde);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
         idMaquina = (String) getIntent().getExtras().getString("idMaquina");
         idMolde = (String) getIntent().getExtras().getString("idMolde");
         imagenCamara = (ImageView)findViewById(R.id.id_imagen);
+        botonEnviar = (Button)findViewById(R.id.id_boton_enviar);
 
         TextView textId = (TextView) findViewById(R.id.textIdMaquinaMolde);
 
@@ -37,9 +43,20 @@ public class MaquinaMolde extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent ventanaCamara = new Intent(MaquinaMolde.this, ImagenCamara.class);
-                ventanaCamara.putExtra("foto",bmp);
+                ventanaCamara.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+                ventanaCamara.putExtra("foto", bmp);
                 startActivity(ventanaCamara);
             }
+        });
+
+        botonEnviar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager fg = getFragmentManager();
+                DialogoEnviar dialogoEnviar = new DialogoEnviar();
+                dialogoEnviar.show(fg,"EnviarReporte");
+            }
+
         });
 
     }
@@ -57,6 +74,13 @@ public class MaquinaMolde extends AppCompatActivity {
             bmp = (Bitmap)extra.get("data");
             imagenCamara.setImageBitmap(bmp);
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        // do something on back.
+        finish();
+        //return;
     }
 
 }

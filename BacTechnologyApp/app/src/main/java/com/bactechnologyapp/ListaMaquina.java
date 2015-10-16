@@ -1,6 +1,8 @@
 package com.bactechnologyapp;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -23,6 +25,8 @@ public class ListaMaquina extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_maquina);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         listaMaquina = (ListView)findViewById(R.id.id_lista_maquina);
         buscarMaquina = (EditText)findViewById(R.id.id_buscar_maquina);
