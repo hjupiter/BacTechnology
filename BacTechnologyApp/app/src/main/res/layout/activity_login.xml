@@ -29,32 +29,56 @@
             android:padding="10dip"
             android:layout_below="@id/header">
             <!--  Email Label -->
-            <TextView
-                style="@style/TextView"
-                android:text="Usuario"
-                android:id="@+id/idUsuario" />
 
-            <EditText
-                style="@style/EditView"
-                android:hint="Usuario"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="63dp"
+                    android:layout_height="63dp"
+                    android:src="@drawable/ic_action_user" />
+
+                <EditText
+                    style="@style/EditView"
+                    android:hint="Usuario"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
 
             <!--  Password Label -->
-            <TextView
-                style="@style/TextView"
-                android:text="Contraseña"
-                android:id="@+id/idPass" />
 
-            <EditText
-                style="@style/EditView"
-                android:hint="Contraseña"/>
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="63dp"
+                    android:layout_height="63dp"
+                    android:src="@drawable/ic_action_lock_closed" />
+
+                <EditText
+                    style="@style/EditView"
+                    android:hint="Contraseña"
+                    android:layout_height="match_parent" />
+            </LinearLayout>
 
             <!-- Login button -->
+
+            <!-- Link to Registration Screen -->
             <Button
                 style="@style/btn"
                 android:id="@+id/btnLogin"
                 android:text="Ingresar"
-                android:onClick="ingresoLogin"/>
-            <!-- Link to Registration Screen -->
+                android:textSize="15sp"
+                android:onClick="ingresoLogin"
+                android:layout_width="264dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal" />
+
             <TextView android:id="@+id/link_to_register"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
@@ -66,6 +90,7 @@
                 android:textColor="#0b84aa"/>
 
         </LinearLayout>
+
         <!-- Login Form Ends -->
 
     </RelativeLayout>

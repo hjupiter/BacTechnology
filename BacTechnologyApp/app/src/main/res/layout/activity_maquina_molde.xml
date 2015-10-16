@@ -6,99 +6,168 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.example.bakamedi.bac_technology.ListaMaquina">
+    <ScrollView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true">
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:weightSum="1">
-
-        <LinearLayout
-            android:orientation="vertical"
+        <TableLayout
             android:layout_width="match_parent"
-            android:layout_height="458dp"
-            android:weightSum="1">
+            android:layout_height="match_parent"
+            android:weightSum="1"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true">
 
-            <TextView
-                android:layout_width="335dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Medium Text"
-                android:id="@+id/textIdMaquinaMolde"
-                android:layout_gravity="center_horizontal"
-                android:layout_weight="0.32" />
-
-            <TextView
+            <TableLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Novedad Detectada:" />
+                android:layout_height="590dp"
+                android:weightSum="1">
 
-            <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="false"
-                android:layout_weight="0.33" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Correcion/Reparacion:" />
-
-            <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="false"
-                android:layout_weight="0.27" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Repuestos/Insumos Utilizados:" />
-
-            <EditText
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:singleLine="false"
-                android:layout_weight="0.28" />
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="134dp">
-
-                <LinearLayout
-                    android:orientation="horizontal"
+                <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:weightSum="1">
+                    android:layout_height="match_parent">
 
-                    <Button
+                    <TextView
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Medium Text"
+                        android:id="@+id/textIdMaquinaMolde"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_weight="0.32" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:onClick="setBotonCamara"
-                        android:text="Camara"
-                        android:id="@+id/id_boton_camara"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true" />
+                        android:text="Novedad Detectada:" />
+                </TableRow>
 
-                    <ImageView
-                        android:layout_width="400dp"
-                        android:layout_height="153dp"
-                        android:id="@+id/id_imagen"
-                        android:src="@mipmap/ic_launcher"
-                        android:layout_alignParentTop="true" />
-                </LinearLayout>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-            </RelativeLayout>
+                    <EditText
+                        android:layout_width="fill_parent"
+                        android:layout_height="100dp"
+                        android:singleLine="false"
+                        android:layout_weight="0.33" />
+                </TableRow>
 
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Enviar Reporte"
-                android:id="@+id/btnEnviar"
-                android:onClick="DialogoEnviar"
-                android:layout_gravity="center_horizontal" />
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
 
-        </LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Correcion/Reparacion:" />
+                </TableRow>
 
-    </TableLayout>
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <EditText
+                        android:layout_width="fill_parent"
+                        android:layout_height="100dp"
+                        android:singleLine="false"
+                        android:layout_weight="0.27" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Repuestos/Insumos Utilizados:" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <EditText
+                        android:layout_width="fill_parent"
+                        android:layout_height="100dp"
+                        android:singleLine="false"
+                        android:layout_weight="0.28" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="134dp">
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:weightSum="1">
+
+                            <Button
+                                android:layout_width="wrap_content"
+                                android:layout_height="67dp"
+                                android:onClick="setBotonCamara"
+                                android:text="Camara"
+                                android:id="@+id/id_boton_camara"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true" />
+
+                            <ImageView
+                                android:layout_width="400dp"
+                                android:layout_height="match_parent"
+                                android:id="@+id/id_imagen"
+                                android:src="@mipmap/ic_launcher"
+                                android:layout_alignParentTop="true" />
+                        </LinearLayout>
+
+                    </RelativeLayout>
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Enviar"
+                            android:id="@+id/id_boton_enviar"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginEnd="38dp" />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Atrás"
+                            android:id="@+id/id_boton_atras"
+                            android:layout_marginStart="120dp"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentStart="true" />
+                    </RelativeLayout>
+                </TableRow>
+
+            </TableLayout>
+
+        </TableLayout>
+    </ScrollView>
+
 
 </RelativeLayout>
