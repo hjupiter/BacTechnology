@@ -1,312 +1,50 @@
-<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
     android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity"
-    android:background="#c7c4c4">
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".MainActivity">
 
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <TableLayout
-            android:layout_width="166dp"
-            android:layout_height="match_parent"
-            android:weightSum="1">
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <ImageButton
-                    android:layout_width="110dp"
-                    android:layout_height="wrap_content"
-                    android:src="@mipmap/ic_launcher"
-                    android:id="@+id/id_imagen_user"
-                    android:layout_weight="0.06" />
-
-            </TableRow>
-
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:weightSum="1">
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="43dp"
-                    android:layout_weight="0.03">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_launcher"
-                        android:id="@+id/id_imagen_item_maquina" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Maquinas"
-                        android:id="@+id/textView" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="43dp"
-                    android:layout_weight="0.03">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_launcher"
-                        android:id="@+id/id_imagen_item_molde" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Moldes"
-                        android:id="@+id/textView3" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="43dp"
-                    android:layout_weight="0.03">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_launcher"
-                        android:id="@+id/id_imagen_item_reporte" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Reporte"
-                        android:id="@+id/textView4" />
-                </LinearLayout>
-
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="97dp">
-
-                    <Button
-                        android:onClick="setBotonAtras"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Atras"
-                        android:id="@+id/id_boton_atras" />
-                </TableLayout>
-
-            </LinearLayout>
-
-        </TableLayout>
+    <TabHost
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/tabHost"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true">
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
 
-            <TableLayout
-                android:layout_width="match_parent"
-                android:id="@+id/id_layout_maquina"
-                android:layout_height="match_parent"
-                android:weightSum="1" >
+            <TabWidget
+                android:id="@android:id/tabs"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"></TabWidget>
 
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:id="@+id/id_layout_lista"
-                    android:layout_height="match_parent" >
+            <FrameLayout
+                android:id="@android:id/tabcontent"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_launcher"
-                        android:id="@+id/id_imagen_buscar" />
+                <LinearLayout
+                    android:id="@+id/ejemplo1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical"></LinearLayout>
 
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/editText2"
-                        android:hint="Buscar Maquina"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="0.08" />
-                </TableRow>
+                <LinearLayout
+                    android:id="@+id/ejemplo2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical"></LinearLayout>
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
-
-                    <ListView
-                        android:layout_width="match_parent"
-                        android:layout_height="334dp"
-                        android:id="@+id/id_list_view_maquina"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_gravity="center_horizontal|bottom"
-                        android:layout_row="4"
-                        android:layout_column="0"
-                        android:layout_span="2"
-                        android:layout_alignParentTop="true" />
-                </RelativeLayout>
-
-            </TableLayout>
-
-            <TableLayout
-                android:layout_width="match_parent"
-                android:visibility="gone"
-                android:id="@+id/id_layout_molde"
-                android:layout_height="match_parent"
-                android:weightSum="1">
-
-                <TableRow
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/ic_launcher"
-                        android:id="@+id/id_imagen_buscar_2" />
-
-                    <EditText
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/editText"
-                        android:hint="Buscar Molde"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_weight="0.08" />
-                </TableRow>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ListView
-                        android:layout_width="460dp"
-                        android:layout_height="334dp"
-                        android:id="@+id/id_list_view_molde"
-                        android:layout_alignParentLeft="true"
-                        android:layout_alignParentStart="true"
-                        android:layout_gravity="center_horizontal|bottom"
-                        android:layout_row="4"
-                        android:layout_column="0"
-                        android:layout_span="2"
-                        android:layout_alignParentTop="true"
-                        android:layout_alignParentBottom="true" />
-
-                </RelativeLayout>
-
-            </TableLayout>
-
-            <TableLayout
-                android:layout_width="match_parent"
-                android:id="@+id/id_layout_reporte"
-                android:visibility="gone"
-                android:layout_height="match_parent">
-
-                <TableLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:weightSum="1" >
-
-                    <LinearLayout
-                        android:orientation="vertical"
-                        android:layout_width="match_parent"
-                        android:layout_height="458dp"
-                        android:weightSum="1" >
-
-                        <TextView
-                            android:layout_width="335dp"
-                            android:layout_height="wrap_content"
-                            android:textAppearance="?android:attr/textAppearanceMedium"
-                            android:text="Medium Text"
-                            android:id="@+id/textView2"
-                            android:layout_gravity="center_horizontal" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Novedad Detectada:" />
-
-                        <EditText
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:singleLine="false"
-                            android:layout_weight="0.33" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Correcion/Reparacion:" />
-
-                        <EditText
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:singleLine="false"
-                            android:layout_weight="0.27" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Repuestos/Insumos Utilizados:" />
-
-                        <EditText
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:singleLine="false"
-                            android:layout_weight="0.28" />
-
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="134dp" >
-
-                            <LinearLayout
-                                android:orientation="horizontal"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:weightSum="1" >
-
-                                <Button
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Camara"
-                                    android:onClick="setBotonCamara"
-                                    android:id="@+id/id_boton_camara"
-                                    android:layout_alignParentTop="true"
-                                    android:layout_alignParentLeft="true"
-                                    android:layout_alignParentStart="true" />
-
-                                <ImageView
-                                    android:layout_width="154dp"
-                                    android:layout_height="153dp"
-                                    android:id="@+id/id_imagen_camara"
-                                    android:src="@mipmap/ic_launcher"
-                                    android:layout_alignParentTop="true" />
-                            </LinearLayout>
-                        </RelativeLayout>
-
-                        <Button
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Enviar Reporte"
-                            android:id="@+id/button2"
-                            android:onClick="DialogoEnviar"
-                            android:layout_gravity="center_horizontal" />
-                    </LinearLayout>
-                </TableLayout>
-            </TableLayout>
-
+                <LinearLayout
+                    android:id="@+id/ejemplo3"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:orientation="vertical"></LinearLayout>
+            </FrameLayout>
         </LinearLayout>
-    </LinearLayout>
-</RelativeLayout>
+    </TabHost>
+</RelativeLayout>s

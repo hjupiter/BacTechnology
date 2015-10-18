@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TabHost;
 import android.widget.TableLayout;
 import android.widget.Toast;
 
@@ -43,106 +44,25 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        //tab1
+        TabHost TbH = (TabHost) findViewById(R.id.tabHost); //llamamos al Tabhost
+        TbH.setup();                                                         //lo activamos
 
-        if(getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-            imagenItemMaquina   = (ImageView)findViewById(R.id.id_imagen_item_maquina);
-            imagenItemMolde     = (ImageView)findViewById(R.id.id_imagen_item_molde);
-            imagenItemReporte   = (ImageView)findViewById(R.id.id_imagen_item_reporte);
-            imagenUser          = (ImageView)findViewById(R.id.id_imagen_user);
-            imagenBuscar        = (ImageView)findViewById(R.id.id_imagen_buscar);
-            imagenBuscar2       = (ImageView)findViewById(R.id.id_imagen_buscar_2);
-            imagenCamara        = (ImageView)findViewById(R.id.id_imagen_camara);
+        TabHost.TabSpec tab1 = TbH.newTabSpec("tab1");  //aspectos de cada Tab (pestaña)
+        TabHost.TabSpec tab2 = TbH.newTabSpec("tab2");
+        TabHost.TabSpec tab3 = TbH.newTabSpec("tab3");
 
-            listMaquina         = (ListView)findViewById(R.id.id_list_view_maquina);
-            listMolde           = (ListView)findViewById(R.id.id_list_view_molde);
+        tab1.setIndicator("UNO");    //qué queremos que aparezca en las pestañas
+        tab1.setContent(R.id.ejemplo1); //definimos el id de cada Tab (pestaña)
 
-            layoutMaquina       = (TableLayout)findViewById(R.id.id_layout_maquina);
-            layoutMolde         = (TableLayout)findViewById(R.id.id_layout_molde);
-            layoutReporte        = (TableLayout)findViewById(R.id.id_layout_reporte);
+        tab2.setIndicator("DOS");
+        tab2.setContent(R.id.ejemplo2);
 
-            final ArrayAdapter<String> adaptador1 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, maquinas);
-            listMaquina.setAdapter(adaptador1);
-            final ArrayAdapter<String> adaptador2 = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, moldes);
-            listMolde.setAdapter(adaptador2);
+        tab3.setIndicator("TRES");
+        tab3.setContent(R.id.ejemplo3);
 
-            imagenItemMaquina.setImageResource(R.drawable.ic_action_next_item);
-            imagenItemMolde.setImageResource(R.drawable.ic_action_about);
-            imagenItemReporte.setImageResource(R.drawable.ic_action_about);
-            imagenUser.setImageResource(R.drawable.ic_action_person);
-            imagenBuscar.setImageResource(R.drawable.ic_action_search);
-            imagenBuscar2.setImageResource(R.drawable.ic_action_search);
-
-            listMaquina.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-                @Override
-                public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
-                    // TODO Auto-generated method stub
-                    String idMaquina = maquinas[position];
-                    Toast.makeText(getApplicationContext(), idMaquina, Toast.LENGTH_SHORT).show();
-                    imagenItemMaquina.setImageResource(R.drawable.ic_action_accept);
-                    imagenItemMolde.setImageResource(R.drawable.ic_action_next_item);
-                    layoutMaquina.setVisibility(View.GONE);
-                    layoutMolde.setVisibility(View.VISIBLE);
-                }
-
-            });
-
-            listMolde.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String idMolde = moldes[position];
-                    Toast.makeText(getApplicationContext(), idMolde, Toast.LENGTH_SHORT).show();
-                    imagenItemMolde.setImageResource(R.drawable.ic_action_accept);
-                    imagenItemReporte.setImageResource(R.drawable.ic_action_next_item);
-                    layoutMolde.setVisibility(View.GONE);
-                    layoutReporte.setVisibility(View.VISIBLE);
-                }
-            });
-
-    }
-
-    public void setBotonAtras(View v){
-        Toast.makeText(getApplicationContext(),"hola mundo",Toast.LENGTH_SHORT);
-        if(layoutMolde.getVisibility() == View.VISIBLE && getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
-            imagenItemMolde.setImageResource(R.drawable.ic_action_about);
-            imagenItemMaquina.setImageResource(R.drawable.ic_action_next_item);
-            layoutMolde.setVisibility(View.GONE);
-            layoutMaquina.setVisibility(View.VISIBLE);
-        }
-        else if(layoutReporte.getVisibility() == View.VISIBLE && getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT){
-            imagenItemMolde.setImageResource(R.drawable.ic_action_next_item);
-            imagenItemReporte.setImageResource(R.drawable.ic_action_about);
-            layoutReporte.setVisibility(View.GONE);
-            layoutMolde.setVisibility(View.VISIBLE);
-        }
-    }
-
-    public void setBotonCamara(View v){
-        ventanaCamara = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(ventanaCamara, 0);
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode,int resultCode,Intent data){
-        super.onActivityResult(requestCode,resultCode,data);
-        if(resultCode == Activity.RESULT_OK){
-            Bundle extra = data.getExtras();
-            bmp = (Bitmap)extra.get("data");
-            imagenCamara.setImageBitmap(bmp);
-        }
-    }
-
-
-    public void cargaReporte(){
-
-    }
-
-    public void llenaDatosMaquina(){
-
-    }
-
-    public void llenaDatosMolde(){
-
+        TbH.addTab(tab1); //añadimos los tabs ya programados
+        TbH.addTab(tab2);
+        TbH.addTab(tab3);
     }
 }
