@@ -12,10 +12,12 @@ import java.awt.Font;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
@@ -77,6 +79,11 @@ public class Usuario extends JInternalFrame{
             public void actionPerformed(ActionEvent e) {
                 //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 connect(txtIp.getText());
+                txtNombre.setText("");
+                txtApellido.setText("");
+                txtCedula.setText("");
+                txtUsuario.setText("");
+                txtContraseña.setText("");
             }
         });
         panel.add(btnCrear);
@@ -122,12 +129,26 @@ public class Usuario extends JInternalFrame{
         List lista = new ArrayList();
         try{
             Class.forName("org.postgresql.Driver");
-            Connection conexion = DriverManager.getConnection(cadena,user,pass);
+            Connection conn = DriverManager.getConnection(cadena,user,pass);
+            CallableStatement nuevoUsuario = conn.prepareCall("{ ? = call INSERTAR_USUARIO( ? , ? , ? , ? , ? , ? ) }");
+            nuevoUsuario.registerOutParameter(1, Types.BOOLEAN);
+            nuevoUsuario.setString(2, txtNombre.getText());
+            nuevoUsuario.setString(3, txtApellido.getText());
+            nuevoUsuario.setString(4, txtCedula.getText());
+            nuevoUsuario.setString(5, txtUsuario.getText());
+            nuevoUsuario.setString(6, txtContraseña.getText());
+            nuevoUsuario.setInt(7, 1);
+            nuevoUsuario.execute();
+            Boolean c = nuevoUsuario.getBoolean(1);
+            System.out.println(c);
+            
+            /*
             Statement st =  conexion.createStatement();
             System.out.println(cadena);
             String sql = "INSERT INTO USUARIO(NOMBRE,APELLIDO,CI,USUARIO,CONTRASEÑA,TIPO) VALUES ('"+txtNombre.getText()+"','"+txtApellido.getText()+"','"+txtCedula.getText()+"','"+txtUsuario.getText()+"','"+txtContraseña.getText()+"',"+1+")";
             System.out.println(sql);
             st.execute(sql);
+            */
         }catch(Exception e){
             System.out.println("Errro: "+e.getMessage());
         }
