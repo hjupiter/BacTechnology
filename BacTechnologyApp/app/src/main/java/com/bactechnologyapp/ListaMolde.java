@@ -83,7 +83,5 @@ public class ListaMolde extends AppCompatActivity {
                 startActivity(ventanaMaquinaMolde);
             }
         });
-
-
     }
 }

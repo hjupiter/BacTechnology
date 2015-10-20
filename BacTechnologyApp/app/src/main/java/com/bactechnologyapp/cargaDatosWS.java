@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Angel on 16/10/2015.
  */
 public class cargaDatosWS {
-
+    private String conexion =  "http://172.18.52.59:8080/BacTechnology/BacTechnologyService?WSDL";
 
     public Boolean getAutenticacion(String usuario,String contraseña){
         Boolean res = null;
@@ -38,7 +38,6 @@ public class cargaDatosWS {
         envelope.setOutputSoapObject(rpc);
         HttpTransportSE androidHttpTransport = null;
         try{
-            String conexion = "http://192.168.1.4:8080/BacTechnology/BacTechnologyService?WSDL";
             androidHttpTransport =  new HttpTransportSE(conexion);
 
             androidHttpTransport.call("http://service.BacTechnology.com/Autenticacion", envelope);
@@ -64,7 +63,6 @@ public class cargaDatosWS {
         envelope.setOutputSoapObject(rpc);
         HttpTransportSE androidHttpTransport = null;
         try{
-            String conexion = "http://192.168.1.4:8080/BacTechnology/BacTechnologyService?WSDL";
             androidHttpTransport =  new HttpTransportSE(conexion);
             androidHttpTransport.call("http://service.BacTechnology.com/CargarMaquinarias", envelope);
 
@@ -87,7 +85,6 @@ public class cargaDatosWS {
         envelope.setOutputSoapObject(rpc);
         HttpTransportSE androidHttpTransport = null;
         try{
-            String conexion = "http://192.168.1.4:8080/BacTechnology/BacTechnologyService?WSDL";
             androidHttpTransport =  new HttpTransportSE(conexion);
             androidHttpTransport.call("http://service.BacTechnology.com/CargarMoldes", envelope);
 

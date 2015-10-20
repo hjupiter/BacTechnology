@@ -80,7 +80,7 @@ public class ListaMaquina extends AppCompatActivity {
                 */
                 pos = position;
                 new DownloadTask2().execute("");
-                progressDialog = ProgressDialog.show(context, "Por favor espere", "Autenticando");
+                progressDialog = ProgressDialog.show(context, "Por favor espere", "Cargando Molde");
             }
 
         });
