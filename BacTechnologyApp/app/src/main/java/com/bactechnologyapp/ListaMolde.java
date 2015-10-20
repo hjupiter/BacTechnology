@@ -16,7 +16,7 @@ import android.widget.Toast;
 public class ListaMolde extends AppCompatActivity {
     private String idMaquina;
     private EditText buscarMolde;
-    final String[] moldes = {"121 PALA DE BASURA CHICA", "14-83 ESPRIMIDOR PICA"
+   /* final String[] moldes = {"121 PALA DE BASURA CHICA", "14-83 ESPRIMIDOR PICA"
             ,"46-2000	BOLSILLO PLATERO","229	EMBUDO CHICO", "9-98	BASE MACETERO JAZMIN PEQ PLATO", "124-2004	BASE JABONERA",
             "141-2004	TAPA JABONERA", "23-93	JARRO PEKES", "25-92	TAPA POMO 2-4 LITROS", "37-99	JABONERA NUEVA DISH",
             "03-2001	MACETERO JAZMIN CHICO TULIPAN (plato)", "129	TAZON BALUN PEQUEÑO", "112-81	ASA BALDE IND CHICO",
@@ -31,6 +31,8 @@ public class ListaMolde extends AppCompatActivity {
             "141-2004	TAPA JABONERA",
             "23-93	JARRO PEKES",
             "25-92	TAPA POMO 2-4 LITROS",};
+            */
+    private String[] moldes;
     private ListView listaMoldes;
 
 
@@ -42,10 +44,7 @@ public class ListaMolde extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
-
-
-
-
+        moldes = getIntent().getExtras().getStringArray("array");
         idMaquina = (String) getIntent().getExtras().getString("idMaquina");
 
         listaMoldes = (ListView)findViewById(R.id.id_lista_molde);
