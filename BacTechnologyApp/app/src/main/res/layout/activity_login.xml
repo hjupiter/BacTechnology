@@ -42,6 +42,7 @@
                     android:src="@drawable/ic_action_user" />
 
                 <EditText
+                    android:id="@+id/txtUsuario"
                     style="@style/EditView"
                     android:hint="Usuario"
                     android:layout_height="match_parent" />
@@ -61,6 +62,7 @@
                     android:src="@drawable/ic_action_lock_closed" />
 
                 <EditText
+                    android:id="@+id/txtContraseña"
                     style="@style/EditView"
                     android:hint="Contraseña"
                     android:layout_height="match_parent" />
