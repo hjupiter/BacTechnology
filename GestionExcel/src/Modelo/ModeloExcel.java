@@ -4,13 +4,12 @@
  * and open the template in the editor.
  */
 package Modelo;
-import archivo.DataBaseHandler;
+import Base.DataBaseHandler;
 import java.io.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.hssf.usermodel.*;
 import org.apache.poi.xssf.usermodel.*;
 
 
@@ -122,6 +121,7 @@ public class ModeloExcel {
             }
             
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No se pudo conectar con la base de datos");
         }
         
     }
