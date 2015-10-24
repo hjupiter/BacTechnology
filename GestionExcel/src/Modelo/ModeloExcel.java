@@ -16,7 +16,7 @@ import org.apache.poi.xssf.usermodel.*;
 
 public class ModeloExcel {
     private Workbook wb;
-    private DataBaseHandler db;
+    private DataBaseHandler db =  new DataBaseHandler();
     
     public String Abrir(File archivo, JTable tablaD){
         String respuesta="No se pudo realizar la importación.";
@@ -115,7 +115,8 @@ public class ModeloExcel {
                     }
                 }
                 System.out.println("ID : "+id+ " Nombre : "+nombre);
-                db.connect(id, nombre);
+                if(id!="" && nombre!="")
+                    db.connect(id, nombre);
                 //guardar datos
                 System.out.println("");
             }
