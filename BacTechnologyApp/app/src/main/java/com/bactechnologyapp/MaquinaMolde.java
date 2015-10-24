@@ -9,10 +9,15 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
-import android.support.v4.app.DialogFragment;
+import android.widget.Toast;
+
+import java.lang.reflect.Array;
 
 public class MaquinaMolde extends AppCompatActivity {
     private Intent ventanaCamara;
@@ -20,7 +25,12 @@ public class MaquinaMolde extends AppCompatActivity {
     private ImageView imagenCamara;
     private String idMolde;
     private String idMaquina;
+    private String opcionNovedad,opcionSolucion;
     private Bitmap bmp;
+    private Spinner spinnerNovedad;
+    private Spinner spinnerolucion;
+    private ArrayAdapter<CharSequence> adapterNovedad;
+    private ArrayAdapter<CharSequence> adapterSolucion;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +44,33 @@ public class MaquinaMolde extends AppCompatActivity {
         idMolde = (String) getIntent().getExtras().getString("idMolde");
         imagenCamara = (ImageView)findViewById(R.id.id_imagen);
         botonEnviar = (Button)findViewById(R.id.id_boton_enviar);
+        spinnerNovedad = (Spinner)findViewById(R.id.id_tipo_novedad);
+        spinnerolucion = (Spinner)findViewById(R.id.id_tipo_solucion);
+
+        adapterNovedad = ArrayAdapter.createFromResource(this,R.array.opcionesNovedad, android.R.layout.simple_spinner_item);
+        adapterNovedad.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        adapterSolucion = ArrayAdapter.createFromResource(this,R.array.opcionesSolución, android.R.layout.simple_spinner_item);
+        adapterSolucion.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        spinnerNovedad.setAdapter(adapterNovedad);
+        spinnerolucion.setAdapter(adapterSolucion);
+
+        spinnerNovedad.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getBaseContext(), parent.getItemIdAtPosition(position) + "ha sido seleccionado", Toast.LENGTH_LONG);
+                //opcionNovedad = (String) Array.get(spinnerNovedad,position);
+            }
+        });
+
+        spinnerolucion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(getBaseContext(), parent.getItemIdAtPosition(position) + "ha sido seleccionado", Toast.LENGTH_LONG);
+                //opcionSolucion = (String) Array.get(spinnerolucion,position);
+            }
+        });
 
         TextView textId = (TextView) findViewById(R.id.textIdMaquinaMolde);
 

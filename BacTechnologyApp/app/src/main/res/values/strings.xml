@@ -3,4 +3,14 @@
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
+    <string-array name="opcionesNovedad">
+        <item>Correción</item>
+        <item>Reparación</item>
+        <item>Acción Tomada</item>
+    </string-array>
+    <string-array name="opcionesSolución">
+        <item>Repuesto</item>
+        <item>Insumos Utilizados</item>
+        <item>Reparación</item>
+    </string-array>
 </resources>

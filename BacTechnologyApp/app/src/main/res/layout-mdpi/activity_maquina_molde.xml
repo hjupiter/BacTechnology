@@ -26,38 +26,57 @@
                 android:id="@+id/textIdMaquinaMolde"
                 android:layout_weight="0.05" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Novedad Detectada"
-                android:id="@+id/textView6" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="47dp"
+                android:weightSum="1">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Eliga una NOVEDAD"
+                    android:id="@+id/textView"
+                    android:layout_weight="0.45" />
+
+                <Spinner
+                    android:layout_width="181dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/id_tipo_novedad"
+                    android:layout_weight="0.42" />
+            </LinearLayout>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText3" />
+                android:id="@+id/editText3"
+                android:layout_weight="0.26" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Novedad Detectada"
-                android:id="@+id/textView7" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="47dp"
+                android:weightSum="1" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="Eliga una Solución"
+                    android:id="@+id/textView5"
+                    android:layout_weight="0.48" />
+
+                <Spinner
+                    android:layout_width="181dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/id_tipo_solucion"
+                    android:layout_weight="0.39" />
+            </LinearLayout>
 
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText4" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Repuestos/Insumos Utilizados:"
-                android:id="@+id/textView8" />
-
-            <EditText
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/editText5" />
+                android:id="@+id/editText5"
+                android:layout_weight="0.33" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
