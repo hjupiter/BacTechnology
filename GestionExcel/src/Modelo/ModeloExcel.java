@@ -4,6 +4,7 @@
  * and open the template in the editor.
  */
 package Modelo;
+import Vista.VistaExcel;
 import Base.DataBaseHandler;
 import java.io.*;
 import java.util.*;
@@ -18,6 +19,7 @@ public class ModeloExcel {
     private Workbook wb;
     private DataBaseHandler db =  new DataBaseHandler();
     
+    
     public String Abrir(File archivo, JTable tablaD){
         String respuesta="No se pudo realizar la importación.";
         DefaultTableModel modeloT = new DefaultTableModel();
@@ -27,6 +29,7 @@ public class ModeloExcel {
             Sheet hoja = wb.getSheetAt(0);
             Iterator filaIterator = hoja.rowIterator();
             int indiceFila=-1;
+            
             while (filaIterator.hasNext()) {                
                 indiceFila++;
                 Row fila = (Row) filaIterator.next();
@@ -116,7 +119,9 @@ public class ModeloExcel {
                 }
                 System.out.println("ID : "+id+ " Nombre : "+nombre);
                 if(id!="" && nombre!="")
-                    db.connect(id, nombre);
+                    if(id != "NOMBRE" && nombre != "NOMBRE PRODUCTO"){
+                        db.connect(id, nombre);
+                    }
                 //guardar datos
                 System.out.println("");
             }

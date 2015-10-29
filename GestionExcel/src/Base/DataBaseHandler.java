@@ -17,9 +17,9 @@ import java.sql.Types;
  * @author bakamedi
  */
 public class DataBaseHandler {
-    private static String conexion = "jdbc:postgresql://localhost:5432/BACTECHNOLOGY";
-    private static String user = "postgres";
-    private static String pass = "root";
+    private static final String conexion = "jdbc:postgresql://localhost:5432/BACTECHNOLOGY";
+    private static final String user = "postgres";
+    private static final String pass = "root";
     private Connection con;
     
     

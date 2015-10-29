@@ -97,7 +97,8 @@
                     android:layout_height="match_parent"
                     android:id="@+id/id_imagen"
                     android:src="@mipmap/ic_launcher"
-                    android:layout_alignParentTop="true" />
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true" />
 
             </RelativeLayout>
 
