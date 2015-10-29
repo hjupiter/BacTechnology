@@ -20,7 +20,7 @@ public class ControladorExcel implements ActionListener{
     File archivo;
     File archivoPath = null;
     int contAccion=0;
-    
+    private int comboOpcion = 0;
     
     public ControladorExcel(VistaExcel vistaE, ModeloExcel modeloE){
         this.vistaE = vistaE;
@@ -37,19 +37,35 @@ public class ControladorExcel implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         contAccion++;
+        comboOpcion = vistaE.comboItem.getSelectedIndex();
         if(contAccion==1)AgregarFiltro();
-        
-        if(e.getSource() == vistaE.btnImportar){
-            if(selecArchivo.showDialog(null, "Seleccionar archivo")==JFileChooser.APPROVE_OPTION){
-                archivo=selecArchivo.getSelectedFile();
-                archivoPath = selecArchivo.getSelectedFile().getAbsoluteFile();
-                if(archivo.getName().endsWith("xls") || archivo.getName().endsWith("xlsx")){
-                    JOptionPane.showMessageDialog(null, modeloE.Abrir(archivo, vistaE.jtDatos) + "\n Formato ."+ archivo.getName().substring(archivo.getName().lastIndexOf(".")+1));
-                }else{
-                    JOptionPane.showMessageDialog(null, "Elija un formato valido.");
+        if(comboOpcion == 0){
+            if(e.getSource() == vistaE.btnImportar){
+                if(selecArchivo.showDialog(null, "Seleccionar archivo")==JFileChooser.APPROVE_OPTION){
+                    archivo=selecArchivo.getSelectedFile();
+                    archivoPath = selecArchivo.getSelectedFile().getAbsoluteFile();
+                    if(archivo.getName().endsWith("xls") || archivo.getName().endsWith("xlsx")){
+                        JOptionPane.showMessageDialog(null, modeloE.Abrir(archivo, vistaE.jtDatos, comboOpcion) + "\n Formato ."+ archivo.getName().substring(archivo.getName().lastIndexOf(".")+1));
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Elija un formato valido.");
+                    }
                 }
             }
         }
+        else if(comboOpcion == 1){
+            if(e.getSource() == vistaE.btnImportar){
+                if(selecArchivo.showDialog(null, "Seleccionar archivo")==JFileChooser.APPROVE_OPTION){
+                    archivo=selecArchivo.getSelectedFile();
+                    archivoPath = selecArchivo.getSelectedFile().getAbsoluteFile();
+                    if(archivo.getName().endsWith("xls") || archivo.getName().endsWith("xlsx")){
+                        JOptionPane.showMessageDialog(null, modeloE.Abrir(archivo, vistaE.jtDatos, comboOpcion) + "\n Formato ."+ archivo.getName().substring(archivo.getName().lastIndexOf(".")+1));
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Elija un formato valido.");
+                    }
+                }
+            }
+        }
+        
     }
     
 }

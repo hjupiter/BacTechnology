@@ -20,7 +20,7 @@ public class ModeloExcel {
     private DataBaseHandler db =  new DataBaseHandler();
     
     
-    public String Abrir(File archivo, JTable tablaD){
+    public String Abrir(File archivo, JTable tablaD,int comboOpcion){
         String respuesta="No se pudo realizar la importación.";
         DefaultTableModel modeloT = new DefaultTableModel();
         tablaD.setModel(modeloT);
@@ -63,19 +63,25 @@ public class ModeloExcel {
                 if(indiceFila!=0)modeloT.addRow(listaColumna);
             }
             respuesta="Importación exitosa";
-            muestraDatos(archivo);
+            muestraDatos(archivo,comboOpcion);
         } catch (Exception e) {
         }
         return respuesta;
     }
     
     
-    public void muestraDatos(File archivoExcel){
+    public void muestraDatos(File archivoExcel,int comboOpcion){
         List celda = new ArrayList();
+        XSSFSheet hssSheet;
         try{
             FileInputStream fileInputStream = new FileInputStream(archivoExcel);
             XSSFWorkbook workBook = new XSSFWorkbook(fileInputStream);
-            XSSFSheet hssSheet = workBook.getSheetAt(0);
+            if(comboOpcion == 0){
+                hssSheet = workBook.getSheetAt(0);
+            }else{
+                hssSheet = workBook.getSheetAt(1);
+            }
+                
             Iterator rowIterator = hssSheet.rowIterator();
             while(rowIterator.hasNext()){
                 XSSFRow hssfRow = (XSSFRow) rowIterator.next();
@@ -91,10 +97,10 @@ public class ModeloExcel {
         }catch(Exception e){
             e.printStackTrace();
         }
-        obtener(celda);
+        obtener(celda,comboOpcion);
     }
     
-    private void obtener(List cellDataList){
+    private void obtener(List cellDataList,int comboOpcion){
         String id = "",nombre = "";
         int cont = 0;
         try {
@@ -119,9 +125,16 @@ public class ModeloExcel {
                 }
                 System.out.println("ID : "+id+ " Nombre : "+nombre);
                 if(id!="" && nombre!="")
-                    if(id != "NOMBRE" && nombre != "NOMBRE PRODUCTO"){
-                        db.connect(id, nombre);
+                    if(comboOpcion == 0){
+                        if(id != "NOMBRE" && nombre != "NOMBRE PRODUCTO"){
+                            db.guardaMoldes(id, nombre);
+                        }
                     }
+                    else if(comboOpcion == 1){
+                            //db.guardaMaquinas(id, nombre);
+                      
+                    }
+                    
                 //guardar datos
                 System.out.println("");
             }

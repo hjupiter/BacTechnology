@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Angel on 16/10/2015.
  */
 public class cargaDatosWS {
-    private String conexion =  "http://172.18.52.59:8080/BacTechnology/BacTechnologyService?WSDL";
+    private String conexion =  "http://192.168.100.101:8080/BacTechnology/BacTechnologyService?WSDL";
 
     public Boolean getAutenticacion(String usuario,String contraseña){
         Boolean res = null;
