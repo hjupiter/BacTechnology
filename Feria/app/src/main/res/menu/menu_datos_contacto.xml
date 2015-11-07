@@ -1,0 +1,19 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.feria.UptContacto">
+
+    <item
+        android:id="@+id/itemEditarContacto"
+        android:icon="@drawable/ic_action_edit"
+        android:title="Editar"
+        android:enabled="true"
+        app:showAsAction="always|withText" />
+
+    <item
+        android:id="@+id/itemAceptarEditar"
+        android:icon="@drawable/ic_action_accept"
+        android:title="Aceptar"
+        android:enabled="true"
+        app:showAsAction="always|withText" />
+</menu>
