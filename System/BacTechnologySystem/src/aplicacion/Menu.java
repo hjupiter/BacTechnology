@@ -94,6 +94,11 @@ public class Menu extends javax.swing.JFrame {
         itemUsuarioConsultar.setText("Consultar");
 
         jMenuItem1.setText("Usuario");
+        jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem1ActionPerformed(evt);
+            }
+        });
         itemUsuarioConsultar.add(jMenuItem1);
 
         itemMaquinariaConsultar.setText("Maquinaria");
@@ -171,6 +176,13 @@ public class Menu extends javax.swing.JFrame {
             Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_itemMoldeActionPerformed
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // TODO add your handling code here:
+        Reporte r = new Reporte();
+        centerJIF(r);
+        DesktopPane.add(r);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     /**
      * @param args the command line arguments

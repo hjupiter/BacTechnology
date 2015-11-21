@@ -6,15 +6,11 @@
             <extension file="jaxws-build.xml" id="jaxws"/>
         </buildExtensions>
         <data xmlns="http://www.netbeans.org/ns/web-project/3">
-            <name>BacTechnology2</name>
+            <name>BacTechnology</name>
             <minimum-ant-version>1.6.5</minimum-ant-version>
             <web-module-libraries>
                 <library dirs="200">
                     <file>${file.reference.postgresql-9.4-1203.jdbc4.jar}</file>
-                    <path-in-war>WEB-INF/lib</path-in-war>
-                </library>
-                <library dirs="200">
-                    <file>${file.reference.postgresql-9.4-1203.jdbc4.jar-1}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>

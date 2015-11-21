@@ -62,13 +62,10 @@
                     android:src="@drawable/ic_action_lock_closed" />
 
                 <EditText
-                    android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
-                    android:inputType="textPassword"
+                    android:id="@+id/txtContraseña"
+                    style="@style/EditView"
                     android:hint="Contraseña"
-                    android:ems="10"
-                    android:id="@+id/txtContraseña" />
-
+                    android:layout_height="match_parent" />
             </LinearLayout>
 
             <!-- Login button -->

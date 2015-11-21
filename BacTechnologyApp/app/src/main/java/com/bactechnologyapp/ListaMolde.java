@@ -35,6 +35,8 @@ public class ListaMolde extends AppCompatActivity {
     private String[] moldes;
     private ListView listaMoldes;
 
+    private String usuario;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,8 @@ public class ListaMolde extends AppCompatActivity {
 
         moldes = getIntent().getExtras().getStringArray("array");
         idMaquina = (String) getIntent().getExtras().getString("idMaquina");
+
+        usuario = getIntent().getExtras().getString("usuario");
 
         listaMoldes = (ListView)findViewById(R.id.id_lista_molde);
         buscarMolde = (EditText)findViewById(R.id.id_buscar_molde);
@@ -80,6 +84,7 @@ public class ListaMolde extends AppCompatActivity {
                 Intent ventanaMaquinaMolde = new Intent(ListaMolde.this, MaquinaMolde.class);
                 ventanaMaquinaMolde.putExtra("idMolde", idMolde);
                 ventanaMaquinaMolde.putExtra("idMaquina", idMaquina);
+                ventanaMaquinaMolde.putExtra("usuario",usuario);
                 startActivity(ventanaMaquinaMolde);
             }
         });

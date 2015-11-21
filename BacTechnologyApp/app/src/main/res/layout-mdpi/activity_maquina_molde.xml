@@ -49,7 +49,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText3"
+                android:id="@+id/txtReporteNovedad"
                 android:layout_weight="0.26" />
 
             <LinearLayout
@@ -75,7 +75,7 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/editText5"
+                android:id="@+id/txtReporteSolucion"
                 android:layout_weight="0.33" />
 
             <RelativeLayout
@@ -97,8 +97,7 @@
                     android:layout_height="match_parent"
                     android:id="@+id/id_imagen"
                     android:src="@mipmap/ic_launcher"
-                    android:layout_alignParentTop="true"
-                    android:layout_centerHorizontal="true" />
+                    android:layout_alignParentTop="true" />
 
             </RelativeLayout>
 

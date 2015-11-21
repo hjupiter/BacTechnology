@@ -22,11 +22,14 @@ public class ListaMantenimiento extends AppCompatActivity {
     private String[] nombreLitasMantenimeinto = new String[]{"Mantenimiento de Moldes","Mantenimiento de Maquina/Inyectores"};
     private int[] imagenListaMantenimiento = {R.drawable.icon01,R.drawable.icon02};
 
+    private String usuario;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_mantenimiento);
         context = this;
+        usuario = getIntent().getExtras().getString("usuario");
         final ListView listaMantenimiento = (ListView) findViewById(R.id.id_lista_mantenimiento);
         adapter = new ListViewMantenimientoAdapter(this, nombreLitasMantenimeinto, imagenListaMantenimiento);
         listaMantenimiento.setAdapter(adapter);
@@ -59,6 +62,7 @@ public class ListaMantenimiento extends AppCompatActivity {
             String[] arrayMaquinarias = convLisToArray(maquinarias);
             Intent ventanaMaquina = new Intent(ListaMantenimiento.this, ListaMaquina.class);
             ventanaMaquina.putExtra("array", arrayMaquinarias);
+            ventanaMaquina.putExtra("usuario",usuario);
             startActivity(ventanaMaquina);
             super.onPostExecute(result);
         }

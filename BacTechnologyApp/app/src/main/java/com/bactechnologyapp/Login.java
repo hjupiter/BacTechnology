@@ -54,6 +54,7 @@ public class Login extends AppCompatActivity {
             progressDialog.dismiss();
             if(autenticacion) {
                 Intent login = new Intent(Login.this, ListaMantenimiento.class);
+                login.putExtra("usuario",usuario.getText().toString());
                 startActivity(login);
             }
             super.onPostExecute(result);

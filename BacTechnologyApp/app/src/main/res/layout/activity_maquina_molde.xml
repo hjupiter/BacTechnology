@@ -58,7 +58,7 @@
                         <Spinner
                             android:layout_width="178dp"
                             android:layout_height="match_parent"
-                            android:id="@+id/spinner3" />
+                            android:id="@+id/id_tipo_novedad" />
                     </LinearLayout>
                 </TableRow>
 
@@ -67,6 +67,7 @@
                     android:layout_height="match_parent">
 
                     <EditText
+                        android:id="@+id/txtReporteNovedad"
                         android:layout_width="fill_parent"
                         android:layout_height="100dp"
                         android:singleLine="false"
@@ -93,7 +94,7 @@
                         <Spinner
                             android:layout_width="177dp"
                             android:layout_height="wrap_content"
-                            android:id="@+id/spinner4"
+                            android:id="@+id/id_tipo_solucion"
                             android:layout_weight="0.07" />
                     </LinearLayout>
                 </TableRow>
@@ -103,6 +104,7 @@
                     android:layout_height="match_parent">
 
                     <EditText
+                        android:id="@+id/txtReporteSolucion"
                         android:layout_width="fill_parent"
                         android:layout_height="100dp"
                         android:singleLine="false"

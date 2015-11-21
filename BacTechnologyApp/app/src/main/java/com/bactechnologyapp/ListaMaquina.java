@@ -33,6 +33,8 @@ public class ListaMaquina extends AppCompatActivity {
 
     private int pos;
 
+    private String usuario;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +45,7 @@ public class ListaMaquina extends AppCompatActivity {
 
         context = this;
         maquinas = getIntent().getExtras().getStringArray("array");
+        usuario = getIntent().getExtras().getString("usuario");
 
         listaMaquina = (ListView)findViewById(R.id.id_lista_maquina);
         buscarMaquina = (EditText)findViewById(R.id.id_buscar_maquina);
@@ -104,6 +107,7 @@ public class ListaMaquina extends AppCompatActivity {
             Intent ventanaMoldes = new Intent(ListaMaquina.this, ListaMolde.class);
             ventanaMoldes.putExtra("array", arrayMoldes);
             ventanaMoldes.putExtra("idMaquina", idMaquina);
+            ventanaMoldes.putExtra("usuario",usuario);
             startActivity(ventanaMoldes);
             super.onPostExecute(result);
         }

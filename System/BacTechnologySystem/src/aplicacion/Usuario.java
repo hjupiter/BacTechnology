@@ -130,7 +130,7 @@ public class Usuario extends JInternalFrame{
         try{
             Class.forName("org.postgresql.Driver");
             Connection conn = DriverManager.getConnection(cadena,user,pass);
-            CallableStatement nuevoUsuario = conn.prepareCall("{ ? = call INSERTAR_USUARIO( ? , ? , ? , ? , ? , ? ) }");
+            CallableStatement nuevoUsuario = conn.prepareCall("{ ? = call INSERTAR_USUARIO( ? , ? , ? , ? , ? , ?) }");
             nuevoUsuario.registerOutParameter(1, Types.BOOLEAN);
             nuevoUsuario.setString(2, txtNombre.getText());
             nuevoUsuario.setString(3, txtApellido.getText());
