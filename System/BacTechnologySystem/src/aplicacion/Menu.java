@@ -179,7 +179,7 @@ public class Menu extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-        Reporte r = new Reporte();
+        InternalReporte r = new InternalReporte();
         centerJIF(r);
         DesktopPane.add(r);
     }//GEN-LAST:event_jMenuItem1ActionPerformed

@@ -186,3 +186,243 @@ BEGIN
 	RETURN ID;
 END;
 $$ LANGUAGE PLPGSQL;
+
+
+CREATE OR REPLACE FUNCTION CONSULTA_SOLO_MAQUINARIA(varchar) RETURNS REFCURSOR AS $$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR SELECT * from 
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde
+	where maquinaria.codigo like $1||'%';
+	RETURN MYCURS;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION CONSULTA_SOLO_MOLDE(varchar) RETURNS REFCURSOR AS $$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR SELECT * from 
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde
+	where molde.codigo like $1||'%';
+	RETURN MYCURS;
+END;
+$$ LANGUAGE PLPGSQL;
+
+
+CREATE OR REPLACE FUNCTION CONSULTA_SOLO_USUARIO(varchar) RETURNS REFCURSOR AS $$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR SELECT * from 
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde
+	where usuario.nombre like $1||'%';
+	RETURN MYCURS;
+END;
+$$ LANGUAGE PLPGSQL;
+
+
+
+CREATE OR REPLACE FUNCTION CONSULTA_SOLO_NOVEDAD(varchar) RETURNS REFCURSOR AS $$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR SELECT * from 
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde
+	where reporte.tipo_novedad like $1||'%';
+	RETURN MYCURS;
+END;
+$$ LANGUAGE PLPGSQL;
+
+
+CREATE OR REPLACE FUNCTION CONSULTA_USUARIO_MAQUINARIA(varchar, varchar) RETURNS REFCURSOR AS $$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR SELECT * from 
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde
+	where usuario.nombre like $1||'%' and maquinaria.codigo like $2||'%';
+	RETURN MYCURS;
+END;
+$$ LANGUAGE PLPGSQL;
+
+
+CREATE OR REPLACE FUNCTION CONSULTA_USUARIO_MOLDE(varchar, varchar) RETURNS REFCURSOR AS $$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR SELECT * from 
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde
+	where usuario.nombre like $1||'%' and molde.codigo like $2||'%';
+	RETURN MYCURS;
+END;
+$$ LANGUAGE PLPGSQL;
+
+
+
+CREATE OR REPLACE FUNCTION CONSULTA_USUARIO_NOVEDAD(varchar, varchar) RETURNS REFCURSOR AS $$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR SELECT * from 
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde
+	where usuario.nombre like $1||'%' and reporte.tipo_novedad like $2||'%';
+	RETURN MYCURS;
+END;
+$$ LANGUAGE PLPGSQL;
+
+
+CREATE OR REPLACE FUNCTION CONSULTA_USUARIO_MAQUINARIA_MOLDE(varchar, varchar, varchar) RETURNS REFCURSOR AS $$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR SELECT * from 
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde
+	where usuario.nombre like $1||'%' and maquinaria.codigo like $2||'%' and molde.codigo like $3||'%';
+	RETURN MYCURS;
+END;
+$$ LANGUAGE PLPGSQL;
+
+
+CREATE OR REPLACE FUNCTION CONSULTA_USUARIO_MAQUINARIA_NOVEDAD(varchar, varchar, varchar) RETURNS REFCURSOR AS $$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR SELECT * from 
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde
+	where usuario.nombre like $1||'%' and maquinaria.codigo like $2||'%' and reporte.tipo_novedad like $3||'%';
+	RETURN MYCURS;
+END;
+$$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION CONSULTA_USUARIO_MOLDE_NOVEDAD(varchar, varchar, varchar) RETURNS REFCURSOR AS $$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR SELECT * from 
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde
+	where usuario.nombre like $1||'%' and molde.codigo like $2||'%' and reporte.tipo_novedad like $3||'%';
+	RETURN MYCURS;
+END;
+$$ LANGUAGE PLPGSQL;
+
+
+
+CREATE OR REPLACE FUNCTION CONSULTA_MAQUINARIA_MOLDE(varchar, varchar) RETURNS REFCURSOR AS $$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR SELECT * from 
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde
+	where maquinaria.codigo like $1||'%' and molde.codigo like $2||'%';
+	RETURN MYCURS;
+END;
+$$ LANGUAGE PLPGSQL;
+
+
+
+CREATE OR REPLACE FUNCTION CONSULTA_MAQUINARIA_NOVEDAD(varchar, varchar) RETURNS REFCURSOR AS $$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR SELECT * from 
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde
+	where maquinaria.codigo like $1||'%' and reporte.tipo_novedad like $2||'%';
+	RETURN MYCURS;
+END;
+$$ LANGUAGE PLPGSQL;
+
+
+CREATE OR REPLACE FUNCTION CONSULTA_MAQUINARIA_MOLDE_NOVEDAD(varchar, varchar, varchar) RETURNS REFCURSOR AS $$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR SELECT * from 
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde
+	where maquinaria.codigo like $1||'%' and molde.codigo like $2||'%' and reporte.tipo_novedad like $3||'%';
+	RETURN MYCURS;
+END;
+$$ LANGUAGE PLPGSQL;
+
+
+CREATE OR REPLACE FUNCTION CONSULTA_MOLDE_NOVEDAD(varchar, varchar) RETURNS REFCURSOR AS $$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR SELECT * from 
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde
+	where molde.codigo like $1||'%' and reporte.tipo_novedad like $2||'%';
+	RETURN MYCURS;
+END;
+$$ LANGUAGE PLPGSQL;
