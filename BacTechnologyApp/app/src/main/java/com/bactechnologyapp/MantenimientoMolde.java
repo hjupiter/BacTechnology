@@ -2,7 +2,6 @@ package com.bactechnologyapp;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.FragmentManager;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,15 +20,13 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import org.kobjects.base64.Base64;
 
 import java.io.ByteArrayOutputStream;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import org.kobjects.base64.Base64;
-import org.ksoap2.serialization.MarshalBase64;
 
-public class MaquinaMolde extends AppCompatActivity {
+public class MantenimientoMolde extends AppCompatActivity {
+
     private Intent ventanaCamara;
     private Button botonAtras,botonEnviar;
     private ImageView imagenCamara;
@@ -44,8 +41,6 @@ public class MaquinaMolde extends AppCompatActivity {
     private EditText reporteNovedad;
     private EditText reporteSolucion;
 
-    private EditText novedadDetectada;
-
     private String opNovedad,opSolucion;
 
     private ProgressDialog progressDialog;
@@ -54,25 +49,32 @@ public class MaquinaMolde extends AppCompatActivity {
 
     private String usuario;
 
+    private EditText Articulo;
+    private EditText NovedadDetectada;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maquina_molde);
+        setContentView(R.layout.activity_mantenimiento_molde);
         context = this;
+
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         idMaquina = (String) getIntent().getExtras().getString("idMaquina");
         idMolde = (String) getIntent().getExtras().getString("idMolde");
         usuario = getIntent().getExtras().getString("usuario");
-        imagenCamara = (ImageView)findViewById(R.id.id_imagen);
-        botonEnviar = (Button)findViewById(R.id.id_boton_enviar);
-        spinnerNovedad = (Spinner)findViewById(R.id.id_tipo_novedad);
-        spinnerolucion = (Spinner)findViewById(R.id.id_tipo_solucion);
 
-        novedadDetectada = (EditText)findViewById(R.id.txtNovedadDetectada);
-        reporteNovedad = (EditText)findViewById(R.id.txtReporteNovedad);
-        reporteSolucion = (EditText)findViewById(R.id.txtReporteSolucion);
+        Articulo = (EditText)findViewById(R.id.txtArticulo_molde);
+        NovedadDetectada = (EditText)findViewById(R.id.txtNovedadDetectada_molde);
+
+        imagenCamara = (ImageView)findViewById(R.id.id_imagen_molde);
+        botonEnviar = (Button)findViewById(R.id.id_boton_enviar_molde);
+        spinnerNovedad = (Spinner)findViewById(R.id.id_tipo_novedad_molde);
+        spinnerolucion = (Spinner)findViewById(R.id.id_tipo_solucion_molde);
+
+        reporteNovedad = (EditText)findViewById(R.id.txtReporteNovedad_molde);
+        reporteSolucion = (EditText)findViewById(R.id.txtReporteSolucion_molde);
 
 
         adapterNovedad = ArrayAdapter.createFromResource(this,R.array.opcionesNovedad, android.R.layout.simple_spinner_item);
@@ -110,36 +112,14 @@ public class MaquinaMolde extends AppCompatActivity {
             }
         });
 
-
-        //spinnerNovedad.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, adNovedad));
-        //spinnerolucion.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, adsolucion));
-
-
-        /*
-        spinnerNovedad.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getBaseContext(), parent.getItemIdAtPosition(position) + "ha sido seleccionado", Toast.LENGTH_LONG);
-                //opcionNovedad = (String) Array.get(spinnerNovedad,position);
-            }
-        });
-
-        spinnerolucion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getBaseContext(), parent.getItemIdAtPosition(position) + "ha sido seleccionado", Toast.LENGTH_LONG);
-                //opcionSolucion = (String) Array.get(spinnerolucion,position);
-            }
-        });*/
-
-        TextView textId = (TextView) findViewById(R.id.textIdMaquinaMolde);
+        TextView textId = (TextView) findViewById(R.id.textIdMantenimientoMaquinaMolde);
 
         textId.setText("Maquina : " + idMaquina + "\nMolde : " + idMolde);
 
         imagenCamara.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent ventanaCamara = new Intent(MaquinaMolde.this, ImagenCamara.class);
+                Intent ventanaCamara = new Intent(MantenimientoMolde.this, ImagenCamara.class);
                 ventanaCamara.addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
                 ventanaCamara.putExtra("foto", bmp);
                 startActivity(ventanaCamara);
@@ -156,7 +136,7 @@ public class MaquinaMolde extends AppCompatActivity {
                 AlertDialog.Builder alert = new AlertDialog.Builder(context);
                 alert.setTitle("Guardar Reporte");
                 alert.setMessage("Esta seguro de realizar esta accion");
-                alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -173,7 +153,6 @@ public class MaquinaMolde extends AppCompatActivity {
             }
 
         });
-
     }
 
     public void setBotonCamara(View v){
@@ -216,9 +195,10 @@ public class MaquinaMolde extends AppCompatActivity {
             System.out.println(reporteSolucion.getText().toString());
             System.out.println(opNovedad);
             System.out.println(opSolucion);
-            System.out.println(novedadDetectada.getText().toString());
+            System.out.println(NovedadDetectada.getText().toString());
+            System.out.println(Articulo.getText().toString());
             System.out.println(strBase64);
-            Boolean a = ws.guardarReporte(idMaquina,idMolde,usuario,strBase64,reporteNovedad.getText().toString(),reporteSolucion.getText().toString(),opNovedad,opSolucion,novedadDetectada.getText().toString());
+            Boolean a = ws.guardarReporteMolde(idMaquina,idMolde,usuario,strBase64,reporteNovedad.getText().toString(),reporteSolucion.getText().toString(),opNovedad,opSolucion,NovedadDetectada.getText().toString(),Articulo.getText().toString());
             System.out.println(a);
             /*
             cargaDatosWS ws = new cargaDatosWS();
@@ -233,5 +213,4 @@ public class MaquinaMolde extends AppCompatActivity {
             super.onPostExecute(result);
         }
     }
-
 }

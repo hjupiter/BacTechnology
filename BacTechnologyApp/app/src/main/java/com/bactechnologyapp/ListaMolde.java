@@ -37,6 +37,8 @@ public class ListaMolde extends AppCompatActivity {
 
     private String usuario;
 
+    private int posMenu;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +52,8 @@ public class ListaMolde extends AppCompatActivity {
         idMaquina = (String) getIntent().getExtras().getString("idMaquina");
 
         usuario = getIntent().getExtras().getString("usuario");
+
+        posMenu = getIntent().getExtras().getInt("posicion");
 
         listaMoldes = (ListView)findViewById(R.id.id_lista_molde);
         buscarMolde = (EditText)findViewById(R.id.id_buscar_molde);
@@ -81,11 +85,22 @@ public class ListaMolde extends AppCompatActivity {
                 // TODO Auto-generated method stub
                 Toast.makeText(getApplicationContext(), "Ha pulsado el item " + moldes[position], Toast.LENGTH_SHORT).show();
                 String idMolde = moldes[position];
-                Intent ventanaMaquinaMolde = new Intent(ListaMolde.this, MaquinaMolde.class);
-                ventanaMaquinaMolde.putExtra("idMolde", idMolde);
-                ventanaMaquinaMolde.putExtra("idMaquina", idMaquina);
-                ventanaMaquinaMolde.putExtra("usuario",usuario);
-                startActivity(ventanaMaquinaMolde);
+
+                if(posMenu == 0){
+                    Intent ventanaMaquinaMolde = new Intent(ListaMolde.this, MaquinaMolde.class);
+                    ventanaMaquinaMolde.putExtra("idMolde", idMolde);
+                    ventanaMaquinaMolde.putExtra("idMaquina", idMaquina);
+                    ventanaMaquinaMolde.putExtra("usuario",usuario);
+                    startActivity(ventanaMaquinaMolde);
+                }
+
+                if(posMenu == 1){
+                    Intent ventanaMantenimientoMolde = new Intent(ListaMolde.this, MantenimientoMolde.class);
+                    ventanaMantenimientoMolde.putExtra("idMolde", idMolde);
+                    ventanaMantenimientoMolde.putExtra("idMaquina", idMaquina);
+                    ventanaMantenimientoMolde.putExtra("usuario",usuario);
+                    startActivity(ventanaMantenimientoMolde);
+                }
             }
         });
     }

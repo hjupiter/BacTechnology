@@ -5,7 +5,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.bakamedi.bac_technology.ListaMaquina">
+    tools:context="com.bactechnologyapp.MantenimientoMolde">
     <ScrollView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
@@ -24,8 +24,28 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Medium Text"
-                android:id="@+id/textIdMaquinaMolde"
+                android:id="@+id/textIdMantenimientoMaquinaMolde"
                 android:layout_weight="0.07" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="47dp"
+                android:weightSum="1" >
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="Novedad Detectada"
+                    android:layout_weight="0.07" />
+            </LinearLayout>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.33"
+                android:id="@+id/txtNovedadDetectada_molde" />
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -37,7 +57,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Novedad Detectada"
+                    android:text="Articulo"
                     android:layout_weight="0.36" />
             </LinearLayout>
 
@@ -45,7 +65,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.33"
-                android:id="@+id/txtNovedadDetectada" />
+                android:id="@+id/txtArticulo_molde" />
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -57,17 +77,16 @@
                     android:layout_width="319dp"
                     android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Elige un tipo de  Novedad"
-                    android:id="@+id/textView6" />
+                    android:text="Elige un tipo de  Novedad" />
 
                 <Spinner
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/id_tipo_novedad" />
+                    android:id="@+id/id_tipo_novedad_molde" />
             </LinearLayout>
 
             <EditText
-                android:id="@+id/txtReporteNovedad"
+                android:id="@+id/txtReporteNovedad_molde"
                 android:layout_width="fill_parent"
                 android:layout_height="100dp"
                 android:singleLine="false"
@@ -84,13 +103,12 @@
                     android:layout_height="match_parent"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="Eliga una Solución"
-                    android:id="@+id/textView2"
                     android:layout_weight="0.36" />
 
                 <Spinner
                     android:layout_width="181dp"
                     android:layout_height="wrap_content"
-                    android:id="@+id/id_tipo_solucion" />
+                    android:id="@+id/id_tipo_solucion_molde" />
             </LinearLayout>
 
             <EditText
@@ -98,7 +116,8 @@
                 android:layout_height="100dp"
                 android:singleLine="false"
                 android:layout_weight="0.02"
-                android:id="@+id/txtReporteSolucion" />
+                android:id="@+id/txtReporteSolucion_molde" />
+
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -107,7 +126,7 @@
                 <ImageView
                     android:layout_width="400dp"
                     android:layout_height="match_parent"
-                    android:id="@+id/id_imagen"
+                    android:id="@+id/id_imagen_molde"
                     android:src="@mipmap/ic_launcher"
                     android:layout_centerHorizontal="true" />
 
@@ -116,8 +135,9 @@
                     android:layout_height="67dp"
                     android:onClick="setBotonCamara"
                     android:text="Camara"
-                    android:id="@+id/button"
-                    android:layout_alignParentTop="true"/>
+                    android:id="@+id/id_boton_camara_molde"
+                    android:layout_alignParentTop="true"
+                    android:layout_toStartOf="@+id/imageView3" />
             </RelativeLayout>
 
             <Button
@@ -125,7 +145,7 @@
                 android:layout_width="170dp"
                 android:layout_height="wrap_content"
                 android:text="Enviar"
-                android:id="@+id/id_boton_enviar"
+                android:id="@+id/id_boton_enviar_molde"
                 android:layout_below="@+id/scrollView"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="76dp"

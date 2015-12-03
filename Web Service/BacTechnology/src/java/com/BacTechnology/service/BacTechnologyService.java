@@ -156,7 +156,7 @@ public class BacTechnologyService {
      * Web service operation
      */
     @WebMethod(operationName = "NuevoReporte")
-    public Boolean NuevoReporte(@WebParam(name = "maquina") String maquina, @WebParam(name = "molde") String molde, @WebParam(name = "usuario") String usuario, @WebParam(name = "novedad") String novedad, @WebParam(name = "solucion") String solucion, @WebParam(name = "tipoNovedad") String tipoNovedad, @WebParam(name = "tipoSolucion") String tipoSolucion, @WebParam(name = "foto") String foto, @WebParam(name = "novedadDetectada") String novedadDetectada, @WebParam(name = "tipoReporte") int tipo) {
+    public Boolean NuevoReporte(@WebParam(name = "maquina") String maquina, @WebParam(name = "molde") String molde, @WebParam(name = "usuario") String usuario, @WebParam(name = "novedad") String novedad, @WebParam(name = "solucion") String solucion, @WebParam(name = "tipoNovedad") String tipoNovedad, @WebParam(name = "tipoSolucion") String tipoSolucion, @WebParam(name = "foto") String foto, @WebParam(name = "novedadDetectada") String novedadDetectada) {
         //TODO write your implementation code here:
         System.out.println(usuario);
         System.out.println(molde);
@@ -222,7 +222,7 @@ public class BacTechnologyService {
                 funcion.setString(9, tipoSolucion);
                 funcion.setString(10, novedadDetectada);
                 funcion.setBinaryStream(11,in, longitudBytes);
-                funcion.setInt(12,tipo);
+                funcion.setString(12, " ");
                 funcion.execute();
                 System.out.println("asdasdasdafsadfsafasdfdsafasdfsadfasdfasd");
                 
@@ -250,7 +250,104 @@ public class BacTechnologyService {
     }
     
     
-
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "NuevoReporteMolde")
+    public Boolean NuevoReporteMolde(@WebParam(name = "maquina") String maquina, @WebParam(name = "molde") String molde, @WebParam(name = "usuario") String usuario, @WebParam(name = "novedad") String novedad, @WebParam(name = "solucion") String solucion, @WebParam(name = "tipoNovedad") String tipoNovedad, @WebParam(name = "tipoSolucion") String tipoSolucion, @WebParam(name = "foto") String foto, @WebParam(name = "novedadDetectada") String novedadDetectada, @WebParam(name = "articulo") String articulo) {
+        //TODO write your implementation code here:
+        System.out.println("Usuario: "+usuario);
+        System.out.println("Molde: "+molde);
+        System.out.println("Maquinaria: "+maquina);
+        System.out.println("Novedad : "+novedad);
+        System.out.println("Tipo Novedad: "+tipoNovedad);
+        System.out.println("Solucion: "+solucion);
+        System.out.println("Tipo SOlucion: "+tipoSolucion);
+        System.out.println("Novedad Detectada: "+novedadDetectada);
+        System.out.println("Articulo: "+articulo);
+        System.out.println("------------------");
+        Conexion conexion = new Conexion();
+        Connection conn =  conexion.Conexion();
+        try{
+            CallableStatement funcion =  conn.prepareCall("{ ? = call buscar_usuario ( ? ) }");
+            funcion.registerOutParameter(1, Types.INTEGER);
+            funcion.setString(2, usuario);
+            funcion.execute();
+            int UsuarioEcontrado = funcion.getInt(1);
+            System.out.println(usuario);
+            System.out.println("--------------Usuario");
+            System.out.println(UsuarioEcontrado);
+            funcion.close();
+            
+            funcion = conn.prepareCall("{ ? = call buscar_molde ( ? ) }");
+            funcion.registerOutParameter(1, Types.INTEGER);
+            funcion.setString(2, molde);
+            funcion.execute();
+            int MoldeEcontrado = funcion.getInt(1);
+            System.out.println(molde);
+            System.out.println("--------------Molde");
+            System.out.println(MoldeEcontrado);
+            funcion.close();
+            
+            funcion = conn.prepareCall("{ ? = call buscar_maquina ( ? ) }");
+            funcion.registerOutParameter(1, Types.INTEGER);
+            funcion.setString(2, maquina);
+            funcion.execute();
+            int MaquinariaEcontrado = funcion.getInt(1);
+            System.out.println(maquina);
+            System.out.println("--------------Maquina");
+            System.out.println(MaquinariaEcontrado);
+            funcion.close();
+            
+            System.out.println("----------");
+            
+            if(UsuarioEcontrado!=0 && MoldeEcontrado !=0 && MaquinariaEcontrado != 0){
+                System.out.println("asdasdasdsadsa");
+                byte[] imageInByte = Base64.decode(foto);
+                int longitudBytes = imageInByte.length;
+                InputStream in = new ByteArrayInputStream(imageInByte);
+                Date fecha = Date.valueOf(LocalDate.now());
+                System.out.println("----------------->>>>>>");
+                funcion = conn.prepareCall("{ ? = call insertar_reporte_molde( ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? ,?) }");
+                funcion.registerOutParameter(1, Types.BOOLEAN);
+                funcion.setDate(2,fecha);
+                funcion.setInt(3, MaquinariaEcontrado);
+                funcion.setInt(4, MoldeEcontrado);
+                funcion.setInt(5, UsuarioEcontrado);
+                funcion.setString(6, novedad);
+                funcion.setString(7, tipoNovedad);
+                funcion.setString(8, solucion);
+                funcion.setString(9, tipoSolucion);
+                funcion.setString(10, novedadDetectada);
+                funcion.setBinaryStream(11,in, longitudBytes);
+                funcion.setString(12,articulo);
+                funcion.setString(13," ");
+                System.out.println("----------------->>>>>>");
+                funcion.execute();
+                System.out.println("asdasdasdafsadfsafasdfdsafasdfsadfasdfasd");
+                
+                /*
+                byte[] imageInByte1;
+                imageInByte1 = Base64.decode(foto);
+                InputStream inr = new ByteArrayInputStream(imageInByte1);
+                BufferedImage bImageFromConvert1 = ImageIO.read(inr);
+                ImageIO.write(bImageFromConvert1, "jpg", new File(
+                            "c:/Users/Angel/Desktop/new-darksouls.jpg"));
+                */
+                boolean a = funcion.getBoolean(1);
+                System.out.println(a);
+                funcion.close();
+                conn.close();
+                return a;
+            }
+            
+            
+            
+        }catch(Exception e){
+            return false;
+        }
+        return null;
+    }
 }
 
 

@@ -21,6 +21,7 @@ public class ListaMantenimiento extends AppCompatActivity {
     private Context context;
     private String[] nombreLitasMantenimeinto = new String[]{"Mantenimiento de Moldes","Mantenimiento de Maquina/Inyectores"};
     private int[] imagenListaMantenimiento = {R.drawable.icon01,R.drawable.icon02};
+    private int pos;
 
     private String usuario;
 
@@ -39,7 +40,8 @@ public class ListaMantenimiento extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(getApplicationContext(), "presiono " + position, Toast.LENGTH_SHORT).show();
-                if (position == 0) {
+                if (position == 0 || position ==1) {
+                    pos = position;
                     new DownloadTask2().execute("");
                     progressDialog = ProgressDialog.show(context, "Por favor espere", "Cargando Maquinarias");
                 }
@@ -63,6 +65,7 @@ public class ListaMantenimiento extends AppCompatActivity {
             Intent ventanaMaquina = new Intent(ListaMantenimiento.this, ListaMaquina.class);
             ventanaMaquina.putExtra("array", arrayMaquinarias);
             ventanaMaquina.putExtra("usuario",usuario);
+            ventanaMaquina.putExtra("posicion",pos);
             startActivity(ventanaMaquina);
             super.onPostExecute(result);
         }
