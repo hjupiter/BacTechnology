@@ -718,15 +718,21 @@ public class InternalReporte extends javax.swing.JInternalFrame {
         
         for (int i = 0 ; i < jTable.getRowCount();i++){
             filas = hoja.createRow(i+1);
-            filas.createCell(0).setCellValue(jTable.getValueAt(i, 0).toString());
-            filas.createCell(0).setCellValue(jTable.getValueAt(i, 1).toString());
-            filas.createCell(0).setCellValue(jTable.getValueAt(i, 2).toString());
-            filas.createCell(0).setCellValue(jTable.getValueAt(i, 3).toString());
-            filas.createCell(0).setCellValue(jTable.getValueAt(i, 4).toString());
-            filas.createCell(0).setCellValue(jTable.getValueAt(i, 5).toString());
-            filas.createCell(0).setCellValue(jTable.getValueAt(i, 6).toString());
-            filas.createCell(0).setCellValue(jTable.getValueAt(i, 7).toString());
-            filas.createCell(0).setCellValue(jTable.getValueAt(i, 8).toString());
+            
+            for(int j = 0 ; j < 9 ; j++){
+                System.out.println("Tabla --> "+jTable.getValueAt(i, j).toString());
+                filas.createCell(j).setCellValue(jTable.getValueAt(i, j).toString());
+                //filas.createCell(0).setCellValue(jTable.getValueAt(i, j).toString());
+            }
+            
+            //filas.createCell(0).setCellValue(jTable.getValueAt(i, 1).toString());
+            //filas.createCell(0).setCellValue(jTable.getValueAt(i, 2).toString());
+            //filas.createCell(0).setCellValue(jTable.getValueAt(i, 3).toString());
+            //filas.createCell(0).setCellValue(jTable.getValueAt(i, 4).toString());
+            //filas.createCell(0).setCellValue(jTable.getValueAt(i, 5).toString());
+            //filas.createCell(0).setCellValue(jTable.getValueAt(i, 6).toString());
+            //filas.createCell(0).setCellValue(jTable.getValueAt(i, 7).toString());
+            //filas.createCell(0).setCellValue(jTable.getValueAt(i, 8).toString());
             
         }
         try {
