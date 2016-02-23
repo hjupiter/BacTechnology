@@ -34,7 +34,7 @@ public class Email {
     private String rutaArchivo;
     private String asunto;
     private String mensaje;
-    private static String clave = "bhhgytijarfhhkng";
+    private static String clave = "kayjqlvwdkhxqltb";
 
     public Email(String usuarioCorreo, String destinatario, String nombreArchivo, String rutaArchivo, String asunto, String mensaje) {
         this.usuarioCorreo = usuarioCorreo;

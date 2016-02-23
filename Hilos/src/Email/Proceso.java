@@ -12,6 +12,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Types;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 import javax.activation.DataHandler;
@@ -61,10 +62,8 @@ public class Proceso extends Thread{
             sec = fecha.getSeconds();
             //System.out.println(" hora "+hora+"-"+min+"-"+sec);
             //obtenerDatosBase();
-            if(hora == 23 && min == 0 && sec == 0 ){
-                email = new Email("bakamedi12@gmail.com", "bakamedi12@gmail.com", "data.xlsx", "C://data//data.xlsx", "Reportes BacTechnology", "Por favor no responda a este mensaje");
-                //Email correo = new Email("bakamedi12@gmail.com", "123", "bakamedi12@gmail.com", "PRUEBA", "ASDASD");
-                //correo.sendMail();
+            if(hora == 21 && min == 59 && sec == 0 ){
+                email = new Email("reportes.bactechnology.2016@gmail.com", "reportes.bactechnology.2016@gmail.com", "data.xlsx", "C://data//data.xlsx", "Reportes BacTechnology", "Por favor no responda a este mensaje");
                 obtenerDatosBase();
                 email.sendMail();
             }
@@ -98,10 +97,18 @@ public class Proceso extends Thread{
         hoja.setColumnWidth(8, 256*15);
         hoja.setColumnWidth(9, 256*30);
         XSSFRow filas;
+        String dia,mes,annio,fecha;
+        Calendar c = Calendar.getInstance();
+        dia = Integer.toString(c.get(Calendar.DATE));
+        mes = Integer.toString(c.get(Calendar.MONTH)+1);
+        annio = Integer.toString(c.get(Calendar.YEAR));
+        fecha = ""+annio+"-"+mes+"-"+dia;
+        
         try{
             conn.setAutoCommit(false);
-            CallableStatement todas_reportes =  conn.prepareCall("{ ? = CALL TODOS_REPORTES ( ) }");
+            CallableStatement todas_reportes =  conn.prepareCall("{ ? = CALL TODOS_REPORTES_FECHAS ( ? ) }");
             todas_reportes.registerOutParameter(1, Types.OTHER);
+            todas_reportes.setString(2, fecha);
             todas_reportes.execute();
             ResultSet results = (ResultSet)todas_reportes.getObject(1);
             Object datos[] = new Object[12];
