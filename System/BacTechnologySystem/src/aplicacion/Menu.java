@@ -51,6 +51,7 @@ public class Menu extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Sistema");
+        setExtendedState(6);
 
         javax.swing.GroupLayout DesktopPaneLayout = new javax.swing.GroupLayout(DesktopPane);
         DesktopPane.setLayout(DesktopPaneLayout);
@@ -102,9 +103,19 @@ public class Menu extends javax.swing.JFrame {
         itemUsuarioConsultar.add(jMenuItem1);
 
         itemMaquinariaConsultar.setText("Maquinaria");
+        itemMaquinariaConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemMaquinariaConsultarActionPerformed(evt);
+            }
+        });
         itemUsuarioConsultar.add(itemMaquinariaConsultar);
 
         itemMoldeConsultar.setText("Molde");
+        itemMoldeConsultar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                itemMoldeConsultarActionPerformed(evt);
+            }
+        });
         itemUsuarioConsultar.add(itemMoldeConsultar);
 
         jMenuBar1.add(itemUsuarioConsultar);
@@ -183,6 +194,14 @@ public class Menu extends javax.swing.JFrame {
         centerJIF(r);
         DesktopPane.add(r);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void itemMoldeConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMoldeConsultarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_itemMoldeConsultarActionPerformed
+
+    private void itemMaquinariaConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMaquinariaConsultarActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_itemMaquinariaConsultarActionPerformed
 
     /**
      * @param args the command line arguments

@@ -53,7 +53,7 @@ public class Reporte extends JInternalFrame{
     
     private String[] getColumnas()
     {
-          String columna[]=new String[]{"1","Fecha","Maquinaria","Molde","Usuario","Descripcion","Tipo Novedad","Descripcion","Solucion","Novedad","Imagen"};
+          String columna[]=new String[]{"ID","Fecha","Maquinaria","Molde","Usuario","Descripcion","Tipo Novedad","Descripcion","Solucion","Novedad","Imagen"};
           return columna;
     }
  
