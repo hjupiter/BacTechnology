@@ -178,7 +178,6 @@
                                 android:layout_width="400dp"
                                 android:layout_height="match_parent"
                                 android:id="@+id/id_imagen_molde"
-                                android:src="@mipmap/ic_launcher"
                                 android:layout_alignParentTop="true" />
                         </LinearLayout>
 

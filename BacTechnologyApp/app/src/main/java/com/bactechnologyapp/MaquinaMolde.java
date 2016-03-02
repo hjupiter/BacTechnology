@@ -30,12 +30,14 @@ import org.kobjects.base64.Base64;
 import org.ksoap2.serialization.MarshalBase64;
 
 public class MaquinaMolde extends AppCompatActivity {
+    private static final String TAG=MaquinaMolde.class.getName();
+    private static ArrayList<Activity> activities=new ArrayList<Activity>();
     private Intent ventanaCamara;
     private Button botonAtras,botonEnviar;
     private ImageView imagenCamara;
     private String idMolde;
     private String idMaquina;
-    private Bitmap bmp;
+    private Bitmap bmp = null;
     private Spinner spinnerNovedad;
     private Spinner spinnerolucion;
     private ArrayAdapter<CharSequence> adapterNovedad;
@@ -59,8 +61,6 @@ public class MaquinaMolde extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maquina_molde);
         context = this;
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
         idMaquina = (String) getIntent().getExtras().getString("idMaquina");
         idMolde = (String) getIntent().getExtras().getString("idMolde");
@@ -146,25 +146,52 @@ public class MaquinaMolde extends AppCompatActivity {
             }
         });
 
+
         botonEnviar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //FragmentManager fg = getFragmentManager();
                 //DialogoEnviar dialogoEnviar = new DialogoEnviar();
                 //dialogoEnviar.show(fg,"EnviarReporte");
-
                 AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                alert.setTitle("Guardar Reporte");
-                alert.setMessage("Esta seguro de realizar esta accion");
-                alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                if(bmp != null){
+                    if(reporteNovedad.getText().length() !=0 && reporteSolucion.getText().length() !=0 && novedadDetectada.getText().length() !=0){
+                        alert.setTitle("Guardar Reporte");
+                        alert.setMessage("Esta seguro de realizar esta accion");
+                        alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        new DownloadTask2().execute("");
-                        progressDialog = ProgressDialog.show(context, "Por favor espere", "Cargando Molde");
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                new DownloadTask2().execute("");
+                                progressDialog = ProgressDialog.show(context, "Por favor espere", "Enviando Datos");
+                                finishAll();
+                                //restartActivity();
+                            }
+                        });
+                        alert.show();
+                    }else{
+                        Toast.makeText(getApplicationContext(), reporteNovedad.getText(), Toast.LENGTH_SHORT).show();
+                        alert.setTitle("Error al Enviar");
+                        alert.setMessage("No debe de haber campos vacios");
+                        alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+                        alert.show();
                     }
-                });
-                alert.show();
+                }else{
+                    alert.setTitle("Error en Imagen");
+                    alert.setMessage("Se debe de tener una foto de la maquinari/molde");
+                    alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    alert.show();
+                }
+
+
 
                 //new DownloadTask2().execute("");
                 //progressDialog = ProgressDialog.show(context, "Por favor espere", "Cargando Molde");
@@ -174,6 +201,28 @@ public class MaquinaMolde extends AppCompatActivity {
 
         });
 
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        activities.remove(this);
+    }
+
+    public static void finishAll()
+    {
+        for(Activity activity:activities)
+            activity.finish();
+    }
+
+
+    private void restartActivity(){
+        Intent intent = getIntent();
+        finish();
+        Intent i = new Intent(MaquinaMolde.this,ListaMantenimiento.class);
+        startActivity(i);
+        //startActivity(intent);
     }
 
     public void setBotonCamara(View v){
@@ -194,7 +243,7 @@ public class MaquinaMolde extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         // do something on back.
-        finish();
+        this.finish();
         //return;
     }
 
@@ -228,8 +277,11 @@ public class MaquinaMolde extends AppCompatActivity {
             return 1;
         }
 
+
+
         protected void onPostExecute(Object result) {
             progressDialog.dismiss();
+            MaquinaMolde.this.finish();
             super.onPostExecute(result);
         }
     }

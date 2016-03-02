@@ -16,22 +16,7 @@ import android.widget.Toast;
 public class ListaMolde extends AppCompatActivity {
     private String idMaquina;
     private EditText buscarMolde;
-   /* final String[] moldes = {"121 PALA DE BASURA CHICA", "14-83 ESPRIMIDOR PICA"
-            ,"46-2000	BOLSILLO PLATERO","229	EMBUDO CHICO", "9-98	BASE MACETERO JAZMIN PEQ PLATO", "124-2004	BASE JABONERA",
-            "141-2004	TAPA JABONERA", "23-93	JARRO PEKES", "25-92	TAPA POMO 2-4 LITROS", "37-99	JABONERA NUEVA DISH",
-            "03-2001	MACETERO JAZMIN CHICO TULIPAN (plato)", "129	TAZON BALUN PEQUEÑO", "112-81	ASA BALDE IND CHICO",
-            "4F-2010	TAPA REPOSTERO RED LUNCH BOX",
-            "4E-2010	BASE TARRINA LONCHERA TERMICA 0,5LT",
-            "3C03-2012	TAPA EXPRIMIDOR ORANGE JUICER",
-            "3C01-2012	BASE EXPRIMIDOR ORANGE JUICER",
-            "46-2000	BOLSILLO PLATERO",
-            "229	EMBUDO CHICO",
-            "9-98	BASE MACETERO JAZMIN PEQ PLATO",
-            "124-2004	BASE JABONERA",
-            "141-2004	TAPA JABONERA",
-            "23-93	JARRO PEKES",
-            "25-92	TAPA POMO 2-4 LITROS",};
-            */
+
     private String[] moldes;
     private ListView listaMoldes;
 
@@ -45,8 +30,8 @@ public class ListaMolde extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_molde);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
+        //android.app.ActionBar actionBar = getActionBar();
+        //actionBar.setDisplayHomeAsUpEnabled(true);
 
         moldes = getIntent().getExtras().getStringArray("array");
         idMaquina = (String) getIntent().getExtras().getString("idMaquina");
@@ -92,6 +77,7 @@ public class ListaMolde extends AppCompatActivity {
                     ventanaMaquinaMolde.putExtra("idMaquina", idMaquina);
                     ventanaMaquinaMolde.putExtra("usuario",usuario);
                     startActivity(ventanaMaquinaMolde);
+                    ListaMolde.this.finish();
                 }
 
                 if(posMenu == 1){
@@ -100,6 +86,7 @@ public class ListaMolde extends AppCompatActivity {
                     ventanaMantenimientoMolde.putExtra("idMaquina", idMaquina);
                     ventanaMantenimientoMolde.putExtra("usuario",usuario);
                     startActivity(ventanaMantenimientoMolde);
+                    ListaMolde.this.finish();
                 }
             }
         });

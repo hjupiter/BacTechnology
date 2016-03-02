@@ -27,7 +27,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="10dip"
-            android:layout_below="@id/header">
+            android:layout_below="@id/header"
+            android:id="@+id/linearLayout">
             <!--  Email Label -->
 
             <LinearLayout
@@ -64,6 +65,7 @@
                 <EditText
                     android:id="@+id/txtContraseña"
                     style="@style/EditView"
+                    android:inputType="textPassword"
                     android:hint="Contraseña"
                     android:layout_height="match_parent" />
             </LinearLayout>
@@ -81,17 +83,11 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal" />
 
-            <TextView android:id="@+id/link_to_register"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="40dip"
-                android:layout_marginBottom="40dip"
-                android:text="Olvide mi Contraseña"
-                android:gravity="center"
-                android:textSize="20dip"
-                android:textColor="#0b84aa"/>
+
 
         </LinearLayout>
+
+
 
         <!-- Login Form Ends -->
 

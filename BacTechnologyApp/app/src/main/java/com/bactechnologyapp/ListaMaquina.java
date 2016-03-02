@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -20,7 +21,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListaMaquina extends AppCompatActivity {
+public class ListaMaquina extends ActionBarActivity  {
 
     //private String[] maquinas = {"Y-01/15 (HT-120)", "Y-02/15 (HT-120)", "Y-03 (NB-750) ", "Y-04 (750 B) NO EQUIPO HIDRAULICO ", "Y-05/15 (HT-200)","Y-06  (R-300)", "Y-07 (V-17)", "Y-10   (HT-200) ", "Y-11  (HT-160) ", "Y-12 (JM 368)","Y-13 (NB 190)","Y-14 (V-22)"};
     private ListView listaMaquina;
@@ -41,9 +42,6 @@ public class ListaMaquina extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lista_maquina);
-
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
         context = this;
         maquinas = getIntent().getExtras().getStringArray("array");
@@ -93,6 +91,24 @@ public class ListaMaquina extends AppCompatActivity {
 
     }
 
+    /*@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // app icon in action bar clicked; go home
+
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }*/
+
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(ListaMaquina.this, "HOLA", Toast.LENGTH_SHORT).show();
+    }
+
     private class DownloadTask2 extends AsyncTask<String,Void,Object> {
 
         protected Integer doInBackground(String... args) {
@@ -113,6 +129,7 @@ public class ListaMaquina extends AppCompatActivity {
             ventanaMoldes.putExtra("usuario",usuario);
             ventanaMoldes.putExtra("posicion",posMenu);
             startActivity(ventanaMoldes);
+            ListaMaquina.this.finish();
             super.onPostExecute(result);
         }
     }

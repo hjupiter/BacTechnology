@@ -18,28 +18,21 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ListaMolde">
+        </activity>
+        <activity android:name=".MaquinaMolde">
+        </activity>
         <activity android:name=".ListaMantenimiento" >
         </activity>
-        <activity
-            android:name=".ListaMaquina"
-            android:parentActivityName=".ListaMantenimiento" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ListaMantenimiento" />
-        </activity>
-        <activity
-            android:name=".ListaMolde"
-            android:parentActivityName=".ListaMaquina" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ListaMaquina" />
-        </activity>
-        <activity android:name=".MaquinaMolde" >
-        </activity>
-        <activity android:name=".ImagenCamara" >
+        <activity android:name=".ImagenCamara">
         </activity>
         <activity android:name=".MantenimientoMolde" >
         </activity>
+        <activity android:name=".ListaMaquina" >
+        </activity>
+
+
+
     </application>
 
 </manifest>

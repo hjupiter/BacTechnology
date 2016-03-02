@@ -17,9 +17,7 @@ public class ImagenCamara extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_imagen_camara);
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        getIntent().addFlags(Intent.FLAG_ACTIVITY_PREVIOUS_IS_TOP);
+
 
         bmp = (Bitmap) getIntent().getExtras().get("foto");
 

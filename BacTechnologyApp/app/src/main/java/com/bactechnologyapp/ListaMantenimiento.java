@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ListaMantenimiento extends AppCompatActivity {
-
     private ListViewMantenimientoAdapter adapter;
     private List maquinarias;
     private ProgressDialog progressDialog;

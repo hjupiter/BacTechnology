@@ -58,8 +58,6 @@ public class MantenimientoMolde extends AppCompatActivity {
         setContentView(R.layout.activity_mantenimiento_molde);
         context = this;
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
 
         idMaquina = (String) getIntent().getExtras().getString("idMaquina");
         idMolde = (String) getIntent().getExtras().getString("idMolde");
