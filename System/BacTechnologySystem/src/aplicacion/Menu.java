@@ -16,6 +16,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import nuevoElemento.InternalUsuario;
+
 /**
  *
  * @author Angel
@@ -139,8 +141,8 @@ public class Menu extends javax.swing.JFrame {
 
     private void itemUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemUsuarioActionPerformed
         // TODO add your handling code here:
-        
-        Usuario usuario = new Usuario();
+        InternalUsuario usuario = new InternalUsuario();
+        //Usuario usuario = new Usuario();
         
         centerJIF(usuario);
         
@@ -190,6 +192,7 @@ public class Menu extends javax.swing.JFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
+        
         InternalReporte r = new InternalReporte();
         centerJIF(r);
         DesktopPane.add(r);
