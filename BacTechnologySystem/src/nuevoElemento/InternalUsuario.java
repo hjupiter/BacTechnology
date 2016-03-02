@@ -166,7 +166,7 @@ public class InternalUsuario extends javax.swing.JInternalFrame {
 
     private void btnUsuarioCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuarioCrearActionPerformed
         // TODO add your handling code here:
-        if(valUsu.camposVacios(txtUsuarioApellido, txtUsuarioApellido, txtUsuarioCedula, txtUsuarioPass, txtUsuarioNick) == true){
+        if(valUsu.camposVacios(txtUsuarioApellido, txtUsuarioApellido, txtUsuarioCedula, txtUsuarioPass, txtUsuarioNick) == false){
             Conexion conexion =  new Conexion();
             Connection conn = conexion.Conexion();
             try{

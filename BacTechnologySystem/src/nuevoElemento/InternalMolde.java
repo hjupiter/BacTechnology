@@ -11,16 +11,19 @@ import java.sql.Connection;
 import java.sql.Types;
 import javax.swing.JOptionPane;
 
+import validacion.ValidacionMolde;
+
 /**
  *
  * @author Angel
  */
 public class InternalMolde extends javax.swing.JInternalFrame {
-
+    private ValidacionMolde valMolde;
     /**
      * Creates new form InternalMolde
      */
     public InternalMolde() {
+        valMolde =  new ValidacionMolde();
         initComponents();
         setVisible(true);
     }
@@ -102,21 +105,35 @@ public class InternalMolde extends javax.swing.JInternalFrame {
     private void btnMoldeCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoldeCrearActionPerformed
         // TODO add your handling code here:
         
-        Conexion conexion =  new Conexion();
-        Connection conn = conexion.Conexion();
-        try{
-            CallableStatement insertar_molde =  conn.prepareCall("{ ? = call INSERTAR_MOLDE ( ? , ? ) }");
-            insertar_molde.registerOutParameter(1, Types.BOOLEAN);
-            insertar_molde.setString(2, txtMoldeCodigo.getText());
-            insertar_molde.setString(3, txtMoldeNombre.getText());
-            insertar_molde.execute();
-            boolean res = insertar_molde.getBoolean(1);
-            insertar_molde.close();
-            JOptionPane.showConfirmDialog(this, "Molde creado con exito", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
-        }catch(Exception e){
-            System.out.println("Error: "+e.getMessage());
-            JOptionPane.showConfirmDialog(this, "Fallo al crear Molde", "Error",JOptionPane.ERROR_MESSAGE);
+        if(valMolde.camposVacios(txtMoldeCodigo, txtMoldeNombre)==false){
+            Conexion conexion =  new Conexion();
+            Connection conn = conexion.Conexion();
+            try{
+                CallableStatement insertar_molde =  conn.prepareCall("{ ? = call INSERTAR_MOLDE ( ? , ? ) }");
+                insertar_molde.registerOutParameter(1, Types.BOOLEAN);
+                insertar_molde.setString(2, txtMoldeCodigo.getText());
+                insertar_molde.setString(3, txtMoldeNombre.getText());
+                insertar_molde.execute();
+                boolean res = insertar_molde.getBoolean(1);
+                insertar_molde.close();
+                if(res == true){
+                    JOptionPane.showConfirmDialog(this, "Molde creado con exito", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+                    txtMoldeCodigo.setText("");
+                    txtMoldeNombre.setText("");
+                }
+                else{
+                    JOptionPane.showConfirmDialog(this, "El mode ya existe", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+                }
+                
+            }catch(Exception e){
+                System.out.println("Error: "+e.getMessage());
+                JOptionPane.showConfirmDialog(this, "Fallo al crear Molde", "Error",JOptionPane.ERROR_MESSAGE);
+            }
         }
+        else{
+            JOptionPane.showConfirmDialog(this, "No de be dejar campos vacios", "Error",JOptionPane.ERROR_MESSAGE);
+        }
+        
     }//GEN-LAST:event_btnMoldeCrearActionPerformed
 
 

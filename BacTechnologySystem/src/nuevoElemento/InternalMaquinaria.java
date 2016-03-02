@@ -11,16 +11,19 @@ import java.sql.Connection;
 import java.sql.Types;
 import javax.swing.JOptionPane;
 
+import validacion.ValidacionMaquinaria;
+
 /**
  *
  * @author Angel
  */
 public class InternalMaquinaria extends javax.swing.JInternalFrame {
-
+    private ValidacionMaquinaria valMaquinaria;
     /**
      * Creates new form InternalMaquinaria
      */
     public InternalMaquinaria() {
+        valMaquinaria = new ValidacionMaquinaria();
         initComponents();
         setVisible(true);
     }
@@ -101,22 +104,33 @@ public class InternalMaquinaria extends javax.swing.JInternalFrame {
 
     private void btnMaquinariaCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMaquinariaCrearActionPerformed
         // TODO add your handling code here:
-        
-        Conexion conexion =  new Conexion();
-        Connection conn = conexion.Conexion();
-        try{
-            CallableStatement insertar_maquinaria =  conn.prepareCall("{ ? = call INSERTAR_MAQUINARIA ( ? , ? ) }");
-            insertar_maquinaria.registerOutParameter(1, Types.BOOLEAN);
-            insertar_maquinaria.setString(2, txtMaquinariaCodigo.getText());
-            insertar_maquinaria.setString(3, txtMaquinariaNombre.getText());
-            insertar_maquinaria.execute();
-            boolean res = insertar_maquinaria.getBoolean(1);
-            insertar_maquinaria.close();
-            JOptionPane.showConfirmDialog(this, "Maquinaria creado con exito", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
-        }catch(Exception e){
-            System.out.println("Error: "+e.getMessage());
+        if(valMaquinaria.camposVacios(txtMaquinariaCodigo, txtMaquinariaNombre) == false){
+            Conexion conexion =  new Conexion();
+            Connection conn = conexion.Conexion();
+            try{
+                CallableStatement insertar_maquinaria =  conn.prepareCall("{ ? = call INSERTAR_MAQUINARIA ( ? , ? ) }");
+                insertar_maquinaria.registerOutParameter(1, Types.BOOLEAN);
+                insertar_maquinaria.setString(2, txtMaquinariaCodigo.getText());
+                insertar_maquinaria.setString(3, txtMaquinariaNombre.getText());
+                insertar_maquinaria.execute();
+                boolean res = insertar_maquinaria.getBoolean(1);
+                insertar_maquinaria.close();
+                if(res == true){
+                    JOptionPane.showConfirmDialog(this, "Maquinaria creado con exito", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+                }
+                else{
+                    JOptionPane.showConfirmDialog(this, "La Maquinaria ya existe", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+                }
+                
+            }catch(Exception e){
+                System.out.println("Error: "+e.getMessage());
+                JOptionPane.showConfirmDialog(this, "No de be dejar campos vacios", "Error",JOptionPane.ERROR_MESSAGE);
+            }
+        }
+        else{
             JOptionPane.showConfirmDialog(this, "Fallo al crear Maquinaria", "Error",JOptionPane.ERROR_MESSAGE);
         }
+        
     }//GEN-LAST:event_btnMaquinariaCrearActionPerformed
 
 

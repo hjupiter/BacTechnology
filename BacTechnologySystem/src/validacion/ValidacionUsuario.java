@@ -22,10 +22,10 @@ public class ValidacionUsuario {
     
     public boolean camposVacios(JTextField t1,JTextField t2,JTextField t3,JTextField t4,JTextField t5){
         if(t1.getText().length()==0 || t2.getText().length()==0 || t3.getText().length()==0 || t4.getText().length()==0 || t5.getText().length()==0){
-            return false;
+            return true;
         }
         else{
-            return true;
+            return false;
         }
     }
 
