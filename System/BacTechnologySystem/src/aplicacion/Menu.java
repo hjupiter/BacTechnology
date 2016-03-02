@@ -15,6 +15,8 @@ import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import nuevoElemento.InternalMaquinaria;
+import nuevoElemento.InternalMolde;
 
 import nuevoElemento.InternalUsuario;
 
@@ -166,7 +168,7 @@ public class Menu extends javax.swing.JFrame {
     private void itemMaquinariaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMaquinariaActionPerformed
         // TODO add your handling code here:
         
-        Maquinaria maquinaria =  new Maquinaria();
+        InternalMaquinaria maquinaria =  new InternalMaquinaria();
         centerJIF(maquinaria);
         DesktopPane.add(maquinaria);
         
@@ -179,7 +181,7 @@ public class Menu extends javax.swing.JFrame {
 
     private void itemMoldeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMoldeActionPerformed
         // TODO add your handling code here:
-        Molde molde = new Molde();
+        InternalMolde molde = new InternalMolde();
         centerJIF(molde);
         DesktopPane.add(molde);
         

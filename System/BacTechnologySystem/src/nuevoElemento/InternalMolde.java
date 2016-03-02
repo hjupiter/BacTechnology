@@ -5,6 +5,12 @@
  */
 package nuevoElemento;
 
+import conexion.Conexion;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.Types;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Angel
@@ -16,6 +22,7 @@ public class InternalMolde extends javax.swing.JInternalFrame {
      */
     public InternalMolde() {
         initComponents();
+        setVisible(true);
     }
 
     /**
@@ -32,6 +39,9 @@ public class InternalMolde extends javax.swing.JInternalFrame {
         txtMoldeNombre = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         btnMoldeCrear = new javax.swing.JButton();
+
+        setClosable(true);
+        setTitle("Nuevo Molde");
 
         txtMoldeCodigo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
@@ -91,6 +101,22 @@ public class InternalMolde extends javax.swing.JInternalFrame {
 
     private void btnMoldeCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMoldeCrearActionPerformed
         // TODO add your handling code here:
+        
+        Conexion conexion =  new Conexion();
+        Connection conn = conexion.Conexion();
+        try{
+            CallableStatement insertar_molde =  conn.prepareCall("{ ? = call INSERTAR_MOLDE ( ? , ? ) }");
+            insertar_molde.registerOutParameter(1, Types.BOOLEAN);
+            insertar_molde.setString(2, txtMoldeCodigo.getText());
+            insertar_molde.setString(3, txtMoldeNombre.getText());
+            insertar_molde.execute();
+            boolean res = insertar_molde.getBoolean(1);
+            insertar_molde.close();
+            JOptionPane.showConfirmDialog(this, "Molde creado con exito", "Mensaje",JOptionPane.ERROR_MESSAGE);
+        }catch(Exception e){
+            System.out.println("Error: "+e.getMessage());
+            JOptionPane.showConfirmDialog(this, "Fallo al crear Molde", "Error",JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnMoldeCrearActionPerformed
 
 

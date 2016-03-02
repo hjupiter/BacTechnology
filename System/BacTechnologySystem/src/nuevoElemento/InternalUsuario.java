@@ -48,6 +48,7 @@ public class InternalUsuario extends javax.swing.JInternalFrame {
         txtUsuarioPass = new javax.swing.JTextField();
 
         setClosable(true);
+        setTitle("Nuevo Usuario");
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Nombre");

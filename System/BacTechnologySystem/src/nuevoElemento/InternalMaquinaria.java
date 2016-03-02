@@ -5,6 +5,12 @@
  */
 package nuevoElemento;
 
+import conexion.Conexion;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.Types;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Angel
@@ -16,6 +22,7 @@ public class InternalMaquinaria extends javax.swing.JInternalFrame {
      */
     public InternalMaquinaria() {
         initComponents();
+        setVisible(true);
     }
 
     /**
@@ -32,6 +39,9 @@ public class InternalMaquinaria extends javax.swing.JInternalFrame {
         txtMaquinariaNombre = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         btnMaquinariaCrear = new javax.swing.JButton();
+
+        setClosable(true);
+        setTitle("Nueva Maquinaria");
 
         txtMaquinariaCodigo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
@@ -91,6 +101,22 @@ public class InternalMaquinaria extends javax.swing.JInternalFrame {
 
     private void btnMaquinariaCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMaquinariaCrearActionPerformed
         // TODO add your handling code here:
+        
+        Conexion conexion =  new Conexion();
+        Connection conn = conexion.Conexion();
+        try{
+            CallableStatement insertar_maquinaria =  conn.prepareCall("{ ? = call INSERTAR_MAQUINARIA ( ? , ? ) }");
+            insertar_maquinaria.registerOutParameter(1, Types.BOOLEAN);
+            insertar_maquinaria.setString(2, txtMaquinariaCodigo.getText());
+            insertar_maquinaria.setString(3, txtMaquinariaNombre.getText());
+            insertar_maquinaria.execute();
+            boolean res = insertar_maquinaria.getBoolean(1);
+            insertar_maquinaria.close();
+            JOptionPane.showConfirmDialog(this, "Maquinaria creado con exito", "Mensaje",JOptionPane.ERROR_MESSAGE);
+        }catch(Exception e){
+            System.out.println("Error: "+e.getMessage());
+            JOptionPane.showConfirmDialog(this, "Fallo al crear Maquinaria", "Error",JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_btnMaquinariaCrearActionPerformed
 
 
