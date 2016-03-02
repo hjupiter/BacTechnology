@@ -448,3 +448,21 @@ BEGIN
 	RETURN MYCURS;
 END;
 $$ LANGUAGE PLPGSQL;
+
+CREATE OR REPLACE FUNCTION consulta_reporte_fecha_por_mes(character varying)
+  RETURNS refcursor AS
+$BODY$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR select * from
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde 
+	where cast(reporte.fecha as VARCHAR) between $1 and $1;
+	RETURN MYCURS;
+END;
+$$ LANGUAGE PLPGSQL;
