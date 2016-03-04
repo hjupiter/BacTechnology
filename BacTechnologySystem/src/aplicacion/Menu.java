@@ -7,6 +7,7 @@ package aplicacion;
 
 import consultas.InternalReporte;
 import edicion.ConsultaMaquinaria;
+import edicion.ConsultaMolde;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -204,6 +205,9 @@ public class Menu extends javax.swing.JFrame {
 
     private void itemMoldeConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMoldeConsultarActionPerformed
         // TODO add your handling code here:
+        ConsultaMolde molde =  new ConsultaMolde();
+        centerJIF(molde);
+        DesktopPane.add(molde);
     }//GEN-LAST:event_itemMoldeConsultarActionPerformed
 
     private void itemMaquinariaConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMaquinariaConsultarActionPerformed
