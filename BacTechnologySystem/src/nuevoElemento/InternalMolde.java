@@ -117,21 +117,21 @@ public class InternalMolde extends javax.swing.JInternalFrame {
                 boolean res = insertar_molde.getBoolean(1);
                 insertar_molde.close();
                 if(res == true){
-                    JOptionPane.showConfirmDialog(this, "Molde creado con exito", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showConfirmDialog(this, "Molde creado con exito", "Mensaje",JOptionPane.CLOSED_OPTION);
                     txtMoldeCodigo.setText("");
                     txtMoldeNombre.setText("");
                 }
                 else{
-                    JOptionPane.showConfirmDialog(this, "El mode ya existe", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showConfirmDialog(this, "El mode ya existe", "Mensaje",JOptionPane.CLOSED_OPTION);
                 }
                 
             }catch(Exception e){
                 System.out.println("Error: "+e.getMessage());
-                JOptionPane.showConfirmDialog(this, "Fallo al crear Molde", "Error",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showConfirmDialog(this, "Fallo al crear Molde", "Error",JOptionPane.CLOSED_OPTION);
             }
         }
         else{
-            JOptionPane.showConfirmDialog(this, "No de be dejar campos vacios", "Error",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showConfirmDialog(this, "No de be dejar campos vacios", "Error",JOptionPane.CLOSED_OPTION);
         }
         
     }//GEN-LAST:event_btnMoldeCrearActionPerformed

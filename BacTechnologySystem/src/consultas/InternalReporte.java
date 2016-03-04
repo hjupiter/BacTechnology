@@ -91,14 +91,14 @@ public class InternalReporte extends javax.swing.JInternalFrame {
         jTable.setModel(model);
         setEventoMouseClicked(jTable);
     }
-    private void setEventoMouseClicked(JTable tbl)
-    {
+    
+    private void setEventoMouseClicked(JTable tbl){
         tbl.addMouseListener(new java.awt.event.MouseAdapter() {
  
-        @Override
-        public void mouseClicked(MouseEvent e) {
-        tblEjemploMouseClicked(e);
-        }
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                tblEjemploMouseClicked(e);
+            }
         });
     }
     
@@ -140,8 +140,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
         //JOptionPane.showMessageDialog(null, fecha);
     }
     
-    private String[] getColumnas()
-    {
+    private String[] getColumnas(){
           String columna[]=new String[]{"1","Fecha","Maquinaria","Molde","Usuario","Descripcion","Tipo Novedad","Descripcion","Solucion","Novedad"};
           return columna;
     }

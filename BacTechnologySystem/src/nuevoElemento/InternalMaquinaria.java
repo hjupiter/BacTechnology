@@ -116,19 +116,19 @@ public class InternalMaquinaria extends javax.swing.JInternalFrame {
                 boolean res = insertar_maquinaria.getBoolean(1);
                 insertar_maquinaria.close();
                 if(res == true){
-                    JOptionPane.showConfirmDialog(this, "Maquinaria creado con exito", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showConfirmDialog(this, "Maquinaria creado con exito", "Mensaje",JOptionPane.CLOSED_OPTION);
                 }
                 else{
-                    JOptionPane.showConfirmDialog(this, "La Maquinaria ya existe", "Mensaje",JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showConfirmDialog(this, "La Maquinaria ya existe", "Mensaje",JOptionPane.CLOSED_OPTION);
                 }
                 
             }catch(Exception e){
                 System.out.println("Error: "+e.getMessage());
-                JOptionPane.showConfirmDialog(this, "No de be dejar campos vacios", "Error",JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showConfirmDialog(this, "No de be dejar campos vacios", "Error",JOptionPane.CLOSED_OPTION);
             }
         }
         else{
-            JOptionPane.showConfirmDialog(this, "Fallo al crear Maquinaria", "Error",JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showConfirmDialog(this, "Fallo al crear Maquinaria", "Error",JOptionPane.CLOSED_OPTION);
         }
         
     }//GEN-LAST:event_btnMaquinariaCrearActionPerformed

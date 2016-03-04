@@ -6,6 +6,7 @@
 package aplicacion;
 
 import consultas.InternalReporte;
+import edicion.ConsultaMaquinaria;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -207,6 +208,9 @@ public class Menu extends javax.swing.JFrame {
 
     private void itemMaquinariaConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMaquinariaConsultarActionPerformed
         // TODO add your handling code here:
+        ConsultaMaquinaria maquinaria =  new ConsultaMaquinaria();
+        centerJIF(maquinaria);
+        DesktopPane.add(maquinaria);
     }//GEN-LAST:event_itemMaquinariaConsultarActionPerformed
 
     /**
