@@ -857,12 +857,13 @@ public class InternalReporte extends javax.swing.JInternalFrame {
         limpiarCombo(comboBoxUsuario);
         try{
             conn.setAutoCommit(false);
-            CallableStatement todos_usuarios =  conn.prepareCall("{ ? = CALL TODOS_USUARIOS ( ) }");
+            CallableStatement todos_usuarios =  conn.prepareCall("{ ? = CALL TODOS_USUARIO_NOMBRE ( ) }");
             todos_usuarios.registerOutParameter(1, Types.OTHER);
             todos_usuarios.execute();
             ResultSet results = (ResultSet)todos_usuarios.getObject(1);
             while(results.next()){
-                comboBoxUsuario.addItem(results.getString(2));
+                System.out.println("--> "+results.getString(1));
+                comboBoxUsuario.addItem(results.getString(1));
             }
             todos_usuarios.close();
             conn.close();

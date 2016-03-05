@@ -527,3 +527,22 @@ BEGIN
 	RETURN TRUE;
 END;
 $$ LANGUAGE PLPGSQL;
+
+-- Function: todos_usuario_nombre()
+
+-- DROP FUNCTION todos_usuario_nombre();
+
+CREATE OR REPLACE FUNCTION todos_usuario_nombre()
+  RETURNS refcursor AS
+$BODY$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR SELECT NOMBRE FROM USUARIO;
+	RETURN MYCURS;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;
+ALTER FUNCTION todos_usuario_nombre()
+  OWNER TO postgres;
