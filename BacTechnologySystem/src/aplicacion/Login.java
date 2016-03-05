@@ -5,17 +5,48 @@
  */
 package aplicacion;
 
+import conexion.Conexion;
+import java.sql.CallableStatement;
+import java.sql.Connection;
+import java.sql.Types;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Angel
  */
 public class Login extends javax.swing.JFrame {
-
+    private final Conexion conexion = new Conexion();
+    private final Connection conn = conexion.Conexion();
+    private Boolean verifica = false;
     /**
      * Creates new form Main
      */
     public Login() {
         initComponents();
+        clearTxtFields();
+    }
+    
+    private void clearTxtFields(){
+        txtContraseña.setText("");
+    }
+    
+    private Boolean verificaUsuario(String usuario,String pass){
+        
+        try{
+            System.out.println("SSS");
+            CallableStatement usuarioAutenticado =  conn.prepareCall("{ ? = call AUTENTICACION ( ? , ? ) }");
+            usuarioAutenticado.registerOutParameter(1, Types.BOOLEAN);
+            usuarioAutenticado.setString(2, usuario);
+            usuarioAutenticado.setString(3, pass);
+            usuarioAutenticado.execute();
+            verifica = usuarioAutenticado.getBoolean(1);
+            usuarioAutenticado.close();
+            conn.close();
+        }catch(Exception e){
+            System.out.println("Error: "+e.getMessage());
+        }
+        return verifica;
     }
 
     /**
@@ -90,11 +121,13 @@ public class Login extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIngresarMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarMenuActionPerformed
-        // TODO add your handling code here
         Menu menu = new Menu();
-        menu.setVisible(true);
-        this.dispose();
-        
+        if(verificaUsuario(txtUsuario.getText(),txtContraseña.getText())){
+            menu.setVisible(true);
+            this.dispose();
+        }else{
+            JOptionPane.showMessageDialog(this,"Contraseña Incorrecta");
+        }
     }//GEN-LAST:event_btnIngresarMenuActionPerformed
 
     /**
