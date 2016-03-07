@@ -71,7 +71,7 @@ public class Menu extends javax.swing.JFrame {
             .addGap(0, 423, Short.MAX_VALUE)
         );
 
-        jMenu1.setText("Archivo");
+        jMenu1.setText("Nuevo");
 
         itemUsuario.setText("Usuario");
         itemUsuario.addActionListener(new java.awt.event.ActionListener() {
