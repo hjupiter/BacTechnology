@@ -546,3 +546,27 @@ $BODY$
   COST 100;
 ALTER FUNCTION todos_usuario_nombre()
   OWNER TO postgres;
+  
+  CREATE OR REPLACE FUNCTION consulta_usuario_maquinaria_molde_novedad(
+    character varying,
+    character varying,
+    character varying,
+    character varying)
+  RETURNS refcursor AS
+$BODY$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR SELECT * from 
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde
+	where usuario.nombre like $1||'%' and maquinaria.codigo like $2||'%' and molde.codigo like $3||'%' and reporte.tipo_novedad like $4||'%';
+	RETURN MYCURS;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+  COST 100;

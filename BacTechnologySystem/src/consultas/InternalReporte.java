@@ -272,7 +272,6 @@ public class InternalReporte extends javax.swing.JInternalFrame {
         comboBoxNovedad = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
         comboBoxUsuario = new javax.swing.JComboBox<>();
-        btnFechaInicio = new com.toedter.calendar.JDateChooser();
         jPanel2 = new javax.swing.JPanel();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
@@ -380,9 +379,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(comboBoxMaquinaria, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(50, 50, 50)))
-                .addGap(18, 18, 18)
-                .addComponent(btnFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(208, Short.MAX_VALUE))
+                .addContainerGap(333, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -394,8 +391,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(comboBoxUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(jLabel5))
-                            .addComponent(btnFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(jLabel5)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
@@ -411,7 +407,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
                     .addComponent(jLabel4)
                     .addComponent(txtNovedad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(comboBoxNovedad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 4, Short.MAX_VALUE))
+                .addGap(0, 8, Short.MAX_VALUE))
         );
 
         jButton1.setText("Consultar");
@@ -795,6 +791,74 @@ public class InternalReporte extends javax.swing.JInternalFrame {
         }
     }
     
+    private void consultar_usuario_maquinaria_molde_novedad(String usuario,String maquinaria,String molde,String novedad,String procedure){
+        Conexion conexion =  new Conexion();
+        Connection conn = conexion.Conexion();
+        try{
+            System.out.println("++++++++++++++++++++");
+            conn.setAutoCommit(false);
+            CallableStatement todas_reportes =  conn.prepareCall(procedure);
+            System.out.println("+++++++++++++");
+            todas_reportes.registerOutParameter(1, Types.OTHER);
+            System.out.println(usuario+" "+ maquinaria + " " + molde + " " + novedad +" ");
+            todas_reportes.setString(2, usuario);
+            todas_reportes.setString(3, maquinaria);
+            todas_reportes.setString(4, molde);
+            todas_reportes.setString(5, novedad);
+            System.out.println("++++++++++++++++++++");
+            todas_reportes.execute();
+            System.out.println("++++++++++++++++++++");
+            ResultSet results = (ResultSet)todas_reportes.getObject(1);
+            System.out.println("++++++++++++++++++++");
+            Object datos[] = new Object[11];
+            System.out.println("++++++++++++++++++++");
+            while(results.next()){
+                String n = "";
+                for(int i = 0; i<25;i++){
+                    if(i==16){
+                        datos[9] = results.getObject(i+1);
+                    }
+                    if(i==1){
+                        n = results.getObject(i+1).toString();
+                    }
+                    if(i==2){
+                        String a = results.getObject(i+1).toString();
+                        String f = n+" "+a;
+                        datos[4] = f;
+                    }
+                    if(i==15){
+                        datos[8] = results.getObject(i+1);
+                    }
+                    if(i==14){
+                        datos[7] = results.getObject(i+1);
+                    }
+                    if(i==13){
+                        datos[6] = results.getObject(i+1);
+                    }
+                    if(i==12){
+                        datos[5] = results.getObject(i+1);
+                    }
+                    if(i==7){
+                        datos[0] = results.getObject(i+1);
+                    }
+                    if(i==8){
+                        datos[1] = results.getObject(i+1);
+                    }
+                    if(i==23){
+                        datos[3] = results.getObject(i+1);
+                    }
+                    if(i==20){
+                        datos[2] = results.getObject(i+1);
+                    }
+                }
+                model.addRow(datos);
+            }
+            System.out.println("++++++++++++++++++++");
+        }
+        catch(Exception e){
+        }
+    }
+    
     private String ponerFechaFormatoCorrecto(String fecha){
         String arreglo[];
         arreglo = fecha.split("/");
@@ -956,8 +1020,12 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             System.out.println("molde novedad");
             String procedure = "{ ? = call CONSULTA_MOLDE_NOVEDAD ( ? , ? ) }";
             consultar_dos(molde,novedad, procedure);
-        }else{
-            //JOptionPane.showMessageDialog(null, "no exite ese campo");
+        }
+        if(!usuario.equals("") && !maquinaria.equals("") && !molde.equals("") && !novedad.equals("")){
+            limpiar_tabla();
+            System.out.println("usuario maquina molde novedad");
+            String procedure = "{ ? = call CONSULTA_USUARIO_MAQUINARIA_MOLDE_NOVEDAD ( ? , ? , ? , ?) }";
+            consultar_usuario_maquinaria_molde_novedad(usuario,maquinaria,molde,novedad,procedure);
         }
 //        if(btnFechaInicio != null){
 //            String fechaObtenida = df.format(btnFechaInicio.getDate());
@@ -1062,7 +1130,6 @@ public class InternalReporte extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.toedter.calendar.JDateChooser btnFechaInicio;
     private javax.swing.JComboBox<String> comboBoxMaquinaria;
     private javax.swing.JComboBox<String> comboBoxMolde;
     private javax.swing.JComboBox<String> comboBoxNovedad;
