@@ -6,6 +6,7 @@
 package aplicacion;
 
 import conexion.Conexion;
+import java.awt.event.KeyEvent;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Types;
@@ -77,6 +78,12 @@ public class Login extends javax.swing.JFrame {
         jLabel2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel2.setText("Contraseña");
 
+        txtUsuario.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtUsuarioKeyTyped(evt);
+            }
+        });
+
         btnIngresarMenu.setText("Ingresar");
         btnIngresarMenu.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -94,9 +101,9 @@ public class Login extends javax.swing.JFrame {
         jPanelLogoLayout.setHorizontalGroup(
             jPanelLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelLogoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(41, 41, 41)
+                .addComponent(jLabel3)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelLogoLayout.setVerticalGroup(
             jPanelLogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -114,13 +121,18 @@ public class Login extends javax.swing.JFrame {
         });
 
         txtContraseña.setText("jPasswordField1");
+        txtContraseña.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtContraseñaKeyTyped(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(28, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1)
                     .addComponent(jLabel2))
@@ -136,7 +148,7 @@ public class Login extends javax.swing.JFrame {
                 .addComponent(btnSalir)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(0, 0, 0)
                 .addComponent(jPanelLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -158,11 +170,15 @@ public class Login extends javax.swing.JFrame {
                 .addGap(41, 41, 41))
         );
 
-        setSize(new java.awt.Dimension(367, 338));
+        setSize(new java.awt.Dimension(385, 338));
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnIngresarMenuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIngresarMenuActionPerformed
+        ingresar();
+    }//GEN-LAST:event_btnIngresarMenuActionPerformed
+
+    private void ingresar(){
         Menu menu = new Menu();
         if(verificaUsuario(txtUsuario.getText(),txtContraseña.getText())){
             menu.setVisible(true);
@@ -170,12 +186,28 @@ public class Login extends javax.swing.JFrame {
         }else{
             JOptionPane.showMessageDialog(this,"Contraseña Incorrecta");
         }
-    }//GEN-LAST:event_btnIngresarMenuActionPerformed
-
+    }
+    
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         // TODO add your handling code here:
         this.dispose();
     }//GEN-LAST:event_btnSalirActionPerformed
+
+    private void txtUsuarioKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsuarioKeyTyped
+        // TODO add your handling code here:
+        char cteclaPresionada = evt.getKeyChar();
+        if(cteclaPresionada == KeyEvent.VK_ENTER){
+            txtContraseña.requestFocus();
+        }
+    }//GEN-LAST:event_txtUsuarioKeyTyped
+
+    private void txtContraseñaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtContraseñaKeyTyped
+        // TODO add your handling code here:
+        char cteclaPresionada = evt.getKeyChar();
+        if(cteclaPresionada == KeyEvent.VK_ENTER){
+            ingresar();
+        }
+    }//GEN-LAST:event_txtContraseñaKeyTyped
 
     /**
      * @param args the command line arguments
