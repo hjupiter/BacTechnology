@@ -8,6 +8,7 @@ package aplicacion;
 import consultas.InternalReporte;
 import edicion.ConsultaMaquinaria;
 import edicion.ConsultaMolde;
+import edicion.ConsultaUsuario;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -222,11 +223,12 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
         boolean ventanaActivaReporteUsuario = InternalReporte.ventanaActivaReporteUsuario;
         if(!ventanaActivaReporteUsuario){
-            InternalReporte r = new InternalReporte();
-            centerJIF(r);
-            DesktopPane.add(r);
+            //InternalReporte r = new InternalReporte();
+            ConsultaUsuario usuario = new ConsultaUsuario();
+            centerJIF(usuario);
+            DesktopPane.add(usuario);
         }else{
-            JOptionPane.showMessageDialog(this, "La ventana REPORTE ya esta abierta!!");
+            JOptionPane.showMessageDialog(this, "La ventana USUARIO ya esta abierta!!");
         }
         
     }//GEN-LAST:event_jMenuItem1ActionPerformed
