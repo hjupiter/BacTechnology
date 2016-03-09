@@ -36,6 +36,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * @author Angel
  */
 public class InternalReporte extends javax.swing.JInternalFrame {
+
+    public static boolean ventanaActivaReporteUsuario = false;
     DateFormat df = DateFormat.getDateInstance();
     private static final String rutaArchivo = "C://data//data.xlsx";
     private static final File archivo = new File(rutaArchivo);
@@ -49,6 +51,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
     DefaultTableModel model;
     JScrollPane scroll;
     public InternalReporte() {
+        ventanaActivaReporteUsuario = true;
         initComponents();
         llenarTable();
         llenarComboMolde();
@@ -284,6 +287,23 @@ public class InternalReporte extends javax.swing.JInternalFrame {
         setMaximizable(true);
         setResizable(true);
         setPreferredSize(new java.awt.Dimension(889, 600));
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -1149,6 +1169,11 @@ public class InternalReporte extends javax.swing.JInternalFrame {
     private void comboBoxMaquinariaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_comboBoxMaquinariaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_comboBoxMaquinariaActionPerformed
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        // TODO add your handling code here:
+        ventanaActivaReporteUsuario = false;
+    }//GEN-LAST:event_formInternalFrameClosing
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

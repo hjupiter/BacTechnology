@@ -28,6 +28,8 @@ import javax.swing.table.DefaultTableModel;
  * @author Angel
  */
 public class ConsultaMaquinaria extends javax.swing.JInternalFrame implements ActionListener{
+
+    public static boolean ventanaActivaMaquina;
     private DefaultTableModel model;
     private JScrollPane scroll;
     
@@ -44,7 +46,7 @@ public class ConsultaMaquinaria extends javax.swing.JInternalFrame implements Ac
      * Creates new form CosultaMaquinaria
      */
     public ConsultaMaquinaria() {
-        
+        ventanaActivaMaquina = false;
         initComponents();
         llenarTable();
         setVisible(true);
@@ -277,6 +279,23 @@ public class ConsultaMaquinaria extends javax.swing.JInternalFrame implements Ac
         setMaximizable(true);
         setResizable(true);
         setTitle("Maquinaria");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
@@ -331,6 +350,11 @@ public class ConsultaMaquinaria extends javax.swing.JInternalFrame implements Ac
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        // TODO add your handling code here:
+        ventanaActivaMaquina = false;
+    }//GEN-LAST:event_formInternalFrameClosing
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -28,6 +28,8 @@ import javax.swing.table.DefaultTableModel;
  * @author Angel
  */
 public class ConsultaMolde extends javax.swing.JInternalFrame implements ActionListener{
+
+    public static boolean ventanaActivaMolde = false;
     private DefaultTableModel model;
     private JScrollPane scroll;
     
@@ -44,7 +46,7 @@ public class ConsultaMolde extends javax.swing.JInternalFrame implements ActionL
      * Creates new form CosultaMaquinaria
      */
     public ConsultaMolde() {
-        
+        ventanaActivaMolde = true;
         initComponents();
         llenarTable();
         setVisible(true);
@@ -277,6 +279,23 @@ public class ConsultaMolde extends javax.swing.JInternalFrame implements ActionL
         setMaximizable(true);
         setResizable(true);
         setTitle("Molde");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
@@ -331,6 +350,11 @@ public class ConsultaMolde extends javax.swing.JInternalFrame implements ActionL
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        // TODO add your handling code here:
+        ventanaActivaMolde = false;
+    }//GEN-LAST:event_formInternalFrameClosing
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

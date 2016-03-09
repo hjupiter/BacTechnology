@@ -18,11 +18,14 @@ import validacion.ValidacionMaquinaria;
  * @author Angel
  */
 public class InternalMaquinaria extends javax.swing.JInternalFrame {
+
+    public static boolean ventanaActivaMaquinaria;
     private ValidacionMaquinaria valMaquinaria;
     /**
      * Creates new form InternalMaquinaria
      */
     public InternalMaquinaria() {
+        ventanaActivaMaquinaria = true;
         valMaquinaria = new ValidacionMaquinaria();
         initComponents();
         setVisible(true);
@@ -45,6 +48,23 @@ public class InternalMaquinaria extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setTitle("Nueva Maquinaria");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         txtMaquinariaCodigo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
@@ -132,6 +152,11 @@ public class InternalMaquinaria extends javax.swing.JInternalFrame {
         }
         
     }//GEN-LAST:event_btnMaquinariaCrearActionPerformed
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        // TODO add your handling code here:
+        ventanaActivaMaquinaria = false;
+    }//GEN-LAST:event_formInternalFrameClosing
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

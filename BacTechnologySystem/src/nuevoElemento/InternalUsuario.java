@@ -22,10 +22,12 @@ import validacion.General;
 public class InternalUsuario extends javax.swing.JInternalFrame {
     private General val;
     private ValidacionUsuario valUsu;
+    public static boolean ventanaActivaUsuario = false;
     /**
      * Creates new form Usuario
      */
     public InternalUsuario() {
+        ventanaActivaUsuario = true;
         val = new General();
         valUsu =  new ValidacionUsuario();
         initComponents();
@@ -55,6 +57,23 @@ public class InternalUsuario extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setTitle("Nuevo Usuario");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel1.setText("Nombre");
@@ -218,6 +237,11 @@ public class InternalUsuario extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         val.soloNumeros(evt);
     }//GEN-LAST:event_txtUsuarioCedulaKeyTyped
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        // TODO add your handling code here:
+        ventanaActivaUsuario = false;
+    }//GEN-LAST:event_formInternalFrameClosing
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

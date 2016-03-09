@@ -18,11 +18,14 @@ import validacion.ValidacionMolde;
  * @author Angel
  */
 public class InternalMolde extends javax.swing.JInternalFrame {
+
+    public static boolean ventanaActivaMolde = false;
     private ValidacionMolde valMolde;
     /**
      * Creates new form InternalMolde
      */
     public InternalMolde() {
+        ventanaActivaMolde = true;
         valMolde =  new ValidacionMolde();
         initComponents();
         setVisible(true);
@@ -45,6 +48,23 @@ public class InternalMolde extends javax.swing.JInternalFrame {
 
         setClosable(true);
         setTitle("Nuevo Molde");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         txtMoldeCodigo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
@@ -135,6 +155,11 @@ public class InternalMolde extends javax.swing.JInternalFrame {
         }
         
     }//GEN-LAST:event_btnMoldeCrearActionPerformed
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        // TODO add your handling code here:
+        ventanaActivaMolde = false;
+    }//GEN-LAST:event_formInternalFrameClosing
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
