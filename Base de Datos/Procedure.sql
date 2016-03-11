@@ -591,3 +591,313 @@ BEGIN
 	RETURN TRUE;
 END;
 $$ LANGUAGE PLPGSQL;
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION consulta_reporte_fecha_usuario_maquina_molde_novedad(
+    character varying,
+    character varying,
+    character varying,
+    character varying,
+    character varying)
+  RETURNS refcursor AS
+$BODY$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR select * from
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde 
+	where (cast(reporte.fecha as VARCHAR) between $1 and $1) and usuario.nombre like $2||'%' and maquinaria.codigo like $3||'%' and molde.codigo like $4||'%' and reporte.tipo_novedad like $5||'%';
+	RETURN MYCURS;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION consulta_reporte_fecha_maquina_molde_novedad(
+    character varying,
+    character varying,
+    character varying,
+    character varying)
+  RETURNS refcursor AS
+$BODY$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR select * from
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde 
+	where (cast(reporte.fecha as VARCHAR) between $1 and $1) and maquinaria.codigo like $2||'%' and molde.codigo like $3||'%' and reporte.tipo_novedad like $4||'%';
+	RETURN MYCURS;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION consulta_reporte_fecha_usuario_molde_novedad(
+    character varying,
+    character varying,
+    character varying,
+    character varying)
+  RETURNS refcursor AS
+$BODY$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR select * from
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde 
+	where (cast(reporte.fecha as VARCHAR) between $1 and $1) and usuario.nombre like $2||'%' and molde.codigo like $3||'%' and reporte.tipo_novedad like $4||'%';
+	RETURN MYCURS;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION consulta_reporte_fecha_usuario_maquina_novedad(
+    character varying,
+    character varying,
+    character varying,
+    character varying)
+  RETURNS refcursor AS
+$BODY$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR select * from
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde 
+	where (cast(reporte.fecha as VARCHAR) between $1 and $1) and usuario.nombre like $2||'%' and maquinaria.codigo like $3||'%' and reporte.tipo_novedad like $4||'%';
+	RETURN MYCURS;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION consulta_reporte_fecha_molde_novedad(
+    character varying,
+    character varying,
+    character varying)
+  RETURNS refcursor AS
+$BODY$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR select * from
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde 
+	where (cast(reporte.fecha as VARCHAR) between $1 and $1) and molde.codigo like $2||'%' and reporte.tipo_novedad like $3||'%';
+	RETURN MYCURS;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION consulta_reporte_fecha_maquina_novedad(
+    character varying,
+    character varying,
+    character varying)
+  RETURNS refcursor AS
+$BODY$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR select * from
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde 
+	where (cast(reporte.fecha as VARCHAR) between $1 and $1) and maquinaria.codigo like $2||'%' and reporte.tipo_novedad like $3||'%';
+	RETURN MYCURS;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION consulta_reporte_fecha_maquina_molde(
+    character varying,
+    character varying,
+    character varying)
+  RETURNS refcursor AS
+$BODY$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR select * from
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde 
+	where (cast(reporte.fecha as VARCHAR) between $1 and $1) and maquinaria.codigo like $2||'%' and molde.codigo like $3||'%';
+	RETURN MYCURS;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION consulta_reporte_fecha_usuario_molde(
+    character varying,
+    character varying,
+    character varying)
+  RETURNS refcursor AS
+$BODY$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR select * from
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde 
+	where (cast(reporte.fecha as VARCHAR) between $1 and $1) and usuario.nombre like $2||'%' and molde.codigo like $3||'%';
+	RETURN MYCURS;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION consulta_reporte_usuario_fecha_maquina_por_mes(
+    character varying,
+    character varying,
+    character varying)
+  RETURNS refcursor AS
+$BODY$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR select * from
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde 
+	where (cast(reporte.fecha as VARCHAR) between $1 and $1) and usuario.nombre like $2||'%' and maquinaria.codigo like $3||'%';
+	RETURN MYCURS;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION consulta_reporte_fecha_novedad_por_mes(
+    character varying,
+    character varying)
+  RETURNS refcursor AS
+$BODY$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR select * from
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde 
+	where (cast(reporte.fecha as VARCHAR) between $1 and $1) and reporte.tipo_novedad like $2||'%';
+	RETURN MYCURS;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION consulta_reporte_fecha_molde_por_mes(
+    character varying,
+    character varying)
+  RETURNS refcursor AS
+$BODY$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR select * from
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde 
+	where (cast(reporte.fecha as VARCHAR) between $1 and $1) and molde.codigo like $2||'%';
+	RETURN MYCURS;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION consulta_reporte_fecha_maquina_por_mes(
+    character varying,
+    character varying)
+  RETURNS refcursor AS
+$BODY$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR select * from
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde 
+	where (cast(reporte.fecha as VARCHAR) between $1 and $1) and maquinaria.codigo like $2||'%';
+	RETURN MYCURS;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION consulta_reporte_usuario_fecha_por_mes(character varying,character varying)
+  RETURNS refcursor AS
+$BODY$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR select * from
+	usuario inner join reporte 
+	on usuario.id_usuario = reporte.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte.id_molde 
+	where (cast(reporte.fecha as VARCHAR) between $1 and $1) and usuario.nombre like $2||'%';
+	RETURN MYCURS;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
