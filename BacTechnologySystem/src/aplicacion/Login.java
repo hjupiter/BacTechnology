@@ -44,7 +44,7 @@ public class Login extends javax.swing.JFrame {
             usuarioAutenticado.execute();
             verifica = usuarioAutenticado.getBoolean(1);
             usuarioAutenticado.close();
-            conn.close();
+            //conn.close();
         }catch(Exception e){
             System.out.println("Error: "+e.getMessage());
         }
@@ -91,7 +91,7 @@ public class Login extends javax.swing.JFrame {
             }
         });
 
-        jPanelLogo.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanelLogo.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel3.setFont(new java.awt.Font("Verdana", 3, 18)); // NOI18N
         jLabel3.setText("SISTEMA BACTECHNOLOGY");
@@ -147,15 +147,13 @@ public class Login extends javax.swing.JFrame {
                 .addGap(41, 41, 41)
                 .addComponent(btnSalir)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(0, 0, 0)
-                .addComponent(jPanelLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jPanelLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanelLogo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
                     .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -179,12 +177,17 @@ public class Login extends javax.swing.JFrame {
     }//GEN-LAST:event_btnIngresarMenuActionPerformed
 
     private void ingresar(){
-        Menu menu = new Menu();
-        if(verificaUsuario(txtUsuario.getText(),txtContraseña.getText())){
+        try {
+            if(verificaUsuario(txtUsuario.getText(),txtContraseña.getText())){
+            Menu menu = new Menu();
             menu.setVisible(true);
+            conn.close();
             this.dispose();
         }else{
             JOptionPane.showMessageDialog(this,"Contraseña Incorrecta");
+        }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this,"Error en Conexion De usuario");
         }
     }
     
