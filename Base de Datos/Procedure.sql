@@ -901,3 +901,21 @@ BEGIN
 END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
+----------------------------------------------------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION autenticacion_app(
+    character varying,
+    character varying)
+  RETURNS boolean AS
+$BODY$
+DECLARE
+	CONTAR INTEGER;
+BEGIN
+	CONTAR := COUNT(*) FROM USUARIO WHERE USUARIO.USUARIO = $1 AND USUARIO.CONTRASEÑA = $2 AND USUARIO.TIPO=1;
+	IF CONTAR = 1 THEN
+		RETURN TRUE;
+	ELSE
+		RETURN FALSE;
+	END IF;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE

@@ -80,7 +80,7 @@ public class BacTechnologyService {
         Conexion conexion =  new Conexion();
         Connection conn = conexion.Conexion();
         try{
-            CallableStatement autenticacion =  conn.prepareCall("{ ? = call AUTENTICACION ( ? , ? ) }");
+            CallableStatement autenticacion =  conn.prepareCall("{ ? = call AUTENTICACION_APP ( ? , ? ) }");
             autenticacion.registerOutParameter(1, Types.BOOLEAN);
             autenticacion.setString(2, usuario);
             autenticacion.setString(3, contraseña);
