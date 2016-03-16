@@ -33,7 +33,6 @@ public class Login extends AppCompatActivity {
     }
 
     private View.OnClickListener listener = new View.OnClickListener() {
-
         @Override
         public void onClick(View v) {
             new DownloadTask2().execute("");

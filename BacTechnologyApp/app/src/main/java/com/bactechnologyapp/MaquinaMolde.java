@@ -9,6 +9,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.PersistableBundle;
 import android.provider.MediaStore;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -30,7 +31,7 @@ import org.kobjects.base64.Base64;
 import org.ksoap2.serialization.MarshalBase64;
 
 public class MaquinaMolde extends AppCompatActivity {
-    private static final String TAG=MaquinaMolde.class.getName();
+    private static final String TAG = MaquinaMolde.class.getName();
     private static ArrayList<Activity> activities=new ArrayList<Activity>();
     private Intent ventanaCamara;
     private Button botonAtras,botonEnviar;
@@ -43,18 +44,18 @@ public class MaquinaMolde extends AppCompatActivity {
     private ArrayAdapter<CharSequence> adapterNovedad;
     private ArrayAdapter<CharSequence> adapterSolucion;
 
-    private EditText reporteNovedad;
-    private EditText reporteSolucion;
+    public EditText reporteNovedad;
+    public EditText reporteSolucion;
 
-    private EditText novedadDetectada;
+    EditText novedadDetectada;
 
-    private String opNovedad,opSolucion;
+    public String opNovedad,opSolucion;
 
-    private ProgressDialog progressDialog;
+    public ProgressDialog progressDialog;
 
-    private Context context;
+    public Context context;
 
-    private String usuario;
+    public String usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,28 +111,6 @@ public class MaquinaMolde extends AppCompatActivity {
             }
         });
 
-
-        //spinnerNovedad.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, adNovedad));
-        //spinnerolucion.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, adsolucion));
-
-
-        /*
-        spinnerNovedad.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getBaseContext(), parent.getItemIdAtPosition(position) + "ha sido seleccionado", Toast.LENGTH_LONG);
-                //opcionNovedad = (String) Array.get(spinnerNovedad,position);
-            }
-        });
-
-        spinnerolucion.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getBaseContext(), parent.getItemIdAtPosition(position) + "ha sido seleccionado", Toast.LENGTH_LONG);
-                //opcionSolucion = (String) Array.get(spinnerolucion,position);
-            }
-        });*/
-
         TextView textId = (TextView) findViewById(R.id.textIdMaquinaMolde);
 
         textId.setText("Maquina : " + idMaquina + "\nMolde : " + idMolde);
@@ -159,12 +138,12 @@ public class MaquinaMolde extends AppCompatActivity {
                         alert.setTitle("Guardar Reporte");
                         alert.setMessage("Esta seguro de realizar esta accion");
                         alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
-
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 new DownloadTask2().execute("");
                                 progressDialog = ProgressDialog.show(context, "Por favor espere", "Enviando Datos");
-                                finishAll();
+                                //Toast.makeText(getApplicationContext(), "NO SE ENVIO", Toast.LENGTH_SHORT).show();
+                                //finishAll();
                                 //restartActivity();
                             }
                         });
@@ -182,7 +161,7 @@ public class MaquinaMolde extends AppCompatActivity {
                     }
                 }else{
                     alert.setTitle("Error en Imagen");
-                    alert.setMessage("Se debe de tener una foto de la maquinari/molde");
+                    alert.setMessage("Se debe de tener una foto de la maquinaria/molde");
                     alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -190,25 +169,20 @@ public class MaquinaMolde extends AppCompatActivity {
                     });
                     alert.show();
                 }
-
-
-
-                //new DownloadTask2().execute("");
-                //progressDialog = ProgressDialog.show(context, "Por favor espere", "Cargando Molde");
-
-
             }
 
         });
 
     }
 
+    /*
     @Override
     public void onDestroy()
     {
         super.onDestroy();
         activities.remove(this);
     }
+    */
 
     public static void finishAll()
     {
@@ -241,11 +215,26 @@ public class MaquinaMolde extends AppCompatActivity {
     }
 
     @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("bitmap", bmp);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        bmp = (Bitmap) savedInstanceState.getParcelable("bitmap");
+        imagenCamara.setImageBitmap(bmp);
+    }
+
+    /*
+    @Override
     public void onBackPressed() {
         // do something on back.
         this.finish();
         //return;
     }
+    */
 
     private class DownloadTask2 extends AsyncTask<String,Void,Object> {
 
@@ -267,12 +256,15 @@ public class MaquinaMolde extends AppCompatActivity {
             System.out.println(opSolucion);
             System.out.println(novedadDetectada.getText().toString());
             System.out.println(strBase64);
-            Boolean a = ws.guardarReporte(idMaquina,idMolde,usuario,strBase64,reporteNovedad.getText().toString(),reporteSolucion.getText().toString(),opNovedad,opSolucion,novedadDetectada.getText().toString());
+            Boolean a = ws.guardarReporte(idMaquina,idMolde,usuario,strBase64,
+                                            reporteNovedad.getText().toString(),
+                                            reporteSolucion.getText().toString(),
+                                            opNovedad,opSolucion,novedadDetectada.getText().toString());
             System.out.println(a);
             /*
             cargaDatosWS ws = new cargaDatosWS();
             String a = ws.hello();
-            System.out.println(a);
+            System.out.println(a);```
             */
             return 1;
         }
@@ -281,7 +273,7 @@ public class MaquinaMolde extends AppCompatActivity {
 
         protected void onPostExecute(Object result) {
             progressDialog.dismiss();
-            MaquinaMolde.this.finish();
+            //MaquinaMolde.this.finish();
             super.onPostExecute(result);
         }
     }

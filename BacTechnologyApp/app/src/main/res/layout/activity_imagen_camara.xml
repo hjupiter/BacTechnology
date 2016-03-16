@@ -15,7 +15,7 @@
 
         <ImageView
             android:layout_width="match_parent"
-            android:src="@mipmap/ic_launcher"
+            android:src="@drawable/ic_action_picture"
             android:layout_height="700dp"
             android:id="@+id/id_foto" />
 

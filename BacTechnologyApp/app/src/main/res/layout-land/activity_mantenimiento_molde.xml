@@ -127,7 +127,7 @@
                     android:layout_width="400dp"
                     android:layout_height="match_parent"
                     android:id="@+id/id_imagen_molde"
-                    android:src="@mipmap/ic_launcher"
+                    android:src="@drawable/ic_action_picture"
                     android:layout_centerHorizontal="true" />
 
                 <Button
@@ -136,8 +136,7 @@
                     android:onClick="setBotonCamara"
                     android:text="Camara"
                     android:id="@+id/id_boton_camara_molde"
-                    android:layout_alignParentTop="true"
-                    android:layout_toStartOf="@+id/imageView3" />
+                    android:layout_alignParentTop="true" />
             </RelativeLayout>
 
             <Button

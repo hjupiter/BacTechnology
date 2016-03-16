@@ -104,10 +104,12 @@ public class ListaMaquina extends ActionBarActivity  {
         }
     }*/
 
+    /*
     @Override
     public void onBackPressed() {
         Toast.makeText(ListaMaquina.this, "HOLA", Toast.LENGTH_SHORT).show();
     }
+    */
 
     private class DownloadTask2 extends AsyncTask<String,Void,Object> {
 

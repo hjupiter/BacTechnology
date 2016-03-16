@@ -18,7 +18,7 @@ import java.util.List;
  */
 
 public class cargaDatosWS {
-    private String conexion =  "http://192.168.1.104:8080/BacTechnology2/BacTechnologyService?WSDL";
+    private String conexion =  "http://192.168.1.103:8080/BacTechnology2/BacTechnologyService?WSDL";
 
     public Boolean getAutenticacion(String usuario,String contraseña){
         Boolean res = null;
@@ -200,6 +200,7 @@ public class cargaDatosWS {
 
             return  res;
         }catch(Exception e){
+            System.out.println("NO SE ENVIO LOS DATOS");
             System.out.println("----------------------------------------------->");
             System.out.println(e.getMessage());
             res = false;
@@ -289,6 +290,7 @@ public class cargaDatosWS {
             return  res;
         }catch(Exception e){
             System.out.println("----------------------------------------------->");
+            System.out.println("NO SE ENVIO EL REPORTE");
             System.out.println(e.getMessage());
             res = false;
             System.out.println("----------------------------------------------->");
