@@ -39,6 +39,7 @@ public class ListaMantenimiento extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(getApplicationContext(), "presiono " + position, Toast.LENGTH_SHORT).show();
+
                 if (position == 0 || position ==1) {
                     pos = position;
                     new DownloadTask2().execute("");

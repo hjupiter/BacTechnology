@@ -23,7 +23,6 @@ import java.util.List;
 
 public class ListaMaquina extends ActionBarActivity  {
 
-    //private String[] maquinas = {"Y-01/15 (HT-120)", "Y-02/15 (HT-120)", "Y-03 (NB-750) ", "Y-04 (750 B) NO EQUIPO HIDRAULICO ", "Y-05/15 (HT-200)","Y-06  (R-300)", "Y-07 (V-17)", "Y-10   (HT-200) ", "Y-11  (HT-160) ", "Y-12 (JM 368)","Y-13 (NB 190)","Y-14 (V-22)"};
     private ListView listaMaquina;
     private String[] maquinas;
     private EditText buscarMaquina;
@@ -31,11 +30,8 @@ public class ListaMaquina extends ActionBarActivity  {
     private List moldes;
     private ProgressDialog progressDialog;
     private Context context;
-
     private int pos;
-
     private int posMenu;
-
     private String usuario;
 
     @Override
@@ -122,7 +118,6 @@ public class ListaMaquina extends ActionBarActivity  {
 
         protected void onPostExecute(Object result) {
             progressDialog.dismiss();
-
             String idMaquina = maquinas[pos];
             String[] arrayMoldes = convLisToArray(moldes);
             Intent ventanaMoldes = new Intent(ListaMaquina.this, ListaMolde.class);
@@ -131,7 +126,7 @@ public class ListaMaquina extends ActionBarActivity  {
             ventanaMoldes.putExtra("usuario",usuario);
             ventanaMoldes.putExtra("posicion",posMenu);
             startActivity(ventanaMoldes);
-            ListaMaquina.this.finish();
+            //ListaMaquina.this.finish();
             super.onPostExecute(result);
         }
     }

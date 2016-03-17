@@ -1,7 +1,9 @@
 package com.bactechnologyapp;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -55,6 +57,16 @@ public class Login extends AppCompatActivity {
                 Intent login = new Intent(Login.this, ListaMantenimiento.class);
                 login.putExtra("usuario",usuario.getText().toString());
                 startActivity(login);
+            }else{
+                AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                alert.setTitle("Error en Imagen");
+                alert.setMessage("Se debe de tener una foto de la maquinaria/molde");
+                alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                alert.show();
             }
             super.onPostExecute(result);
         }

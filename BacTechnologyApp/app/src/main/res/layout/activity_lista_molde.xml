@@ -29,6 +29,20 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
+            android:id="@+id/ID_LAYOUT_SIN_MOLDE"
+            android:layout_height="57dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SIN MOLDE"
+                android:id="@+id/id_btn_sin_molde"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentStart="true" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <ListView

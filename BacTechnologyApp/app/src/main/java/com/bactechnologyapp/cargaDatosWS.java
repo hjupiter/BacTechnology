@@ -18,7 +18,7 @@ import java.util.List;
  */
 
 public class cargaDatosWS {
-    private String conexion =  "http://192.168.1.103:8080/BacTechnology2/BacTechnologyService?WSDL";
+    private String conexion =  "http://192.168.1.103:8080/BacTechnology/BacTechnologyService?WSDL";
 
     public Boolean getAutenticacion(String usuario,String contraseña){
         Boolean res = null;
@@ -127,7 +127,7 @@ public class cargaDatosWS {
     }
 
     public boolean guardarReporte(String idMaquina, String idMolde, String idUsuario, String imagen,String novedad,String solucion,String tipoNovedad, String tipoSolucion,String novedadDetectada){
-        boolean res = false;
+        boolean res;
         SoapObject rpc;
         rpc = new SoapObject("http://service.BacTechnology.com/","NuevoReporte");
 
@@ -187,10 +187,21 @@ public class cargaDatosWS {
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.setOutputSoapObject(rpc);
-        HttpTransportSE androidHttpTransport = null;
+        HttpTransportSE androidHttpTransport;
+
+        //String novedadDetectada ="jbvbvlj";
+        System.out.println(idMaquina);
+        System.out.println(idMolde);
+        System.out.println(idUsuario);
+        System.out.println(novedad);
+        System.out.println(solucion);
+        System.out.println(novedadDetectada);
+        System.out.println(tipoSolucion);
+        System.out.println(tipoNovedad);
+        System.out.println(imagen);
 
         try{
-            System.out.println("asdasdsafsadfasdfsadfsadfsadfasdfsad");
+            System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
             androidHttpTransport =  new HttpTransportSE(conexion);
             androidHttpTransport.call("http://service.BacTechnology.com/NuevoReporte", envelope);
 
@@ -200,8 +211,8 @@ public class cargaDatosWS {
 
             return  res;
         }catch(Exception e){
-            System.out.println("NO SE ENVIO LOS DATOS");
             System.out.println("----------------------------------------------->");
+            System.out.println("NO SE ENVIO LOS DATOS");
             System.out.println(e.getMessage());
             res = false;
             System.out.println("----------------------------------------------->");
@@ -279,7 +290,7 @@ public class cargaDatosWS {
         HttpTransportSE androidHttpTransport = null;
 
         try{
-            System.out.println("asdasdsafsadfasdfsadfsadfsadfasdfsad");
+            System.out.println("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
             androidHttpTransport =  new HttpTransportSE(conexion);
             androidHttpTransport.call("http://service.BacTechnology.com/NuevoReporteMolde", envelope);
 

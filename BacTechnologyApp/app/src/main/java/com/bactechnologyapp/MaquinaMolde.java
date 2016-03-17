@@ -149,8 +149,8 @@ public class MaquinaMolde extends AppCompatActivity {
                         });
                         alert.show();
                     }else{
-                        Toast.makeText(getApplicationContext(), reporteNovedad.getText(), Toast.LENGTH_SHORT).show();
-                        alert.setTitle("Error al Enviar");
+                        //Toast.makeText(getApplicationContext(), reporteNovedad.getText(), Toast.LENGTH_SHORT).show();
+                        alert.setTitle("No se pudo enviar el reporte");
                         alert.setMessage("No debe de haber campos vacios");
                         alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
                             @Override
@@ -244,23 +244,32 @@ public class MaquinaMolde extends AppCompatActivity {
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             bmp.compress(Bitmap.CompressFormat.JPEG, 100, out);
             byte[] imagebyte = out.toByteArray();
-
             String strBase64 = Base64.encode(imagebyte);
             //String novedadDetectada ="jbvbvlj";
-            System.out.println(idMaquina);
-            System.out.println(idMolde);
-            System.out.println(usuario);
-            System.out.println(reporteNovedad.getText().toString());
-            System.out.println(reporteSolucion.getText().toString());
-            System.out.println(opNovedad);
-            System.out.println(opSolucion);
-            System.out.println(novedadDetectada.getText().toString());
-            System.out.println(strBase64);
+            //System.out.println(idMaquina);
+            //System.out.println(idMolde);
+            //System.out.println(usuario);
+            //System.out.println(reporteNovedad.getText().toString());
+            //System.out.println(reporteSolucion.getText().toString());
+            //System.out.println(opNovedad);
+            //System.out.println(opSolucion);
+            //System.out.println(novedadDetectada.getText().toString());
+            //System.out.println(strBase64);
             Boolean a = ws.guardarReporte(idMaquina,idMolde,usuario,strBase64,
                                             reporteNovedad.getText().toString(),
                                             reporteSolucion.getText().toString(),
                                             opNovedad,opSolucion,novedadDetectada.getText().toString());
             System.out.println(a);
+            if(a){
+                System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                System.out.println("SE ESTAN ENVIANDO LOS DATOS");
+                System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+            }else{
+                System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+                System.out.println("NO SE ENVIARON LOS DATOS");
+                System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+            }
+
             /*
             cargaDatosWS ws = new cargaDatosWS();
             String a = ws.hello();
@@ -270,6 +279,9 @@ public class MaquinaMolde extends AppCompatActivity {
         }
 
 
+        @Override
+        protected void onPreExecute() {
+        }
 
         protected void onPostExecute(Object result) {
             progressDialog.dismiss();
