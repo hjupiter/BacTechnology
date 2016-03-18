@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -131,21 +130,41 @@ public class MantenimientoMolde extends AppCompatActivity {
                 //DialogoEnviar dialogoEnviar = new DialogoEnviar();
                 //dialogoEnviar.show(fg,"EnviarReporte");
 
+
+
                 AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                alert.setTitle("Guardar Reporte");
-                alert.setMessage("Esta seguro de realizar esta accion");
-                alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                if(bmp != null){
+                    if(reporteNovedad.getText().length() !=0 && reporteSolucion.getText().length() !=0 && NovedadDetectada.getText().length() !=0){
+                        alert.setTitle("Guardar Reporte");
+                        alert.setMessage("Esta seguro de realizar esta accion");
+                        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
 
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        new DownloadTask2().execute("");
-                        progressDialog = ProgressDialog.show(context, "Por favor espere", "Cargando Molde");
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                new DownloadTask2().execute("");
+                                progressDialog = ProgressDialog.show(context, "Por favor espere", "Enviando los datos");
+                            }
+                        });
+                        //Toast.makeText(getApplicationContext(), reporteNovedad.getText(), Toast.LENGTH_SHORT).show();
+                        alert.setTitle("No se pudo enviar el reporte");
+                        alert.setMessage("No debe de haber campos vacios");
+                        alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                            }
+                        });
+                        alert.show();
                     }
-                });
-                alert.show();
-
-                //new DownloadTask2().execute("");
-                //progressDialog = ProgressDialog.show(context, "Por favor espere", "Cargando Molde");
+                }else{
+                    alert.setTitle("Error en Imagen");
+                    alert.setMessage("Se debe de tener una foto de la maquinaria/molde");
+                    alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                        }
+                    });
+                    alert.show();
+                }
 
 
             }

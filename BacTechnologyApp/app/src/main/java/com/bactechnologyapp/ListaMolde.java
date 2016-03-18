@@ -18,6 +18,7 @@ import android.widget.Toast;
 public class ListaMolde extends AppCompatActivity {
 
     private String idMaquina;
+    private String idMolde;
     private EditText buscarMolde;
     private String[] moldes;
     private ListView listaMoldes;
@@ -83,26 +84,34 @@ public class ListaMolde extends AppCompatActivity {
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long id) {
                 // TODO Auto-generated method stub
                 //Toast.makeText(getApplicationContext(), "Ha pulsado el item " + moldes[position], Toast.LENGTH_SHORT).show();
-                String idMolde = moldes[position];
+                idMolde = moldes[position];
                 Toast.makeText(getApplicationContext(), " MENU " + posMenu, Toast.LENGTH_SHORT).show();
-                if(posMenu == 0){
-                    Intent ventanaMaquinaMolde = new Intent(ListaMolde.this, MaquinaMolde.class);
-                    ventanaMaquinaMolde.putExtra("idMolde", idMolde);
-                    ventanaMaquinaMolde.putExtra("idMaquina", idMaquina);
-                    ventanaMaquinaMolde.putExtra("usuario", usuario);
-                    startActivity(ventanaMaquinaMolde);
-                    //ListaMolde.this.finish();
-                }
-
-                if(posMenu == 1){
-                    Intent ventanaMantenimientoMolde = new Intent(ListaMolde.this, MantenimientoMolde.class);
-                    ventanaMantenimientoMolde.putExtra("idMolde", idMolde);
-                    ventanaMantenimientoMolde.putExtra("idMaquina", idMaquina);
-                    ventanaMantenimientoMolde.putExtra("usuario", usuario);
-                    startActivity(ventanaMantenimientoMolde);
-                    //ListaMolde.this.finish();
-                }
+                eligeVentanaMaquinaMolde(posMenu,idMolde);
             }
         });
+    }
+
+    public void ventanaSinMolde(View v){
+        eligeVentanaMaquinaMolde(posMenu,"000-000");
+    }
+
+    private void eligeVentanaMaquinaMolde(int posMenu,String idMolde){
+        if(posMenu == 0){
+            Intent ventanaMaquinaMolde = new Intent(ListaMolde.this, MaquinaMolde.class);
+            ventanaMaquinaMolde.putExtra("idMolde", idMolde);
+            ventanaMaquinaMolde.putExtra("idMaquina", idMaquina);
+            ventanaMaquinaMolde.putExtra("usuario", usuario);
+            startActivity(ventanaMaquinaMolde);
+            //ListaMolde.this.finish();
+        }
+
+        if(posMenu == 1){
+            Intent ventanaMantenimientoMolde = new Intent(ListaMolde.this, MantenimientoMolde.class);
+            ventanaMantenimientoMolde.putExtra("idMolde", idMolde);
+            ventanaMantenimientoMolde.putExtra("idMaquina", idMaquina);
+            ventanaMantenimientoMolde.putExtra("usuario", usuario);
+            startActivity(ventanaMantenimientoMolde);
+            //ListaMolde.this.finish();
+        }
     }
 }

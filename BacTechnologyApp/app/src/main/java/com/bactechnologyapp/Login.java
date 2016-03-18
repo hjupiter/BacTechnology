@@ -19,7 +19,7 @@ public class Login extends AppCompatActivity {
     private Button login;
     private ProgressDialog progressDialog;
     private Context context;
-    private EditText usuario;
+    public EditText usuario;
     private EditText contraseña;
     private boolean autenticacion;
 
@@ -59,8 +59,8 @@ public class Login extends AppCompatActivity {
                 startActivity(login);
             }else{
                 AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                alert.setTitle("Error en Imagen");
-                alert.setMessage("Se debe de tener una foto de la maquinaria/molde");
+                alert.setTitle("Error en Usuario o Contraseña");
+                alert.setMessage("Asegurese si tiene mayusculas o minusculas su usuario o contraseña");
                 alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -73,8 +73,5 @@ public class Login extends AppCompatActivity {
 
     }
 
-    public void  ingresoLogin(View v){
-        Intent login = new Intent(this,ListaMantenimiento.class);
-        startActivity(login);
-    }
+
 }
