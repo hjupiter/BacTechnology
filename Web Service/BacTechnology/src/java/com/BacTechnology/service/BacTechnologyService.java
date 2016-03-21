@@ -75,20 +75,26 @@ public class BacTechnologyService {
      * Web service operation
      */
     @WebMethod(operationName = "Autenticacion")
-    public Boolean Autenticacion(@WebParam(name = "usuario") String usuario, @WebParam(name = "contrasena") String contraseña) {
+    public boolean Autenticacion(@WebParam(name = "usuario") String usuario, @WebParam(name = "contrasena") String contraseña) {
         //TODO write your implementation code here:
         Conexion conexion =  new Conexion();
         Connection conn = conexion.Conexion();
         try{
-            CallableStatement autenticacion =  conn.prepareCall("{ ? = call AUTENTICACION_APP ( ? , ? ) }");
-            autenticacion.registerOutParameter(1, Types.BOOLEAN);
+            CallableStatement autenticacion =  conn.prepareCall("{ ? = call AUTENTICACION ( ? , ? ) }");
+            autenticacion.registerOutParameter(1, Types.INTEGER);
             autenticacion.setString(2, usuario);
             autenticacion.setString(3, contraseña);
             autenticacion.execute();
-            boolean res = autenticacion.getBoolean(1);
+            int res = autenticacion.getInt(1);
+            System.out.println(res);
+            boolean rest;
             autenticacion.close();
             conn.close();
-            return res;
+            if(res == 1 || res == 2)
+                rest = true;
+            else 
+                rest = false;
+            return rest;
         }catch(Exception e){
             return false;
         }
