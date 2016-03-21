@@ -28,5 +28,15 @@ public class ValidacionUsuario {
             return false;
         }
     }
+    
+    public boolean valCedula(JTextField t1){
+        String cedula = t1.getText();
+        if(cedula.length()==9){
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
 }

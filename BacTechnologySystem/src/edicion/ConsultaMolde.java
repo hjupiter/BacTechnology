@@ -199,7 +199,7 @@ public class ConsultaMolde extends javax.swing.JInternalFrame implements ActionL
                 actualizarMaquinaria.registerOutParameter(1, Types.BOOLEAN);
                 actualizarMaquinaria.setInt(2, idDato);
                 actualizarMaquinaria.setString(3, txtCodigo.getText());
-                actualizarMaquinaria.setString(4, txtNombre.getText());
+                actualizarMaquinaria.setString(4, txtNombre.getText().toUpperCase());
                 actualizarMaquinaria.execute();
                 conn.close();
             }catch(Exception ex){
@@ -353,7 +353,7 @@ public class ConsultaMolde extends javax.swing.JInternalFrame implements ActionL
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
         // TODO add your handling code here:
-        ventanaActivaMolde = false;
+        validacion.VentanasActivas.cMolde = false;
     }//GEN-LAST:event_formInternalFrameClosing
 
 

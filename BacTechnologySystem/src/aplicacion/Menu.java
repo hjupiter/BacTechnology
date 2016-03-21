@@ -30,6 +30,14 @@ import nuevoElemento.InternalUsuario;
  * @author Angel
  */
 public class Menu extends javax.swing.JFrame {
+    
+    
+    private ConsultaMolde molde;
+    private ConsultaMaquinaria maquinaria;
+    private ConsultaUsuario usuario;
+    private InternalMolde internalMolde;
+    private InternalMaquinaria internalMaquinaria;
+    private InternalUsuario InternalUsuario;
 
     /**
      * Creates new form Menu
@@ -57,6 +65,7 @@ public class Menu extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         itemMaquinariaConsultar = new javax.swing.JMenuItem();
         itemMoldeConsultar = new javax.swing.JMenuItem();
+        jMenuItem3 = new javax.swing.JMenuItem();
         itemAyuda = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
 
@@ -129,6 +138,14 @@ public class Menu extends javax.swing.JFrame {
         });
         itemUsuarioConsultar.add(itemMoldeConsultar);
 
+        jMenuItem3.setText("Reporte");
+        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem3ActionPerformed(evt);
+            }
+        });
+        itemUsuarioConsultar.add(jMenuItem3);
+
         jMenuBar1.add(itemUsuarioConsultar);
 
         itemAyuda.setText("Ayuda");
@@ -160,21 +177,21 @@ public class Menu extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    
     private void itemUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemUsuarioActionPerformed
         // TODO add your handling code here:
-        boolean ventanaActivaUsuario = InternalUsuario.ventanaActivaUsuario;
-        if(!ventanaActivaUsuario){
-            InternalUsuario usuario = new InternalUsuario();
-            centerJIF(usuario);
-            DesktopPane.add(usuario);
-            try {
-                usuario.setSelected(true);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        try{
+            if(!validacion.VentanasActivas.iUsuario){
+                InternalUsuario = new InternalUsuario();
+                centerJIF(InternalUsuario);
+                DesktopPane.add(InternalUsuario);
+                validacion.VentanasActivas.iUsuario = true;
+                InternalUsuario.setSelected(true);
+            }else{
+                //JOptionPane.showMessageDialog(this, "La ventana USUARIO ya esta abierta!!");
+                InternalUsuario.setSelected(true);
             }
-        }else{
-            JOptionPane.showMessageDialog(this, "La ventana USUARIO ya esta abierta!!");
-        }
+        }catch(Exception e){}
     }//GEN-LAST:event_itemUsuarioActionPerformed
 
        public void centerJIF(JInternalFrame JIF){
@@ -187,75 +204,85 @@ public class Menu extends javax.swing.JFrame {
     
     private void itemMaquinariaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMaquinariaActionPerformed
         // TODO add your handling code here:
-        boolean ventanaActivaMaquinaria = InternalMaquinaria.ventanaActivaMaquinaria;
-        if(!ventanaActivaMaquinaria){
-            InternalMaquinaria maquinaria =  new InternalMaquinaria();
-            centerJIF(maquinaria);
-            DesktopPane.add(maquinaria);
-            try {
-                maquinaria.setSelected(true);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        try{
+            if(!validacion.VentanasActivas.iMaquinaria){
+                internalMaquinaria =  new InternalMaquinaria();
+                centerJIF(internalMaquinaria);
+                DesktopPane.add(internalMaquinaria);
+                internalMaquinaria.setSelected(true);
+                validacion.VentanasActivas.iMaquinaria = true;
+            }else{
+                //JOptionPane.showMessageDialog(this, "La ventana MAQUINARIA ya esta abierta!!");
+                internalMaquinaria.setSelected(true);
             }
-        }else{
-            JOptionPane.showMessageDialog(this, "La ventana MAQUINARIA ya esta abierta!!");
-        }
+        }catch(Exception e){}
     }//GEN-LAST:event_itemMaquinariaActionPerformed
 
     private void itemMoldeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMoldeActionPerformed
         // TODO add your handling code here:
-        boolean ventanaActivaMolde = InternalMolde.ventanaActivaMolde;
-        if(!ventanaActivaMolde){
-            InternalMolde molde = new InternalMolde();
-            centerJIF(molde);
-            DesktopPane.add(molde);
-            try {
-                molde.setSelected(true);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        try{
+            if(!validacion.VentanasActivas.iMolde){
+                internalMolde = new InternalMolde();
+                centerJIF(internalMolde);
+                DesktopPane.add(internalMolde);
+                internalMolde.setSelected(true);
+                validacion.VentanasActivas.iMolde = true;
+            }else{
+                //JOptionPane.showMessageDialog(this, "La ventana MOLDE ya esta abierta!!");
+                internalMolde.setSelected(true);
             }
-        }else{
-            JOptionPane.showMessageDialog(this, "La ventana MOLDE ya esta abierta!!");
-        }
+        }catch(Exception e){}
     }//GEN-LAST:event_itemMoldeActionPerformed
-
+    
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         // TODO add your handling code here:
-        boolean ventanaActivaReporteUsuario = InternalReporte.ventanaActivaReporteUsuario;
-        if(!ventanaActivaReporteUsuario){
-            //InternalReporte r = new InternalReporte();
-            ConsultaUsuario usuario = new ConsultaUsuario();
-            centerJIF(usuario);
-            DesktopPane.add(usuario);
-        }else{
-            JOptionPane.showMessageDialog(this, "La ventana USUARIO ya esta abierta!!");
-        }
-        
+        try{
+            if(!validacion.VentanasActivas.cUsuario){
+                //InternalReporte r = new InternalReporte();
+                usuario = new ConsultaUsuario();
+                centerJIF(usuario);
+                DesktopPane.add(usuario);
+                validacion.VentanasActivas.cUsuario = true;
+                usuario.setSelected(true);
+            }else{
+                //JOptionPane.showMessageDialog(this, "La ventana CONLSULTA USUARIO ya esta abierta!!");
+                usuario.setSelected(true);
+            }
+        }catch(Exception e){}
     }//GEN-LAST:event_jMenuItem1ActionPerformed
-
+    
     private void itemMoldeConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMoldeConsultarActionPerformed
         // TODO add your handling code here:
-        boolean ventanaActivaMolde = ConsultaMolde.ventanaActivaMolde;
-        if(!ventanaActivaMolde){
-            ConsultaMolde molde =  new ConsultaMolde();
-            centerJIF(molde);
-            DesktopPane.add(molde);
-        }else{
-            JOptionPane.showMessageDialog(this, "La ventana MOLDE ya esta abierta!!");
-        }
-        
+        try{
+            if(!validacion.VentanasActivas.cMolde){
+                molde =  new ConsultaMolde();
+                centerJIF(molde);
+                DesktopPane.add(molde);
+                validacion.VentanasActivas.cMolde = true;
+                molde.setSelected(true);
+            }else{
+                //JOptionPane.showMessageDialog(this, "La ventana CONSULTA MOLDE ya esta abierta!!");
+                molde.setSelected(true);
+            }
+        }catch(Exception e){}
     }//GEN-LAST:event_itemMoldeConsultarActionPerformed
-
+    
+    
     private void itemMaquinariaConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_itemMaquinariaConsultarActionPerformed
         // TODO add your handling code here:
-        boolean ventanaActivaMaquina = ConsultaMaquinaria.ventanaActivaMaquina;
-        if(!ventanaActivaMaquina){
-            ConsultaMaquinaria maquinaria =  new ConsultaMaquinaria();
-            centerJIF(maquinaria);
-            DesktopPane.add(maquinaria);
-        }else{
-            JOptionPane.showMessageDialog(this, "La ventana MAQUINARIA ya esta abierta!!");
-        }
+        //boolean ventanaActivaMaquina = ConsultaMaquinaria.ventanaActivaMaquina;
+        try{
+            if(!validacion.VentanasActivas.cMaquinaria){
+                maquinaria =  new ConsultaMaquinaria();
+                centerJIF(maquinaria);
+                DesktopPane.add(maquinaria);
+                maquinaria.setSelected(true);
+                validacion.VentanasActivas.cMaquinaria = true;
+            }else{
+                //JOptionPane.showMessageDialog(this, "La ventana MAQUINARIA ya esta abierta!!");
+                maquinaria.setSelected(true);
+            }
+        }catch(Exception e){}
         
     }//GEN-LAST:event_itemMaquinariaConsultarActionPerformed
 
@@ -263,14 +290,32 @@ public class Menu extends javax.swing.JFrame {
         // TODO add your handling code here:
         boolean ventanaActivaAcerca = Acerca.ventanaActivaAcerca;
         if(!ventanaActivaAcerca){
+            try{
             Acerca ac = new Acerca();
             centerJIF(ac);
             DesktopPane.add(ac);
+            ac.setSelected(true);
+            }catch(Exception e){}
         }else{
             JOptionPane.showMessageDialog(this, "La ventana ACERCA ya esta abierta!!");
         }
         
     }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        // TODO add your handling code here:
+        boolean ventanaActivaReporteUsuario = InternalReporte.ventanaActivaReporteUsuario;
+        if(!ventanaActivaReporteUsuario){
+            try{
+            InternalReporte r = new InternalReporte();
+            centerJIF(r);
+            DesktopPane.add(r);
+            r.setSelected(true);
+            }catch(Exception e){}
+        }else{
+            JOptionPane.showMessageDialog(this, "La ventana REPORTE ya esta abierta!!");
+        }
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -289,5 +334,6 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
     // End of variables declaration//GEN-END:variables
 }

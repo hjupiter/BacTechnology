@@ -32,6 +32,9 @@ import javax.swing.table.DefaultTableModel;
  * @author Angel
  */
 public class ConsultaUsuario extends javax.swing.JInternalFrame implements ActionListener{
+    
+    public static boolean ventanaActivaConsultaUsuario = false;
+    
     private Conexion conn;
     private DefaultTableModel model;
     private JScrollPane scroll;
@@ -55,6 +58,7 @@ public class ConsultaUsuario extends javax.swing.JInternalFrame implements Actio
      * Creates new form ConsultaUsuario
      */
     public ConsultaUsuario() {
+        ventanaActivaConsultaUsuario = true;
         conn = new Conexion();
         initComponents();
         llenarTable();
@@ -327,12 +331,12 @@ public class ConsultaUsuario extends javax.swing.JInternalFrame implements Actio
                 CallableStatement actualizarUsuario = conn.prepareCall("{ ? = call ACTUALIZAR_USUARIO( ? , ? , ? , ? , ? , ? , ?) }");
                 actualizarUsuario.registerOutParameter(1, Types.BOOLEAN);
                 actualizarUsuario.setInt(2, idDato);
-                actualizarUsuario.setString(3, txtNombre.getText());
-                actualizarUsuario.setString(4, txtApellido.getText());
+                actualizarUsuario.setString(3, txtNombre.getText().toUpperCase());
+                actualizarUsuario.setString(4, txtApellido.getText().toUpperCase());
                 actualizarUsuario.setString(5, txtCedula.getText());
                 actualizarUsuario.setString(6, txtUsuario.getText());
                 actualizarUsuario.setString(7, txtContrasena.getText());
-                actualizarUsuario.setInt(8, cmbTipo.getSelectedIndex());
+                actualizarUsuario.setInt(8, cmbTipo.getSelectedIndex()+1);
                 actualizarUsuario.execute();
                 conn.close();
             }catch(Exception ex){
@@ -383,6 +387,23 @@ public class ConsultaUsuario extends javax.swing.JInternalFrame implements Actio
 
         setClosable(true);
         setTitle("Usuario");
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -441,6 +462,11 @@ public class ConsultaUsuario extends javax.swing.JInternalFrame implements Actio
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        // TODO add your handling code here:
+        validacion.VentanasActivas.cUsuario = false;
+    }//GEN-LAST:event_formInternalFrameClosing
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

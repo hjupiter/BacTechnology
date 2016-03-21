@@ -157,7 +157,7 @@ public class InternalMolde extends javax.swing.JInternalFrame {
                 CallableStatement insertar_molde =  conn.prepareCall("{ ? = call INSERTAR_MOLDE ( ? , ? ) }");
                 insertar_molde.registerOutParameter(1, Types.BOOLEAN);
                 insertar_molde.setString(2, txtMoldeCodigo.getText());
-                insertar_molde.setString(3, txtMoldeNombre.getText());
+                insertar_molde.setString(3, txtMoldeNombre.getText().toUpperCase());
                 insertar_molde.execute();
                 boolean res = insertar_molde.getBoolean(1);
                 insertar_molde.close();
@@ -183,7 +183,7 @@ public class InternalMolde extends javax.swing.JInternalFrame {
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
         // TODO add your handling code here:
-        ventanaActivaMolde = false;
+        validacion.VentanasActivas.iMolde = false;
     }//GEN-LAST:event_formInternalFrameClosing
 
 

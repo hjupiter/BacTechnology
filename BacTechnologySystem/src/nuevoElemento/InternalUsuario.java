@@ -89,7 +89,7 @@ public class InternalUsuario extends javax.swing.JInternalFrame {
         jLabel3.setText("Cedula");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel4.setText("Usuario");
+        jLabel4.setText("Nick");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel5.setText("Contrasena");
@@ -228,30 +228,38 @@ public class InternalUsuario extends javax.swing.JInternalFrame {
     private void btnUsuarioCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuarioCrearActionPerformed
         // TODO add your handling code here:
         if(valUsu.camposVacios(txtUsuarioApellido, txtUsuarioApellido, txtUsuarioCedula, txtUsuarioPass, txtUsuarioNick) == false){
-            Conexion conexion =  new Conexion();
-            Connection conn = conexion.Conexion();
-            try{
-                CallableStatement nuevoUsuario = conn.prepareCall("{ ? = call INSERTAR_USUARIO( ? , ? , ? , ? , ? , ?) }");
-                nuevoUsuario.registerOutParameter(1, Types.BOOLEAN);
-                nuevoUsuario.setString(2, txtUsuarioNombre.getText());
-                nuevoUsuario.setString(3, txtUsuarioApellido.getText());
-                nuevoUsuario.setString(4, txtUsuarioCedula.getText());
-                nuevoUsuario.setString(5, txtUsuarioNick.getText());
-                nuevoUsuario.setString(6, txtUsuarioPass.getText());
-                nuevoUsuario.setInt(7, 1);
-                nuevoUsuario.execute();
-                Boolean c = nuevoUsuario.getBoolean(1);
-                System.out.println(c);
-                if(c == true){
-                    JOptionPane.showConfirmDialog(this, "Usuario creado con exito", "Mensaje",JOptionPane.CLOSED_OPTION);
+            if(valUsu.valCedula(txtUsuarioCedula )== true){
+                Conexion conexion =  new Conexion();
+                Connection conn = conexion.Conexion();
+                try{
+                    CallableStatement nuevoUsuario = conn.prepareCall("{ ? = call INSERTAR_USUARIO( ? , ? , ? , ? , ? , ?) }");
+                    nuevoUsuario.registerOutParameter(1, Types.INTEGER);
+                    nuevoUsuario.setString(2, txtUsuarioNombre.getText().toUpperCase());
+                    nuevoUsuario.setString(3, txtUsuarioApellido.getText().toUpperCase());
+                    nuevoUsuario.setString(4, txtUsuarioCedula.getText());
+                    nuevoUsuario.setString(5, txtUsuarioNick.getText());
+                    nuevoUsuario.setString(6, txtUsuarioPass.getText());
+                    nuevoUsuario.setInt(7, jComboBox1.getSelectedIndex()+1);
+                    nuevoUsuario.execute();
+                    int res = nuevoUsuario.getInt(1);
+                    System.out.println(res);
+                    if(res == 1){
+                        JOptionPane.showConfirmDialog(this, "Usuario creado con exito", "Mensaje",JOptionPane.CLOSED_OPTION);
+                        limpiarCampos();
+                    }
+                    else if(res == 2){
+                        JOptionPane.showConfirmDialog(this, "El nick para el usuario ya existe", "Mensaje",JOptionPane.CLOSED_OPTION);
+                    }
+                    else if(res == 3){
+                        JOptionPane.showConfirmDialog(this, "El Usuario ya existe", "Mensaje",JOptionPane.CLOSED_OPTION);
+                    }
+                }catch(Exception e){
+                    System.out.println("Error: "+e.getMessage());
+                    JOptionPane.showConfirmDialog(this, "Fallo al crear Usuario", "Error",JOptionPane.CLOSED_OPTION);
                 }
-                else{
-                    JOptionPane.showConfirmDialog(this, "El usuario ya existe", "Mensaje",JOptionPane.CLOSED_OPTION);
-                }
-
-            }catch(Exception e){
-                System.out.println("Error: "+e.getMessage());
-                JOptionPane.showConfirmDialog(this, "Fallo al crear Usuario", "Error",JOptionPane.CLOSED_OPTION);
+            }
+            else{
+                JOptionPane.showConfirmDialog(this, "La cedula debe contener al menos 9 numeros", "Error",JOptionPane.CLOSED_OPTION);
             }
         }
         else{
@@ -260,6 +268,15 @@ public class InternalUsuario extends javax.swing.JInternalFrame {
         
     }//GEN-LAST:event_btnUsuarioCrearActionPerformed
 
+    private void limpiarCampos(){
+        txtUsuarioApellido.setText("");
+        txtUsuarioCedula.setText("");
+        txtUsuarioNick.setText("");
+        txtUsuarioNombre.setText("");
+        txtUsuarioPass.setText("");
+        jComboBox1.setSelectedIndex(0);
+    }
+    
     private void txtUsuarioNombreKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtUsuarioNombreKeyTyped
         // TODO add your handling code here:
         val.soloLetras(evt);
@@ -282,7 +299,7 @@ public class InternalUsuario extends javax.swing.JInternalFrame {
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
         // TODO add your handling code here:
-        ventanaActivaUsuario = false;
+        validacion.VentanasActivas.iUsuario = false;
     }//GEN-LAST:event_formInternalFrameClosing
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed

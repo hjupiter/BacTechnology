@@ -38,11 +38,16 @@ public class Login extends javax.swing.JFrame {
         try{
             System.out.println("SSS");
             CallableStatement usuarioAutenticado =  conn.prepareCall("{ ? = call AUTENTICACION ( ? , ? ) }");
-            usuarioAutenticado.registerOutParameter(1, Types.BOOLEAN);
+            usuarioAutenticado.registerOutParameter(1, Types.INTEGER);
             usuarioAutenticado.setString(2, usuario);
             usuarioAutenticado.setString(3, pass);
             usuarioAutenticado.execute();
-            verifica = usuarioAutenticado.getBoolean(1);
+            int res = usuarioAutenticado.getInt(1);
+            System.out.println(res);
+            if(res == 2)
+                verifica = true;
+            else 
+                verifica = false;
             usuarioAutenticado.close();
             //conn.close();
         }catch(Exception e){

@@ -6,6 +6,7 @@
 package nuevoElemento;
 
 import conexion.Conexion;
+import consultas.InternalReporte;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Types;
@@ -154,7 +155,7 @@ public class InternalMaquinaria extends javax.swing.JInternalFrame {
                 CallableStatement insertar_maquinaria =  conn.prepareCall("{ ? = call INSERTAR_MAQUINARIA ( ? , ? ) }");
                 insertar_maquinaria.registerOutParameter(1, Types.BOOLEAN);
                 insertar_maquinaria.setString(2, txtMaquinariaCodigo.getText());
-                insertar_maquinaria.setString(3, txtMaquinariaNombre.getText());
+                insertar_maquinaria.setString(3, txtMaquinariaNombre.getText().toUpperCase());
                 insertar_maquinaria.execute();
                 boolean res = insertar_maquinaria.getBoolean(1);
                 insertar_maquinaria.close();
@@ -178,7 +179,8 @@ public class InternalMaquinaria extends javax.swing.JInternalFrame {
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
         // TODO add your handling code here:
-        ventanaActivaMaquinaria = false;
+        //ventanaActivaMaquinaria = false;
+        validacion.VentanasActivas.iMaquinaria = false;
     }//GEN-LAST:event_formInternalFrameClosing
 
 
