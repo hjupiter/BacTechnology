@@ -19,7 +19,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.kobjects.base64.Base64;
 
@@ -30,27 +29,27 @@ public class MantenimientoMolde extends AppCompatActivity {
     private Intent ventanaCamara;
     private Button botonAtras,botonEnviar;
     private ImageView imagenCamara;
-    public String idMolde;
-    public String idMaquina;
-    public Bitmap bmp;
-    public Spinner spinnerNovedad;
-    public Spinner spinnerolucion;
-    public ArrayAdapter<CharSequence> adapterNovedad;
-    public ArrayAdapter<CharSequence> adapterSolucion;
+    private String idMolde;
+    private String idMaquina;
+    private Bitmap bmp;
+    private Spinner spinnerNovedad;
+    private Spinner spinnerolucion;
+    private ArrayAdapter<CharSequence> adapterNovedad;
+    private ArrayAdapter<CharSequence> adapterSolucion;
 
-    public EditText reporteNovedad;
-    public EditText reporteSolucion;
+    private EditText reporteNovedad;
+    private EditText reporteSolucion;
 
-    public String opNovedad,opSolucion;
+    private String opNovedad,opSolucion;
 
-    public ProgressDialog progressDialog;
+    private ProgressDialog progressDialog;
 
     private Context context;
 
-    public String usuario;
+    private String usuario;
 
-    public EditText Articulo;
-    public EditText NovedadDetectada;
+    private EditText Articulo;
+    private EditText NovedadDetectada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,18 +128,20 @@ public class MantenimientoMolde extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder alert = new AlertDialog.Builder(context);
                 if(bmp != null){
-                    if(reporteNovedad.getText().length() !=0 && reporteSolucion.getText().length() !=0 && NovedadDetectada.getText().length() !=0){
-
+                    if(reporteNovedad.getText().length() !=0 && reporteSolucion.getText().length() !=0 &&
+                            NovedadDetectada.getText().length() !=0 && Articulo.getText().length() !=0
+                            ){
                         alert.setTitle("Guardar Reporte");
                         alert.setMessage("Esta seguro de realizar esta accion");
                         alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(getApplicationContext(), "ENVIANDO DATOS", Toast.LENGTH_SHORT).show();
                                 new DownloadTask2().execute("");
-                                progressDialog = ProgressDialog.show(context, "Por favor espere", "Enviando los datos");
+                                progressDialog = ProgressDialog.show(context, "Por favor espere", "Enviado Reporte");
                             }
                         });
+                        alert.show();
                     }else{
                         //Toast.makeText(getApplicationContext(), reporteNovedad.getText(), Toast.LENGTH_SHORT).show();
                         alert.setTitle("No se pudo enviar el reporte");
@@ -162,6 +163,11 @@ public class MantenimientoMolde extends AppCompatActivity {
                     });
                     alert.show();
                 }
+
+
+
+                //new DownloadTask2().execute("");
+                //progressDialog = ProgressDialog.show(context, "Por favor espere", "Cargando Molde");
 
 
             }
@@ -197,6 +203,13 @@ public class MantenimientoMolde extends AppCompatActivity {
         imagenCamara.setImageBitmap(bmp);
     }
 
+    @Override
+    public void onBackPressed() {
+        // do something on back.
+        finish();
+        //return;
+    }
+
     private class DownloadTask2 extends AsyncTask<String,Void,Object> {
 
         protected Integer doInBackground(String... args) {
@@ -207,6 +220,7 @@ public class MantenimientoMolde extends AppCompatActivity {
             byte[] imagebyte = out.toByteArray();
 
             String strBase64 = Base64.encode(imagebyte);
+            //String novedadDetectada ="jbvbvlj";
             System.out.println(idMaquina);
             System.out.println(idMolde);
             System.out.println(usuario);
@@ -217,15 +231,8 @@ public class MantenimientoMolde extends AppCompatActivity {
             System.out.println(NovedadDetectada.getText().toString());
             System.out.println(Articulo.getText().toString());
             System.out.println(strBase64);
-            Boolean a = ws.guardarReporteMolde(idMaquina,idMolde,usuario,strBase64,
-                                                reporteNovedad.getText().toString(),
-                                                reporteSolucion.getText().toString(),
-                                                opNovedad,opSolucion,NovedadDetectada.getText().toString(),
-                                                Articulo.getText().toString());
+            Boolean a = ws.guardarReporteMolde(idMaquina,idMolde,usuario,strBase64,reporteNovedad.getText().toString(),reporteSolucion.getText().toString(),opNovedad,opSolucion,NovedadDetectada.getText().toString(),Articulo.getText().toString());
             System.out.println(a);
-            if(a){
-                System.out.println("XXXXXXX GG IZI XXXXXXX");
-            }
             /*
             cargaDatosWS ws = new cargaDatosWS();
             String a = ws.hello();
@@ -235,21 +242,8 @@ public class MantenimientoMolde extends AppCompatActivity {
         }
 
         protected void onPostExecute(Object result) {
-            try {
-                progressDialog.dismiss();
-                MantenimientoMolde.this.finish();
-                super.onPostExecute(result);
-            }catch (Exception e){
-                AlertDialog.Builder alert = new AlertDialog.Builder(context);
-                alert.setTitle("Hubo problemas al enviar el reporte");
-                alert.setMessage("Intentelo Nuevamente");
-                alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                    }
-                });
-                alert.show();
-            }
+            progressDialog.dismiss();
+            super.onPostExecute(result);
         }
     }
 }
