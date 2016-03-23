@@ -176,7 +176,6 @@
                         android:layout_height="match_parent">
 
                         <Button
-                            android:onClick="EnviarReporte"
                             android:layout_width="170dp"
                             android:layout_height="wrap_content"
                             android:text="Enviar"

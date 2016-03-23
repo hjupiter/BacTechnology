@@ -203,10 +203,11 @@ public class cargaDatosWS {
         try{
             System.out.println("QQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQQ");
             androidHttpTransport =  new HttpTransportSE(conexion);
+            System.out.println("11111111111111111111111111111111111111111111111111111111");
             androidHttpTransport.call("http://service.BacTechnology.com/NuevoReporte", envelope);
-
+            System.out.println("******************************************************");
             SoapPrimitive resultsRequestSOAP = (SoapPrimitive) envelope.getResponse();
-
+            System.out.println("222222222222222222222222222222222222222222222222222222");
             res = Boolean.valueOf(envelope.getResponse().toString());
 
             return  res;
@@ -220,7 +221,11 @@ public class cargaDatosWS {
         }
     }
 
-    public boolean guardarReporteMolde(String idMaquina, String idMolde, String idUsuario, String imagen,String novedad,String solucion,String tipoNovedad, String tipoSolucion,String novedadDetectada, String Articulo){
+    public boolean guardarReporteMolde(String idMaquina, String idMolde,
+                                       String idUsuario, String imagen,
+                                       String novedad,   String solucion,
+                                       String tipoNovedad, String tipoSolucion,
+                                       String novedadDetectada, String Articulo){
         boolean res = false;
         SoapObject rpc;
         rpc = new SoapObject("http://service.BacTechnology.com/","NuevoReporteMolde");
