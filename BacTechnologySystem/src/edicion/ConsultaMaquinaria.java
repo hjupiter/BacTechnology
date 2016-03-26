@@ -10,6 +10,7 @@ import consultas.InternalData;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -27,7 +28,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Angel
  */
-public class ConsultaMaquinaria extends javax.swing.JInternalFrame implements ActionListener{
+public class ConsultaMaquinaria extends javax.swing.JInternalFrame implements ActionListener {
 
     public static boolean ventanaActivaMaquina;
     private DefaultTableModel model;
@@ -53,7 +54,11 @@ public class ConsultaMaquinaria extends javax.swing.JInternalFrame implements Ac
     }
     
     private void llenarTable(){
-        model = new DefaultTableModel(null,getColumnas());
+        model = new DefaultTableModel(null,getColumnas()){
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         setFilas();
         jTable.setModel(model);
         setEventoMouseClicked(jTable);
@@ -70,6 +75,40 @@ public class ConsultaMaquinaria extends javax.swing.JInternalFrame implements Ac
                 tblEjemploMouseClicked(e);
             }
         });
+    }
+    
+    private void cargarDatosPanel(int posicion){
+        jPanelDatos.removeAll();
+        jPanelDatos.revalidate();
+        jPanelDatos.repaint();
+        String codigo,nombre,id;
+        int row = posicion;
+        if (row >= 0 && jTable.isEnabled()){
+            id = model.getValueAt(row,0).toString();
+            idDato = Integer.parseInt(id);
+            System.out.println("---------------"+idDato);
+            Conexion conexion =  new Conexion();
+            Connection conn = conexion.Conexion();
+            try{
+                conn.setAutoCommit(false);
+                CallableStatement datosMaquinaria = conn.prepareCall("{ ? = call DATOS_MAQUINARIA( ? ) }");
+                datosMaquinaria.registerOutParameter(1, Types.OTHER);
+                datosMaquinaria.setInt(2,idDato);
+                datosMaquinaria.execute();
+                ResultSet results = (ResultSet)datosMaquinaria.getObject(1);
+                Object datos[] = new Object[3];
+                while(results.next()){
+                    for(int i = 1; i<=3;i++){
+                        datos[i-1] = results.getObject(i).toString();
+                    }
+                }
+                crearPanel(datos[1].toString(), datos[2].toString(), datos[0].toString());
+                conn.close();
+            }catch(Exception e){
+                System.out.println("Error: "+e.getMessage());
+            }
+            
+        }
     }
     
     private void tblEjemploMouseClicked(java.awt.event.MouseEvent evt) {
@@ -155,7 +194,7 @@ public class ConsultaMaquinaria extends javax.swing.JInternalFrame implements Ac
         
         jPanelDatos.add(nombre);
         jPanelDatos.add(codigo);
-        jPanelDatos.add(txtId);
+        //jPanelDatos.add(txtId);
         jPanelDatos.add(txtNombre);
         jPanelDatos.add(txtCodigo);
         jPanelDatos.add(btnEditar);
@@ -276,8 +315,6 @@ public class ConsultaMaquinaria extends javax.swing.JInternalFrame implements Ac
         jPanelDatos = new javax.swing.JPanel();
 
         setClosable(true);
-        setMaximizable(true);
-        setResizable(true);
         setTitle("Maquinaria");
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
@@ -309,6 +346,11 @@ public class ConsultaMaquinaria extends javax.swing.JInternalFrame implements Ac
 
             }
         ));
+        jTable.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTableKeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable);
 
         javax.swing.GroupLayout jPanelDatosLayout = new javax.swing.GroupLayout(jPanelDatos);
@@ -355,6 +397,33 @@ public class ConsultaMaquinaria extends javax.swing.JInternalFrame implements Ac
         // TODO add your handling code here:
         validacion.VentanasActivas.cMaquinaria = false;
     }//GEN-LAST:event_formInternalFrameClosing
+
+    private void jTableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTableKeyPressed
+        // TODO add your handling code here:
+        int keyCode = evt.getKeyCode();
+        switch( keyCode ) { 
+            case KeyEvent.VK_UP:
+                if(jTable.getSelectedRow()-1>0)
+                    cargarDatosPanel(jTable.getSelectedRow()-1);
+                break;
+            case KeyEvent.VK_DOWN:
+                if(jTable.getSelectedRow()+1<jTable.getRowCount())
+                    cargarDatosPanel(jTable.getSelectedRow()+1);
+                break;
+            case KeyEvent.VK_PAGE_UP:
+                if(jTable.getSelectedRow()-21>0)
+                    cargarDatosPanel(jTable.getSelectedRow()-21);
+                if(jTable.getSelectedRow()-21<0)
+                    cargarDatosPanel(0);
+                break;
+            case KeyEvent.VK_PAGE_DOWN:
+                if(jTable.getSelectedRow()+21<jTable.getRowCount())
+                    cargarDatosPanel(jTable.getSelectedRow()+21);
+                if(jTable.getSelectedRow()+21>jTable.getRowCount())
+                    cargarDatosPanel(jTable.getRowCount()-1);
+                break;
+        }
+    }//GEN-LAST:event_jTableKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

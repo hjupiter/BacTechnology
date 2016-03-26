@@ -92,7 +92,11 @@ public class InternalReporte extends javax.swing.JInternalFrame {
     }
     
     private void llenarTable(){
-        model = new DefaultTableModel(null,getColumnas());
+        model = new DefaultTableModel(null,getColumnas()){
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         setFilas();
         jTable.setModel(model);
         setEventoMouseClicked(jTable);
@@ -288,8 +292,6 @@ public class InternalReporte extends javax.swing.JInternalFrame {
         jLabel12 = new javax.swing.JLabel();
 
         setClosable(true);
-        setMaximizable(true);
-        setResizable(true);
         setPreferredSize(new java.awt.Dimension(889, 600));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {

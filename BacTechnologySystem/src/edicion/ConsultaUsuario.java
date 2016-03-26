@@ -9,6 +9,7 @@ import conexion.Conexion;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -67,7 +68,11 @@ public class ConsultaUsuario extends javax.swing.JInternalFrame implements Actio
     }
     
     private void llenarTable(){
-        model = new DefaultTableModel(null,getColumnas());
+        model = new DefaultTableModel(null,getColumnas()){
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         setFilas();
         jTable.setModel(model);
         setEventoMouseClicked(jTable);
@@ -84,6 +89,40 @@ public class ConsultaUsuario extends javax.swing.JInternalFrame implements Actio
                 tblEjemploMouseClicked(e);
             }
         });
+    }
+    
+    private void cargarDatosPanel(int posicion){
+        jPanelDatos.removeAll();
+        jPanelDatos.revalidate();
+        jPanelDatos.repaint();
+        String codigo,nombre,id;
+        int row = posicion;
+        if (row >= 0 && jTable.isEnabled()){
+            id = model.getValueAt(row,0).toString();
+            idDato = Integer.parseInt(id);
+            System.out.println("---------------"+idDato);
+            Conexion conexion =  new Conexion();
+            Connection conn = conexion.Conexion();
+            try{
+                conn.setAutoCommit(false);
+                CallableStatement datosMaquinaria = conn.prepareCall("{ ? = call DATOS_USUARIO( ? ) }");
+                datosMaquinaria.registerOutParameter(1, Types.OTHER);
+                datosMaquinaria.setInt(2,idDato);
+                datosMaquinaria.execute();
+                ResultSet results = (ResultSet)datosMaquinaria.getObject(1);
+                Object datos[] = new Object[8];
+                while(results.next()){
+                    for(int i = 1; i<=7;i++){
+                        datos[i-1] = results.getObject(i).toString();
+                    }
+                }
+                crearPanel(datos[0].toString(), datos[1].toString(), datos[2].toString(), datos[3].toString(), datos[4].toString(), datos[5].toString(), Integer.parseInt(datos[6].toString()));
+                conn.close();
+            }catch(Exception e){
+                System.out.println("Error: "+e.getMessage());
+            }
+            
+        }
     }
     
     private void tblEjemploMouseClicked(java.awt.event.MouseEvent evt) {
@@ -213,7 +252,7 @@ public class ConsultaUsuario extends javax.swing.JInternalFrame implements Actio
         btnGuardar.setEnabled(false);
         btnGuardar.addActionListener(this);
         
-        jPanelDatos.add(txtId);
+        //jPanelDatos.add(txtId);
         jPanelDatos.add(lblNombre);
         jPanelDatos.add(lblApellido);
         jPanelDatos.add(lblCedula);
@@ -417,6 +456,11 @@ public class ConsultaUsuario extends javax.swing.JInternalFrame implements Actio
             }
         ));
         jTable.setAutoResizeMode(javax.swing.JTable.AUTO_RESIZE_ALL_COLUMNS);
+        jTable.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTableKeyPressed(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTable);
 
         jTextField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -467,6 +511,33 @@ public class ConsultaUsuario extends javax.swing.JInternalFrame implements Actio
         // TODO add your handling code here:
         validacion.VentanasActivas.cUsuario = false;
     }//GEN-LAST:event_formInternalFrameClosing
+
+    private void jTableKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTableKeyPressed
+        // TODO add your handling code here:
+        int keyCode = evt.getKeyCode();
+        switch( keyCode ) { 
+            case KeyEvent.VK_UP:
+                if(jTable.getSelectedRow()-1>0)
+                    cargarDatosPanel(jTable.getSelectedRow()-1);
+                break;
+            case KeyEvent.VK_DOWN:
+                if(jTable.getSelectedRow()+1<jTable.getRowCount())
+                    cargarDatosPanel(jTable.getSelectedRow()+1);
+                break;
+            case KeyEvent.VK_PAGE_UP:
+                if(jTable.getSelectedRow()-21>0)
+                    cargarDatosPanel(jTable.getSelectedRow()-21);
+                if(jTable.getSelectedRow()-21<0)
+                    cargarDatosPanel(0);
+                break;
+            case KeyEvent.VK_PAGE_DOWN:
+                if(jTable.getSelectedRow()+21<jTable.getRowCount())
+                    cargarDatosPanel(jTable.getSelectedRow()+21);
+                if(jTable.getSelectedRow()+21>jTable.getRowCount())
+                    cargarDatosPanel(jTable.getRowCount()-1);
+                break;
+        }
+    }//GEN-LAST:event_jTableKeyPressed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
