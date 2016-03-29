@@ -86,13 +86,13 @@ public class InternalUsuario extends javax.swing.JInternalFrame {
         jLabel2.setText("Apellido");
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel3.setText("Cedula");
+        jLabel3.setText("Cédula");
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel4.setText("Nick");
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel5.setText("Contrasena");
+        jLabel5.setText("Contraseña");
 
         btnUsuarioCrear.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         btnUsuarioCrear.setText("Crear");

@@ -102,7 +102,7 @@
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel4">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Hecho por : Bakke Medina Abarca,Hector J&#xfa;piter Quinde"/>
+            <Property name="text" type="java.lang.String" value="Desarrollado por : Bakke Medina Abarca,Hector J&#xfa;piter Quinde"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="jLabel5">

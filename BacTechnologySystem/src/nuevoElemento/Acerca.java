@@ -64,7 +64,7 @@ public class Acerca extends javax.swing.JInternalFrame {
 
         jLabel2.setText("VERSION 1.5");
 
-        jLabel4.setText("Hecho por : Bakke Medina Abarca,Hector Júpiter Quinde");
+        jLabel4.setText("Desarrollado por : Bakke Medina Abarca,Hector Júpiter Quinde");
 
         jLabel5.setText("Cualquier  asistencia o duda contactese al telefono 0987533484 o al correo bakamedi12@gmail.com");
 
