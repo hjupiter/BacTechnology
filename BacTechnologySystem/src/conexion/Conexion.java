@@ -19,7 +19,7 @@ public class Conexion {
         List resultData =  new ArrayList();
         Connection conexion = null;
         try{
-            String cadena = "jdbc:postgresql://192.168.1.6:5432/BACTECHNOLOGY";
+            String cadena = "jdbc:postgresql://192.168.1.5:5432/BACTECHNOLOGY";
             String user = "postgres";
             String pass = "root";
             Class.forName("org.postgresql.Driver");

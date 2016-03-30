@@ -464,6 +464,11 @@ public class ConsultaUsuario extends javax.swing.JInternalFrame implements Actio
         jScrollPane1.setViewportView(jTable);
 
         jTextField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField1KeyReleased(evt);
+            }
+        });
 
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
@@ -538,6 +543,51 @@ public class ConsultaUsuario extends javax.swing.JInternalFrame implements Actio
                 break;
         }
     }//GEN-LAST:event_jTableKeyPressed
+
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+        // TODO add your handling code here:
+        String keypressed = jTextField1.getText().toUpperCase();
+        
+        limpiar_tabla();
+        System.out.println(keypressed);
+        Conexion conexion =  new Conexion();
+        Connection conn = conexion.Conexion();
+        try{
+            conn.setAutoCommit(false);
+            CallableStatement busqueda_molde =  conn.prepareCall("{ ? = CALL BUSQUEDA_USUARIO ( ? ) }");
+            busqueda_molde.registerOutParameter(1, Types.OTHER);
+            busqueda_molde.setString(2, keypressed);
+            busqueda_molde.execute();
+            ResultSet results = (ResultSet)busqueda_molde.getObject(1);
+            Object datos[] = new Object[3];
+            while(results.next()){
+                String nombre = "";
+                for(int i = 0; i<=3;i++){
+                    if(i==1){
+                        String maquinaCodigo = results.getObject(i).toString();
+                        int c = Integer.parseInt(maquinaCodigo);
+                        datos[0] = c;
+                    }
+                    if(i==2){
+                        nombre = results.getObject(i).toString();
+                        //datos[1] = maquinaCodigo;
+                    }
+                    if(i==3){
+                        nombre = nombre + " " + results.getObject(i).toString();
+                        datos[1] = nombre;
+                    }
+                }
+                nombre="";
+                model.addRow(datos);
+            }
+            busqueda_molde.close();
+            conn.close();
+            
+            jTable.setModel(model);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }//GEN-LAST:event_jTextField1KeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

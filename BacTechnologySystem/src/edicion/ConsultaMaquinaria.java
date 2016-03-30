@@ -337,6 +337,11 @@ public class ConsultaMaquinaria extends javax.swing.JInternalFrame implements Ac
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
 
         jTextField1.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jTextField1.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                jTextField1KeyReleased(evt);
+            }
+        });
 
         jTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -424,6 +429,37 @@ public class ConsultaMaquinaria extends javax.swing.JInternalFrame implements Ac
                 break;
         }
     }//GEN-LAST:event_jTableKeyPressed
+
+    private void jTextField1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextField1KeyReleased
+        // TODO add your handling code here:
+        String keypressed = jTextField1.getText();
+        
+        limpiar_tabla();
+        System.out.println(keypressed);
+        Conexion conexion =  new Conexion();
+        Connection conn = conexion.Conexion();
+        try{
+            conn.setAutoCommit(false);
+            CallableStatement busqueda_molde =  conn.prepareCall("{ ? = CALL BUSQUEDA_MAQUINARIA ( ? ) }");
+            busqueda_molde.registerOutParameter(1, Types.OTHER);
+            busqueda_molde.setString(2, keypressed);
+            busqueda_molde.execute();
+            ResultSet results = (ResultSet)busqueda_molde.getObject(1);
+            Object datos[] = new Object[3];
+            while(results.next()){
+                for(int i = 1; i<=3;i++){
+                    datos[i-1] = results.getObject(i).toString();
+                }
+                model.addRow(datos);
+            }
+            busqueda_molde.close();
+            conn.close();
+            
+            jTable.setModel(model);
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+        }
+    }//GEN-LAST:event_jTextField1KeyReleased
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
