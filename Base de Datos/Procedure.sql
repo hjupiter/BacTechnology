@@ -1013,3 +1013,36 @@ BEGIN
 	RETURN MYCURS;
 END;
 $$ LANGUAGE PLPGSQL;
+
+-------------------------------------------------------------------------
+CREATE OR REPLACE FUNCTION consultamolde_solo_usuario(character varying)
+  RETURNS refcursor AS
+$BODY$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR SELECT * from 
+	usuario inner join reporte_molde 
+	on usuario.id_usuario = reporte_molde.id_usuario 
+	inner join maquinaria 
+	on maquinaria.id_maquinaria = reporte_molde.id_maquinaria
+	inner join molde
+	on molde.id_molde = reporte_molde.id_molde
+	where usuario.nombre like $1||'%';
+	RETURN MYCURS;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+
+-----------------------------------------------
+CREATE OR REPLACE FUNCTION todos_reportesMolde()
+  RETURNS refcursor AS
+$BODY$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR SELECT * FROM REPORTE_MOLDE;
+	RETURN MYCURS;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
