@@ -6,6 +6,7 @@
 package aplicacion;
 
 import consultas.InternalReporte;
+import consultas.InternalReporteMolde;
 import edicion.ConsultaMaquinaria;
 import edicion.ConsultaMolde;
 import edicion.ConsultaUsuario;
@@ -65,7 +66,9 @@ public class Menu extends javax.swing.JFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         itemMaquinariaConsultar = new javax.swing.JMenuItem();
         itemMoldeConsultar = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
+        jMenuItem5 = new javax.swing.JMenuItem();
         itemAyuda = new javax.swing.JMenu();
         jMenuItem2 = new javax.swing.JMenuItem();
 
@@ -138,15 +141,27 @@ public class Menu extends javax.swing.JFrame {
         });
         itemUsuarioConsultar.add(itemMoldeConsultar);
 
-        jMenuItem3.setText("Reporte");
-        jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
+        jMenuBar1.add(itemUsuarioConsultar);
+
+        jMenu2.setText("Reportes");
+
+        jMenuItem4.setText("Maquina y Molde");
+        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem3ActionPerformed(evt);
+                jMenuItem4ActionPerformed(evt);
             }
         });
-        itemUsuarioConsultar.add(jMenuItem3);
+        jMenu2.add(jMenuItem4);
 
-        jMenuBar1.add(itemUsuarioConsultar);
+        jMenuItem5.setText("Maquinaria / Inyectores");
+        jMenuItem5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItem5ActionPerformed(evt);
+            }
+        });
+        jMenu2.add(jMenuItem5);
+
+        jMenuBar1.add(jMenu2);
 
         itemAyuda.setText("Ayuda");
 
@@ -302,7 +317,8 @@ public class Menu extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
-    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        // TODO add your handling code here:
         // TODO add your handling code here:
         boolean ventanaActivaReporteUsuario = InternalReporte.ventanaActivaReporteUsuario;
         if(!ventanaActivaReporteUsuario){
@@ -315,7 +331,19 @@ public class Menu extends javax.swing.JFrame {
         }else{
             JOptionPane.showMessageDialog(this, "La ventana REPORTE ya esta abierta!!");
         }
-    }//GEN-LAST:event_jMenuItem3ActionPerformed
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+        try {
+            InternalReporteMolde r = new InternalReporteMolde();
+            centerJIF(r);
+            DesktopPane.add(r);
+            r.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -331,9 +359,11 @@ public class Menu extends javax.swing.JFrame {
     private javax.swing.JMenuItem itemUsuario;
     private javax.swing.JMenu itemUsuarioConsultar;
     private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
     // End of variables declaration//GEN-END:variables
 }
