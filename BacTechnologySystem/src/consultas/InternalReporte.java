@@ -24,6 +24,7 @@ import java.text.DateFormat;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -92,14 +93,20 @@ public class InternalReporte extends javax.swing.JInternalFrame {
     }
     
     private void llenarTable(){
-        model = new DefaultTableModel(null,getColumnas()){
-            public boolean isCellEditable(int row, int column) {
-                return false;
-            }
-        };
+        model = new DefaultTableModel(null,getColumnas());
         setFilas();
         jTable.setModel(model);
         setEventoMouseClicked(jTable);
+        jTable.getColumnModel().getColumn(0).setPreferredWidth(5);
+        jTable.getColumnModel().getColumn(1).setPreferredWidth(60);
+        jTable.getColumnModel().getColumn(2).setPreferredWidth(90);
+        jTable.getColumnModel().getColumn(3).setPreferredWidth(90);
+        jTable.getColumnModel().getColumn(4).setPreferredWidth(90);
+        jTable.getColumnModel().getColumn(5).setPreferredWidth(60);
+        jTable.getColumnModel().getColumn(6).setPreferredWidth(60);
+        jTable.getColumnModel().getColumn(7).setPreferredWidth(60);
+        jTable.getColumnModel().getColumn(8).setPreferredWidth(60);
+        jTable.getColumnModel().getColumn(9).setPreferredWidth(60);
     }
     
     private void setEventoMouseClicked(JTable tbl){
@@ -151,7 +158,16 @@ public class InternalReporte extends javax.swing.JInternalFrame {
     }
     
     private String[] getColumnas(){
-          String columna[]=new String[]{"1","Fecha","Maquinaria","Molde","Usuario","Descripcion","Tipo Novedad","Descripcion","Solucion","Novedad"};
+          String columna[]=new String[]{"ID",
+                                        "USUARIO",
+                                        "FECHA",
+                                        "MAQUINARIA",
+                                        "MOLDE",
+                                        "NOVEDAD DETECTADA",
+                                        "TIPO NOVEDAD",
+                                        "DESCRIPCIÓN NOVEDAD",
+                                        "TIPO DE SOLUCIÓN",
+                                        "DESCRIPCIÓN SOLUCIÓN"};
           return columna;
     }
     /*
@@ -183,67 +199,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             todas_reportes.execute();
             ResultSet results = (ResultSet)todas_reportes.getObject(1);
             Object datos[] = new Object[12];
-            while(results.next()){
-                for(int i = 0; i<11;i++){
-                    if(i==2){
-                        String x = results.getObject(i+1).toString();
-                        int entero = Integer.parseInt(x);
-                        CallableStatement buscar = conn.prepareCall("{ ? = call buscar_maquina_id (?) }");
-                        buscar.registerOutParameter(1, Types.VARCHAR);
-                        buscar.setInt(2, entero);
-                        buscar.execute();
-                        String maquina = buscar.getString(1);
-                        System.out.println("1 "+maquina);
-                        buscar.close();
-                        datos[i] = maquina;
-                    }
-                    else if(i==3){
-                        String x = results.getObject(i+1).toString();
-                        int entero = Integer.parseInt(x);
-                        CallableStatement buscar = conn.prepareCall("{ ? = call buscar_molde_id (?) }");
-                        buscar.registerOutParameter(1, Types.VARCHAR);
-                        buscar.setInt(2, entero);
-                        buscar.execute();
-                        String molde = buscar.getString(1);
-                        System.out.println("2 "+molde);
-                        buscar.close();
-                        datos[i] = molde;
-                    }
-                    else if(i==4){
-                        String x = results.getObject(i+1).toString();
-                        int entero = Integer.parseInt(x);
-                        CallableStatement buscar = conn.prepareCall("{ ? = call buscar_usuario_id (?) }");
-                        buscar.registerOutParameter(1, Types.VARCHAR);
-                        buscar.setInt(2, entero);
-                        buscar.execute();
-                        String usuario = buscar.getString(1);
-                        System.out.println("3 "+usuario);
-                        buscar.close();
-                        datos[i] = usuario;
-                    }
-                    else if(i==10){
-                        InputStream is;
-                        ImageIcon foto;
-                        is =  results.getBinaryStream(i+1);
-                        BufferedImage bi = ImageIO.read(is);
-                        foto = new ImageIcon(bi);
-                        Image img = foto.getImage();
-                        Image newimg = img.getScaledInstance(140, 170, java.awt.Image.SCALE_SMOOTH);
-                        ImageIcon newicon = new ImageIcon(newimg);
-                    }
-                    else{
-                        String dato;
-                        datos[i] = results.getObject(i+1);
-                        System.out.println(" "+datos[i].toString());
-                    }   
-                    //datos[i] = results.getObject(i+1);
-                    //System.out.println(results.getObject(i+1));
-                }
-                System.out.println("----");
-                //System.out.println(datos[5]);
-                //System.out.println("----");
-                model.addRow(datos);
-            }
+            llenarTablaCentral(datos, results, conn);
             todas_reportes.close();
             conn.close();
         }catch(Exception e){
@@ -255,6 +211,156 @@ public class InternalReporte extends javax.swing.JInternalFrame {
         for (int i = 0; i < jTable.getRowCount(); i++) {
            model.removeRow(i);
            i-=1;
+        }
+    }
+    
+    
+    private  void llenarTablaCentral(Object datos[],ResultSet results,Connection conn) throws Exception{
+        while(results.next()){
+            for(int i = 0; i<11;i++){
+                if(i==2){
+                    String x = results.getObject(i+1).toString();
+                    int entero = Integer.parseInt(x);
+                    CallableStatement buscar = conn.prepareCall("{ ? = call buscar_maquina_id (?) }");
+                    buscar.registerOutParameter(1, Types.VARCHAR);
+                    buscar.setInt(2, entero);
+                    buscar.execute();
+                    String maquina = buscar.getString(1);
+                    buscar.close();
+                    datos[3] = maquina;
+                    System.out.println("MAQUINA "+maquina);
+                }
+                else if(i == 1){
+                    datos[2] = results.getObject(i+1);
+                    System.out.println("FECHA --> ["+i+"] "+datos[2].toString());
+                }
+                else if(i==3){
+                    String x = results.getObject(i+1).toString();
+                    int entero = Integer.parseInt(x);
+                    CallableStatement buscar = conn.prepareCall("{ ? = call buscar_molde_id (?) }");
+                    buscar.registerOutParameter(1, Types.VARCHAR);
+                    buscar.setInt(2, entero);
+                    buscar.execute();
+                    String molde = buscar.getString(1);
+                    buscar.close();
+                    datos[4] = molde;
+                    System.out.println("MOLDE "+molde);
+                }
+                else if(i==4){
+                    String x = results.getObject(i+1).toString();
+                    int entero = Integer.parseInt(x);
+                    CallableStatement buscar = conn.prepareCall("{ ? = call buscar_usuario_id (?) }");
+                    buscar.registerOutParameter(1, Types.VARCHAR);
+                    buscar.setInt(2, entero);
+                    buscar.execute();
+                    String usuario = buscar.getString(1);
+                    buscar.close();
+                    datos[1] = usuario;
+                    System.out.println("USUARIO -->"+usuario);
+                }
+                else if(i==10){
+                    InputStream is;
+                    ImageIcon foto;
+                    is =  results.getBinaryStream(i+1);
+                    if(is.available()>=1000){
+                        BufferedImage bi = ImageIO.read(is);
+                        foto = new ImageIcon(bi);
+                        Image img = foto.getImage();
+                        Image newimg = img.getScaledInstance(140, 170, java.awt.Image.SCALE_SMOOTH);
+                        ImageIcon newicon = new ImageIcon(newimg);
+                    }
+                    else{
+
+                    }
+                }
+                else if(i == 5){
+                    datos[7] = results.getObject(i+1);
+                    System.out.println("DESCRIPCION NOVEDAD --> "+results.getObject(i+1));
+                }
+                else if(i == 6){
+                    //tipo nocedad
+                    datos[6] = results.getObject(i+1);
+                    System.out.println("TIPO NOVEDAD --> "+results.getObject(i+1));
+                }
+                else if(i == 7){
+                    datos[9] = results.getObject(i+1);
+                    System.out.println("DESCRIPCION SOLUCION --> "+results.getObject(i+1));
+                }
+                else if(i == 8){
+                    datos[8] = results.getObject(i+1);
+                    System.out.println("TIPO SOLUCION --> "+results.getObject(i+1));
+                }
+                else if(i == 9){
+                    datos[5] = results.getObject(i+1);
+                    System.out.println("NOVEDAD --> "+results.getObject(i+1));
+                }
+                else{
+                    datos[i] = results.getObject(i+1);
+                }
+            }
+            model.addRow(datos);
+        }
+    }
+    
+    private void llenarTablaCentralConsultas(Object datos[],ResultSet results,Connection conn) throws Exception{
+        while(results.next()){
+            String n = "";
+            System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+            for(int i = 0; i<25;i++){
+                if(i==16){
+                    datos[5] = results.getObject(i+1);
+                    System.out.println("NOVEDAD ["+i+"] --> "+datos[5].toString());
+                }
+                if(i==1){
+                    n = results.getObject(i+1).toString();
+                    System.out.println(" ["+i+"] --> "+n);
+                }
+                if(i==2){
+                    String a = results.getObject(i+1).toString();
+                    String f = n+" "+a;
+                    datos[1] = f;
+                    System.out.println("USUARIO ["+i+"] --> "+datos[1].toString());
+                }
+                if(i==15){
+                    datos[8] = results.getObject(i+1);
+                    System.out.println("TIPO SOLUCION ["+i+"] --> "+datos[8].toString());
+                }
+                if(i==14){
+                    datos[9] = results.getObject(i+1);
+                    System.out.println("DESCRIPCION SOLUCION ["+i+"] --> "+datos[9].toString());
+                }
+                if(i==13){
+                    datos[6] = results.getObject(i+1);
+                    System.out.println("TIPO NOVEDAD ["+i+"] --> "+datos[6].toString());
+                }
+                if(i==12){
+                    datos[7] = results.getObject(i+1);
+                    System.out.println("DESCRIPCION NOVEDAD ["+i+"] --> "+datos[7].toString());
+                }
+                if(i==7){
+                    datos[0] = results.getObject(i+1);
+                    System.out.println(" ["+i+"] --> "+datos[0].toString());
+                }
+                if(i==8){
+                    datos[2] = results.getObject(i+1);
+                    System.out.println("FECHA ["+i+"] --> "+datos[2].toString());
+                }
+                if(i==23){
+                    if(results.getObject(i+1).equals("000-000")){
+                        datos[4] = "Sin Molde";
+                        System.out.println("MOLDE ["+i+"] --> "+datos[4].toString());
+                    }
+                    else{
+                        datos[4] = results.getObject(i+1);
+                        System.out.println("MOLDE ["+i+"] --> "+datos[4].toString());
+                    }
+                }
+                if(i==20){
+                    datos[3] = results.getObject(i+1);
+                    System.out.println("MAQUINA ["+i+"] --> "+datos[3].toString());
+                }
+            }
+            model.addRow(datos);
         }
     }
     /**
@@ -278,21 +384,20 @@ public class InternalReporte extends javax.swing.JInternalFrame {
         txtMaquinaria = new javax.swing.JTextField();
         txtMolde = new javax.swing.JTextField();
         txtNovedad = new javax.swing.JTextField();
-        comboBoxMaquinaria = new javax.swing.JComboBox<String>();
-        comboBoxMolde = new javax.swing.JComboBox<String>();
-        comboBoxNovedad = new javax.swing.JComboBox<String>();
+        comboBoxMaquinaria = new javax.swing.JComboBox<>();
+        comboBoxMolde = new javax.swing.JComboBox<>();
+        comboBoxNovedad = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
-        comboBoxUsuario = new javax.swing.JComboBox<String>();
+        comboBoxUsuario = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
-        btnFechaInicio = new com.toedter.calendar.JDateChooser();
         checkBoxFecha = new javax.swing.JCheckBox();
         jProgressBar1 = new javax.swing.JProgressBar();
         jPanel3 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
 
         setClosable(true);
-        setPreferredSize(new java.awt.Dimension(889, 600));
+        setPreferredSize(new java.awt.Dimension(1200, 600));
         addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
             public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
             }
@@ -360,21 +465,21 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             }
         });
 
-        comboBoxMaquinaria.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboBoxMaquinaria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         comboBoxMaquinaria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboBoxMaquinariaActionPerformed(evt);
             }
         });
 
-        comboBoxMolde.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboBoxMolde.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        comboBoxNovedad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboBoxNovedad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel5.setText("Fecha");
 
-        comboBoxUsuario.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboBoxUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jButton1.setText("Consultar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -406,7 +511,11 @@ public class InternalReporte extends javax.swing.JInternalFrame {
                             .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(txtMaquinaria, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(comboBoxMaquinaria, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel1Layout.createSequentialGroup()
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
@@ -416,30 +525,23 @@ public class InternalReporte extends javax.swing.JInternalFrame {
                                         .addGap(17, 17, 17))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(txtNovedad, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(43, 43, 43))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addComponent(comboBoxNovedad, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(comboBoxUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)))
-                                .addComponent(jLabel5))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(comboBoxNovedad, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
-                                        .addComponent(txtMaquinaria, javax.swing.GroupLayout.PREFERRED_SIZE, 249, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(comboBoxMaquinaria, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(50, 50, 50)))
-                        .addComponent(btnFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jLabel5)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 175, Short.MAX_VALUE)
                         .addComponent(checkBoxFecha))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(304, 304, 304)
                         .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(68, 68, 68)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 123, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(49, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -456,8 +558,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(comboBoxUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5))
-                                .addComponent(btnFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel5)))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel2)
@@ -484,11 +585,14 @@ public class InternalReporte extends javax.swing.JInternalFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, 855, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(132, 132, 132))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -503,16 +607,16 @@ public class InternalReporte extends javax.swing.JInternalFrame {
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel12.setText("CONSULTAS Y GENERACIÓN DE REPORTES");
+        jLabel12.setText("CONSULTAS Y GENERACIÓN DE REPORTES MAQUINARIA Y MOLDE");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(184, 184, 184)
+                .addGap(206, 206, 206)
                 .addComponent(jLabel12)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(174, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -523,15 +627,12 @@ public class InternalReporte extends javax.swing.JInternalFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane1)
                 .addContainerGap())
+            .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -560,47 +661,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             todas_reportes.execute();
             ResultSet results = (ResultSet)todas_reportes.getObject(1);
             Object datos[] = new Object[11];
-            while(results.next()){
-                String n = "";
-                for(int i = 0; i<25;i++){
-                    if(i==16){
-                        datos[9] = results.getObject(i+1);
-                    }
-                    if(i==1){
-                        n = results.getObject(i+1).toString();
-                    }
-                    if(i==2){
-                        String a = results.getObject(i+1).toString();
-                        String f = n+" "+a;
-                        datos[4] = f;
-                    }
-                    if(i==15){
-                        datos[8] = results.getObject(i+1);
-                    }
-                    if(i==14){
-                        datos[7] = results.getObject(i+1);
-                    }
-                    if(i==13){
-                        datos[6] = results.getObject(i+1);
-                    }
-                    if(i==12){
-                        datos[5] = results.getObject(i+1);
-                    }
-                    if(i==7){
-                        datos[0] = results.getObject(i+1);
-                    }
-                    if(i==8){
-                        datos[1] = results.getObject(i+1);
-                    }
-                    if(i==23){
-                        datos[3] = results.getObject(i+1);
-                    }
-                    if(i==20){
-                        datos[2] = results.getObject(i+1);
-                    }
-                }
-                model.addRow(datos);
-            }
+            llenarTablaCentralConsultas(datos, results, conn);
         }
         catch(Exception e){
         }
@@ -618,47 +679,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             todas_reportes.execute();
             ResultSet results = (ResultSet)todas_reportes.getObject(1);
             Object datos[] = new Object[11];
-            while(results.next()){
-                String n = "";
-                for(int i = 0; i<25;i++){
-                    if(i==16){
-                        datos[9] = results.getObject(i+1);
-                    }
-                    if(i==1){
-                        n = results.getObject(i+1).toString();
-                    }
-                    if(i==2){
-                        String a = results.getObject(i+1).toString();
-                        String f = n+" "+a;
-                        datos[4] = f;
-                    }
-                    if(i==15){
-                        datos[8] = results.getObject(i+1);
-                    }
-                    if(i==14){
-                        datos[7] = results.getObject(i+1);
-                    }
-                    if(i==13){
-                        datos[6] = results.getObject(i+1);
-                    }
-                    if(i==12){
-                        datos[5] = results.getObject(i+1);
-                    }
-                    if(i==7){
-                        datos[0] = results.getObject(i+1);
-                    }
-                    if(i==8){
-                        datos[1] = results.getObject(i+1);
-                    }
-                    if(i==23){
-                        datos[3] = results.getObject(i+1);
-                    }
-                    if(i==20){
-                        datos[2] = results.getObject(i+1);
-                    }
-                }
-                model.addRow(datos);
-            }
+            llenarTablaCentralConsultas(datos, results, conn);
         }
         catch(Exception e){
         }
@@ -678,47 +699,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             todas_reportes.execute();
             ResultSet results = (ResultSet)todas_reportes.getObject(1);
             Object datos[] = new Object[11];
-            while(results.next()){
-                String n = "";
-                for(int i = 0; i<25;i++){
-                    if(i==16){
-                        datos[9] = results.getObject(i+1);
-                    }
-                    if(i==1){
-                        n = results.getObject(i+1).toString();
-                    }
-                    if(i==2){
-                        String a = results.getObject(i+1).toString();
-                        String f = n+" "+a;
-                        datos[4] = f;
-                    }
-                    if(i==15){
-                        datos[8] = results.getObject(i+1);
-                    }
-                    if(i==14){
-                        datos[7] = results.getObject(i+1);
-                    }
-                    if(i==13){
-                        datos[6] = results.getObject(i+1);
-                    }
-                    if(i==12){
-                        datos[5] = results.getObject(i+1);
-                    }
-                    if(i==7){
-                        datos[0] = results.getObject(i+1);
-                    }
-                    if(i==8){
-                        datos[1] = results.getObject(i+1);
-                    }
-                    if(i==23){
-                        datos[3] = results.getObject(i+1);
-                    }
-                    if(i==20){
-                        datos[2] = results.getObject(i+1);
-                    }
-                }
-                model.addRow(datos);
-            }
+            llenarTablaCentralConsultas(datos, results, conn);
         }
         catch(Exception e){
         }
@@ -728,6 +709,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
         Conexion conexion =  new Conexion();
         Connection conn = conexion.Conexion();
         try{
+            System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
             conn.setAutoCommit(false);
             CallableStatement todas_reportes_por_fecha =  conn.prepareCall(procedure);
             todas_reportes_por_fecha.registerOutParameter(1, Types.OTHER);
@@ -735,47 +717,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             todas_reportes_por_fecha.execute();
             ResultSet results = (ResultSet)todas_reportes_por_fecha.getObject(1);
             Object datos[] = new Object[11];
-            while(results.next()){
-                String n = "";
-                for(int i = 0; i<25;i++){
-                    if(i==16){
-                        datos[9] = results.getObject(i+1);
-                    }
-                    if(i==1){
-                        n = results.getObject(i+1).toString();
-                    }
-                    if(i==2){
-                        String a = results.getObject(i+1).toString();
-                        String f = n+" "+a;
-                        datos[4] = f;
-                    }
-                    if(i==15){
-                        datos[8] = results.getObject(i+1);
-                    }
-                    if(i==14){
-                        datos[7] = results.getObject(i+1);
-                    }
-                    if(i==13){
-                        datos[6] = results.getObject(i+1);
-                    }
-                    if(i==12){
-                        datos[5] = results.getObject(i+1);
-                    }
-                    if(i==7){
-                        datos[0] = results.getObject(i+1);
-                    }
-                    if(i==8){
-                        datos[1] = results.getObject(i+1);
-                    }
-                    if(i==23){
-                        datos[3] = results.getObject(i+1);
-                    }
-                    if(i==20){
-                        datos[2] = results.getObject(i+1);
-                    }
-                }
-                model.addRow(datos);
-            }
+            llenarTablaCentralConsultas(datos, results, conn);
         }catch(Exception e){
             System.out.println("xxx Error en consultar_por_fecha xxx");
         }
@@ -795,47 +737,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             ResultSet results = (ResultSet)todas_reportes_por_fecha.getObject(1);
             Object datos[] = new Object[11];
             System.out.println("---------------------------");
-            while(results.next()){
-                String n = "";
-                for(int i = 0; i<25;i++){
-                    if(i==16){
-                        datos[9] = results.getObject(i+1);
-                    }
-                    if(i==1){
-                        n = results.getObject(i+1).toString();
-                    }
-                    if(i==2){
-                        String a = results.getObject(i+1).toString();
-                        String f = n+" "+a;
-                        datos[4] = f;
-                    }
-                    if(i==15){
-                        datos[8] = results.getObject(i+1);
-                    }
-                    if(i==14){
-                        datos[7] = results.getObject(i+1);
-                    }
-                    if(i==13){
-                        datos[6] = results.getObject(i+1);
-                    }
-                    if(i==12){
-                        datos[5] = results.getObject(i+1);
-                    }
-                    if(i==7){
-                        datos[0] = results.getObject(i+1);
-                    }
-                    if(i==8){
-                        datos[1] = results.getObject(i+1);
-                    }
-                    if(i==23){
-                        datos[3] = results.getObject(i+1);
-                    }
-                    if(i==20){
-                        datos[2] = results.getObject(i+1);
-                    }
-                }
-                model.addRow(datos);
-            }
+            llenarTablaCentralConsultas(datos, results, conn);
             System.out.println("---------------------------");
         }catch(Exception e){
             System.out.println("xxx Error en consultar_por_fecha_rango xxx");
@@ -857,47 +759,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             todas_reportes.execute();
             ResultSet results = (ResultSet)todas_reportes.getObject(1);
             Object datos[] = new Object[11];
-            while(results.next()){
-                String n = "";
-                for(int i = 0; i<25;i++){
-                    if(i==16){
-                        datos[9] = results.getObject(i+1);
-                    }
-                    if(i==1){
-                        n = results.getObject(i+1).toString();
-                    }
-                    if(i==2){
-                        String a = results.getObject(i+1).toString();
-                        String f = n+" "+a;
-                        datos[4] = f;
-                    }
-                    if(i==15){
-                        datos[8] = results.getObject(i+1);
-                    }
-                    if(i==14){
-                        datos[7] = results.getObject(i+1);
-                    }
-                    if(i==13){
-                        datos[6] = results.getObject(i+1);
-                    }
-                    if(i==12){
-                        datos[5] = results.getObject(i+1);
-                    }
-                    if(i==7){
-                        datos[0] = results.getObject(i+1);
-                    }
-                    if(i==8){
-                        datos[1] = results.getObject(i+1);
-                    }
-                    if(i==23){
-                        datos[3] = results.getObject(i+1);
-                    }
-                    if(i==20){
-                        datos[2] = results.getObject(i+1);
-                    }
-                }
-                model.addRow(datos);
-            }
+            llenarTablaCentralConsultas(datos, results, conn);
         }
         catch(Exception e){
         }
@@ -915,47 +777,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             reporteFechaMaquina.execute();
             ResultSet results = (ResultSet)reporteFechaMaquina.getObject(1);
             Object datos[] = new Object[11];
-            while(results.next()){
-                String n = "";
-                for(int i = 0; i<25;i++){
-                    if(i==16){
-                        datos[9] = results.getObject(i+1);
-                    }
-                    if(i==1){
-                        n = results.getObject(i+1).toString();
-                    }
-                    if(i==2){
-                        String a = results.getObject(i+1).toString();
-                        String f = n+" "+a;
-                        datos[4] = f;
-                    }
-                    if(i==15){
-                        datos[8] = results.getObject(i+1);
-                    }
-                    if(i==14){
-                        datos[7] = results.getObject(i+1);
-                    }
-                    if(i==13){
-                        datos[6] = results.getObject(i+1);
-                    }
-                    if(i==12){
-                        datos[5] = results.getObject(i+1);
-                    }
-                    if(i==7){
-                        datos[0] = results.getObject(i+1);
-                    }
-                    if(i==8){
-                        datos[1] = results.getObject(i+1);
-                    }
-                    if(i==23){
-                        datos[3] = results.getObject(i+1);
-                    }
-                    if(i==20){
-                        datos[2] = results.getObject(i+1);
-                    }
-                }
-                model.addRow(datos);
-            }
+            llenarTablaCentralConsultas(datos, results, conn);
         }catch(Exception e){
             System.out.println("xxx Error en consultar_fecha_maquina xxx");
         }
@@ -973,47 +795,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             todas_reportes_usuario_por_fecha.execute();
             ResultSet results = (ResultSet)todas_reportes_usuario_por_fecha.getObject(1);
             Object datos[] = new Object[11];
-            while(results.next()){
-                String n = "";
-                for(int i = 0; i<25;i++){
-                    if(i==16){
-                        datos[9] = results.getObject(i+1);
-                    }
-                    if(i==1){
-                        n = results.getObject(i+1).toString();
-                    }
-                    if(i==2){
-                        String a = results.getObject(i+1).toString();
-                        String f = n+" "+a;
-                        datos[4] = f;
-                    }
-                    if(i==15){
-                        datos[8] = results.getObject(i+1);
-                    }
-                    if(i==14){
-                        datos[7] = results.getObject(i+1);
-                    }
-                    if(i==13){
-                        datos[6] = results.getObject(i+1);
-                    }
-                    if(i==12){
-                        datos[5] = results.getObject(i+1);
-                    }
-                    if(i==7){
-                        datos[0] = results.getObject(i+1);
-                    }
-                    if(i==8){
-                        datos[1] = results.getObject(i+1);
-                    }
-                    if(i==23){
-                        datos[3] = results.getObject(i+1);
-                    }
-                    if(i==20){
-                        datos[2] = results.getObject(i+1);
-                    }
-                }
-                model.addRow(datos);
-            }
+            llenarTablaCentralConsultas(datos, results, conn);
         }catch(Exception e){
             System.out.println("xxx Error en consultar_usuario_fecha xxx");
         }
@@ -1031,47 +813,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             consultar_fecha_molde.execute();
             ResultSet results = (ResultSet)consultar_fecha_molde.getObject(1);
             Object datos[] = new Object[11];
-            while(results.next()){
-                String n = "";
-                for(int i = 0; i<25;i++){
-                    if(i==16){
-                        datos[9] = results.getObject(i+1);
-                    }
-                    if(i==1){
-                        n = results.getObject(i+1).toString();
-                    }
-                    if(i==2){
-                        String a = results.getObject(i+1).toString();
-                        String f = n+" "+a;
-                        datos[4] = f;
-                    }
-                    if(i==15){
-                        datos[8] = results.getObject(i+1);
-                    }
-                    if(i==14){
-                        datos[7] = results.getObject(i+1);
-                    }
-                    if(i==13){
-                        datos[6] = results.getObject(i+1);
-                    }
-                    if(i==12){
-                        datos[5] = results.getObject(i+1);
-                    }
-                    if(i==7){
-                        datos[0] = results.getObject(i+1);
-                    }
-                    if(i==8){
-                        datos[1] = results.getObject(i+1);
-                    }
-                    if(i==23){
-                        datos[3] = results.getObject(i+1);
-                    }
-                    if(i==20){
-                        datos[2] = results.getObject(i+1);
-                    }
-                }
-                model.addRow(datos);
-            }
+            llenarTablaCentralConsultas(datos, results, conn);
         }catch(Exception e){
             System.out.println("xxx Error en consultar_fecha_molde xxx");
         }
@@ -1089,47 +831,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             consultar_fecha_novedad.execute();
             ResultSet results = (ResultSet)consultar_fecha_novedad.getObject(1);
             Object datos[] = new Object[11];
-            while(results.next()){
-                String n = "";
-                for(int i = 0; i<25;i++){
-                    if(i==16){
-                        datos[9] = results.getObject(i+1);
-                    }
-                    if(i==1){
-                        n = results.getObject(i+1).toString();
-                    }
-                    if(i==2){
-                        String a = results.getObject(i+1).toString();
-                        String f = n+" "+a;
-                        datos[4] = f;
-                    }
-                    if(i==15){
-                        datos[8] = results.getObject(i+1);
-                    }
-                    if(i==14){
-                        datos[7] = results.getObject(i+1);
-                    }
-                    if(i==13){
-                        datos[6] = results.getObject(i+1);
-                    }
-                    if(i==12){
-                        datos[5] = results.getObject(i+1);
-                    }
-                    if(i==7){
-                        datos[0] = results.getObject(i+1);
-                    }
-                    if(i==8){
-                        datos[1] = results.getObject(i+1);
-                    }
-                    if(i==23){
-                        datos[3] = results.getObject(i+1);
-                    }
-                    if(i==20){
-                        datos[2] = results.getObject(i+1);
-                    }
-                }
-                model.addRow(datos);
-            }
+            llenarTablaCentralConsultas(datos, results, conn);
         }catch(Exception e){
             System.out.println("xxx Error en consultar_fecha_novedad xxx");
         }
@@ -1148,47 +850,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             consultar_usuario_fecha_maquina.execute();
             ResultSet results = (ResultSet)consultar_usuario_fecha_maquina.getObject(1);
             Object datos[] = new Object[11];
-            while(results.next()){
-                String n = "";
-                for(int i = 0; i<25;i++){
-                    if(i==16){
-                        datos[9] = results.getObject(i+1);
-                    }
-                    if(i==1){
-                        n = results.getObject(i+1).toString();
-                    }
-                    if(i==2){
-                        String a = results.getObject(i+1).toString();
-                        String f = n+" "+a;
-                        datos[4] = f;
-                    }
-                    if(i==15){
-                        datos[8] = results.getObject(i+1);
-                    }
-                    if(i==14){
-                        datos[7] = results.getObject(i+1);
-                    }
-                    if(i==13){
-                        datos[6] = results.getObject(i+1);
-                    }
-                    if(i==12){
-                        datos[5] = results.getObject(i+1);
-                    }
-                    if(i==7){
-                        datos[0] = results.getObject(i+1);
-                    }
-                    if(i==8){
-                        datos[1] = results.getObject(i+1);
-                    }
-                    if(i==23){
-                        datos[3] = results.getObject(i+1);
-                    }
-                    if(i==20){
-                        datos[2] = results.getObject(i+1);
-                    }
-                }
-                model.addRow(datos);
-            }
+            llenarTablaCentralConsultas(datos, results, conn);
         }catch(Exception e){
             System.out.println("xxx Error en consultar_usuario_fecha_maquina xxx");
         }
@@ -1207,47 +869,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             consulta_reporte_fecha_molde.execute();
             ResultSet results = (ResultSet)consulta_reporte_fecha_molde.getObject(1);
             Object datos[] = new Object[11];
-            while(results.next()){
-                String n = "";
-                for(int i = 0; i<25;i++){
-                    if(i==16){
-                        datos[9] = results.getObject(i+1);
-                    }
-                    if(i==1){
-                        n = results.getObject(i+1).toString();
-                    }
-                    if(i==2){
-                        String a = results.getObject(i+1).toString();
-                        String f = n+" "+a;
-                        datos[4] = f;
-                    }
-                    if(i==15){
-                        datos[8] = results.getObject(i+1);
-                    }
-                    if(i==14){
-                        datos[7] = results.getObject(i+1);
-                    }
-                    if(i==13){
-                        datos[6] = results.getObject(i+1);
-                    }
-                    if(i==12){
-                        datos[5] = results.getObject(i+1);
-                    }
-                    if(i==7){
-                        datos[0] = results.getObject(i+1);
-                    }
-                    if(i==8){
-                        datos[1] = results.getObject(i+1);
-                    }
-                    if(i==23){
-                        datos[3] = results.getObject(i+1);
-                    }
-                    if(i==20){
-                        datos[2] = results.getObject(i+1);
-                    }
-                }
-                model.addRow(datos);
-            }
+            llenarTablaCentralConsultas(datos, results, conn);
         }catch(Exception e){
             System.out.println("xxx Error en consulta_reporte_fecha_molde xxx");
         }
@@ -1266,47 +888,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             consultar_usuario_fecha_novedad.execute();
             ResultSet results = (ResultSet)consultar_usuario_fecha_novedad.getObject(1);
             Object datos[] = new Object[11];
-            while(results.next()){
-                String n = "";
-                for(int i = 0; i<25;i++){
-                    if(i==16){
-                        datos[9] = results.getObject(i+1);
-                    }
-                    if(i==1){
-                        n = results.getObject(i+1).toString();
-                    }
-                    if(i==2){
-                        String a = results.getObject(i+1).toString();
-                        String f = n+" "+a;
-                        datos[4] = f;
-                    }
-                    if(i==15){
-                        datos[8] = results.getObject(i+1);
-                    }
-                    if(i==14){
-                        datos[7] = results.getObject(i+1);
-                    }
-                    if(i==13){
-                        datos[6] = results.getObject(i+1);
-                    }
-                    if(i==12){
-                        datos[5] = results.getObject(i+1);
-                    }
-                    if(i==7){
-                        datos[0] = results.getObject(i+1);
-                    }
-                    if(i==8){
-                        datos[1] = results.getObject(i+1);
-                    }
-                    if(i==23){
-                        datos[3] = results.getObject(i+1);
-                    }
-                    if(i==20){
-                        datos[2] = results.getObject(i+1);
-                    }
-                }
-                model.addRow(datos);
-            }
+            llenarTablaCentralConsultas(datos, results, conn);
         }catch(Exception e){
             System.out.println("xxx Error en consultar_usuario_fecha_novedad xxx");
         }
@@ -1325,47 +907,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             consultar_fecha_maquina_molde.execute();
             ResultSet results = (ResultSet)consultar_fecha_maquina_molde.getObject(1);
             Object datos[] = new Object[11];
-            while(results.next()){
-                String n = "";
-                for(int i = 0; i<25;i++){
-                    if(i==16){
-                        datos[9] = results.getObject(i+1);
-                    }
-                    if(i==1){
-                        n = results.getObject(i+1).toString();
-                    }
-                    if(i==2){
-                        String a = results.getObject(i+1).toString();
-                        String f = n+" "+a;
-                        datos[4] = f;
-                    }
-                    if(i==15){
-                        datos[8] = results.getObject(i+1);
-                    }
-                    if(i==14){
-                        datos[7] = results.getObject(i+1);
-                    }
-                    if(i==13){
-                        datos[6] = results.getObject(i+1);
-                    }
-                    if(i==12){
-                        datos[5] = results.getObject(i+1);
-                    }
-                    if(i==7){
-                        datos[0] = results.getObject(i+1);
-                    }
-                    if(i==8){
-                        datos[1] = results.getObject(i+1);
-                    }
-                    if(i==23){
-                        datos[3] = results.getObject(i+1);
-                    }
-                    if(i==20){
-                        datos[2] = results.getObject(i+1);
-                    }
-                }
-                model.addRow(datos);
-            }
+            llenarTablaCentralConsultas(datos, results, conn);
         }catch(Exception e){
             System.out.println("xxx Error en consultar_fecha_maquina_molde xxx");
         }
@@ -1384,47 +926,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             consultar_fecha_maquina_novedad.execute();
             ResultSet results = (ResultSet)consultar_fecha_maquina_novedad.getObject(1);
             Object datos[] = new Object[11];
-            while(results.next()){
-                String n = "";
-                for(int i = 0; i<25;i++){
-                    if(i==16){
-                        datos[9] = results.getObject(i+1);
-                    }
-                    if(i==1){
-                        n = results.getObject(i+1).toString();
-                    }
-                    if(i==2){
-                        String a = results.getObject(i+1).toString();
-                        String f = n+" "+a;
-                        datos[4] = f;
-                    }
-                    if(i==15){
-                        datos[8] = results.getObject(i+1);
-                    }
-                    if(i==14){
-                        datos[7] = results.getObject(i+1);
-                    }
-                    if(i==13){
-                        datos[6] = results.getObject(i+1);
-                    }
-                    if(i==12){
-                        datos[5] = results.getObject(i+1);
-                    }
-                    if(i==7){
-                        datos[0] = results.getObject(i+1);
-                    }
-                    if(i==8){
-                        datos[1] = results.getObject(i+1);
-                    }
-                    if(i==23){
-                        datos[3] = results.getObject(i+1);
-                    }
-                    if(i==20){
-                        datos[2] = results.getObject(i+1);
-                    }
-                }
-                model.addRow(datos);
-            }
+            llenarTablaCentralConsultas(datos, results, conn);
         }catch(Exception e){
             System.out.println("xxx Error en consultar_fecha_maquina_novedad xxx");
         }
@@ -1443,47 +945,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             consultar_fecha_molde_novedad.execute();
             ResultSet results = (ResultSet)consultar_fecha_molde_novedad.getObject(1);
             Object datos[] = new Object[11];
-            while(results.next()){
-                String n = "";
-                for(int i = 0; i<25;i++){
-                    if(i==16){
-                        datos[9] = results.getObject(i+1);
-                    }
-                    if(i==1){
-                        n = results.getObject(i+1).toString();
-                    }
-                    if(i==2){
-                        String a = results.getObject(i+1).toString();
-                        String f = n+" "+a;
-                        datos[4] = f;
-                    }
-                    if(i==15){
-                        datos[8] = results.getObject(i+1);
-                    }
-                    if(i==14){
-                        datos[7] = results.getObject(i+1);
-                    }
-                    if(i==13){
-                        datos[6] = results.getObject(i+1);
-                    }
-                    if(i==12){
-                        datos[5] = results.getObject(i+1);
-                    }
-                    if(i==7){
-                        datos[0] = results.getObject(i+1);
-                    }
-                    if(i==8){
-                        datos[1] = results.getObject(i+1);
-                    }
-                    if(i==23){
-                        datos[3] = results.getObject(i+1);
-                    }
-                    if(i==20){
-                        datos[2] = results.getObject(i+1);
-                    }
-                }
-                model.addRow(datos);
-            }
+            llenarTablaCentralConsultas(datos, results, conn);
         }catch(Exception e){
             System.out.println("xxx Error en consultar_fecha_molde_novedad xxx");
         }
@@ -1504,47 +966,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             consultar_reporte_fecha_usuario_maquina_molde_novedad.execute();
             ResultSet results = (ResultSet)consultar_reporte_fecha_usuario_maquina_molde_novedad.getObject(1);
             Object datos[] = new Object[11];
-            while(results.next()){
-                String n = "";
-                for(int i = 0; i<25;i++){
-                    if(i==16){
-                        datos[9] = results.getObject(i+1);
-                    }
-                    if(i==1){
-                        n = results.getObject(i+1).toString();
-                    }
-                    if(i==2){
-                        String a = results.getObject(i+1).toString();
-                        String f = n+" "+a;
-                        datos[4] = f;
-                    }
-                    if(i==15){
-                        datos[8] = results.getObject(i+1);
-                    }
-                    if(i==14){
-                        datos[7] = results.getObject(i+1);
-                    }
-                    if(i==13){
-                        datos[6] = results.getObject(i+1);
-                    }
-                    if(i==12){
-                        datos[5] = results.getObject(i+1);
-                    }
-                    if(i==7){
-                        datos[0] = results.getObject(i+1);
-                    }
-                    if(i==8){
-                        datos[1] = results.getObject(i+1);
-                    }
-                    if(i==23){
-                        datos[3] = results.getObject(i+1);
-                    }
-                    if(i==20){
-                        datos[2] = results.getObject(i+1);
-                    }
-                }
-                model.addRow(datos);
-            }
+            llenarTablaCentralConsultas(datos, results, conn);
         }catch(Exception e){
             System.out.println("xxx Error en consultar_reporte_fecha_usuario_maquina_molde_novedad xxx");
         }
@@ -1564,47 +986,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             consultar_fecha_usuario_maquina_novedad.execute();
             ResultSet results = (ResultSet)consultar_fecha_usuario_maquina_novedad.getObject(1);
             Object datos[] = new Object[11];
-            while(results.next()){
-                String n = "";
-                for(int i = 0; i<25;i++){
-                    if(i==16){
-                        datos[9] = results.getObject(i+1);
-                    }
-                    if(i==1){
-                        n = results.getObject(i+1).toString();
-                    }
-                    if(i==2){
-                        String a = results.getObject(i+1).toString();
-                        String f = n+" "+a;
-                        datos[4] = f;
-                    }
-                    if(i==15){
-                        datos[8] = results.getObject(i+1);
-                    }
-                    if(i==14){
-                        datos[7] = results.getObject(i+1);
-                    }
-                    if(i==13){
-                        datos[6] = results.getObject(i+1);
-                    }
-                    if(i==12){
-                        datos[5] = results.getObject(i+1);
-                    }
-                    if(i==7){
-                        datos[0] = results.getObject(i+1);
-                    }
-                    if(i==8){
-                        datos[1] = results.getObject(i+1);
-                    }
-                    if(i==23){
-                        datos[3] = results.getObject(i+1);
-                    }
-                    if(i==20){
-                        datos[2] = results.getObject(i+1);
-                    }
-                }
-                model.addRow(datos);
-            }
+            llenarTablaCentralConsultas(datos, results, conn);
         }catch(Exception e){
             System.out.println("xxx Error en consultar_fecha_usuario_maquina_novedad xxx");
         }
@@ -1624,47 +1006,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             consultar_fecha_usuario_molde_novedad.execute();
             ResultSet results = (ResultSet)consultar_fecha_usuario_molde_novedad.getObject(1);
             Object datos[] = new Object[11];
-            while(results.next()){
-                String n = "";
-                for(int i = 0; i<25;i++){
-                    if(i==16){
-                        datos[9] = results.getObject(i+1);
-                    }
-                    if(i==1){
-                        n = results.getObject(i+1).toString();
-                    }
-                    if(i==2){
-                        String a = results.getObject(i+1).toString();
-                        String f = n+" "+a;
-                        datos[4] = f;
-                    }
-                    if(i==15){
-                        datos[8] = results.getObject(i+1);
-                    }
-                    if(i==14){
-                        datos[7] = results.getObject(i+1);
-                    }
-                    if(i==13){
-                        datos[6] = results.getObject(i+1);
-                    }
-                    if(i==12){
-                        datos[5] = results.getObject(i+1);
-                    }
-                    if(i==7){
-                        datos[0] = results.getObject(i+1);
-                    }
-                    if(i==8){
-                        datos[1] = results.getObject(i+1);
-                    }
-                    if(i==23){
-                        datos[3] = results.getObject(i+1);
-                    }
-                    if(i==20){
-                        datos[2] = results.getObject(i+1);
-                    }
-                }
-                model.addRow(datos);
-            }
+            llenarTablaCentralConsultas(datos, results, conn);
         }catch(Exception e){
             System.out.println("xxx Error en consultar_fecha_usuario_molde_novedad xxx");
         }
@@ -1684,47 +1026,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             consultar_fecha_usuario_maquina_molde.execute();
             ResultSet results = (ResultSet)consultar_fecha_usuario_maquina_molde.getObject(1);
             Object datos[] = new Object[11];
-            while(results.next()){
-                String n = "";
-                for(int i = 0; i<25;i++){
-                    if(i==16){
-                        datos[9] = results.getObject(i+1);
-                    }
-                    if(i==1){
-                        n = results.getObject(i+1).toString();
-                    }
-                    if(i==2){
-                        String a = results.getObject(i+1).toString();
-                        String f = n+" "+a;
-                        datos[4] = f;
-                    }
-                    if(i==15){
-                        datos[8] = results.getObject(i+1);
-                    }
-                    if(i==14){
-                        datos[7] = results.getObject(i+1);
-                    }
-                    if(i==13){
-                        datos[6] = results.getObject(i+1);
-                    }
-                    if(i==12){
-                        datos[5] = results.getObject(i+1);
-                    }
-                    if(i==7){
-                        datos[0] = results.getObject(i+1);
-                    }
-                    if(i==8){
-                        datos[1] = results.getObject(i+1);
-                    }
-                    if(i==23){
-                        datos[3] = results.getObject(i+1);
-                    }
-                    if(i==20){
-                        datos[2] = results.getObject(i+1);
-                    }
-                }
-                model.addRow(datos);
-            }
+            llenarTablaCentralConsultas(datos, results, conn);
         }catch(Exception e){
             System.out.println("xxx Error en consultar_fecha_usuario_maquina_molde xxx");
         }
@@ -1744,47 +1046,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             consultar_fecha_maquina_molde_novedad.execute();
             ResultSet results = (ResultSet)consultar_fecha_maquina_molde_novedad.getObject(1);
             Object datos[] = new Object[11];
-            while(results.next()){
-                String n = "";
-                for(int i = 0; i<25;i++){
-                    if(i==16){
-                        datos[9] = results.getObject(i+1);
-                    }
-                    if(i==1){
-                        n = results.getObject(i+1).toString();
-                    }
-                    if(i==2){
-                        String a = results.getObject(i+1).toString();
-                        String f = n+" "+a;
-                        datos[4] = f;
-                    }
-                    if(i==15){
-                        datos[8] = results.getObject(i+1);
-                    }
-                    if(i==14){
-                        datos[7] = results.getObject(i+1);
-                    }
-                    if(i==13){
-                        datos[6] = results.getObject(i+1);
-                    }
-                    if(i==12){
-                        datos[5] = results.getObject(i+1);
-                    }
-                    if(i==7){
-                        datos[0] = results.getObject(i+1);
-                    }
-                    if(i==8){
-                        datos[1] = results.getObject(i+1);
-                    }
-                    if(i==23){
-                        datos[3] = results.getObject(i+1);
-                    }
-                    if(i==20){
-                        datos[2] = results.getObject(i+1);
-                    }
-                }
-                model.addRow(datos);
-            }
+            llenarTablaCentralConsultas(datos, results, conn);
         }catch(Exception e){
             System.out.println("xxx Error en consultar_fecha_maquina_molde_novedad xxx");
         }
@@ -2060,25 +1322,26 @@ public class InternalReporte extends javax.swing.JInternalFrame {
                     XSSFSheet hoja = wb.createSheet();
                     XSSFRow fila = hoja.createRow(0);
                     fila.createCell(0).setCellValue("ID");
-                    fila.createCell(1).setCellValue("FECHA");
-                    fila.createCell(2).setCellValue("MAQUINARIA");
-                    fila.createCell(3).setCellValue("MOLDE");
-                    fila.createCell(4).setCellValue("USUARIO");
-                    fila.createCell(5).setCellValue("DESCRIPCIÓN");
+                    fila.createCell(1).setCellValue("USUARIO");//
+                    fila.createCell(2).setCellValue("FECHA");
+                    fila.createCell(3).setCellValue("MAQUINARIA");//
+                    fila.createCell(4).setCellValue("MOLDE");//
+                    fila.createCell(5).setCellValue("NOVEDAD DETECTADA");
                     fila.createCell(6).setCellValue("TIPO DE NOVEDAD");
-                    fila.createCell(7).setCellValue("DESCRIPCIÓN");
-                    fila.createCell(8).setCellValue("SOLUCIÓN");
-                    fila.createCell(9).setCellValue("NOVEDAD");
-                    hoja.setColumnWidth(0, 256*10);
-                    hoja.setColumnWidth(1, 256*13);
-                    hoja.setColumnWidth(2, 256*40);
-                    hoja.setColumnWidth(3, 256*30);
-                    hoja.setColumnWidth(4, 256*15);
-                    hoja.setColumnWidth(5, 256*15);
+                    fila.createCell(7).setCellValue("DESCRIPCIÓN NOVEDAD");
+                    fila.createCell(8).setCellValue("TIPO DE SOLUCIÓN");
+                    fila.createCell(9).setCellValue("DESCRIPCIÓN SOLUCIÓN");
+                    hoja.setColumnWidth(0, 256*5);
+                    hoja.setColumnWidth(1, 256*15);
+                    hoja.setColumnWidth(2, 256*10);
+                    hoja.setColumnWidth(3, 256*23);
+                    hoja.setColumnWidth(4, 256*37);
+                    hoja.setColumnWidth(5, 256*22);
                     hoja.setColumnWidth(6, 256*15);
-                    hoja.setColumnWidth(7, 256*30);
-                    hoja.setColumnWidth(8, 256*15);
-                    hoja.setColumnWidth(9, 256*30);
+                    hoja.setColumnWidth(7, 256*18);
+                    hoja.setColumnWidth(8, 256*22);
+                    hoja.setColumnWidth(9, 256*18);
+                    hoja.setColumnWidth(10, 256*22);
                     XSSFRow filas;
                     Rectangle rect;
                     jProgressBar1.setMaximum(jTable.getRowCount());
@@ -2092,6 +1355,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
                         try {
                             Thread.sleep(50);
                         } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null, "no se pudo cargar la barra de exportacion");
                         }
                         jTable.setRowSelectionInterval(i, i);
                         jProgressBar1.setValue(i+1);
@@ -2103,12 +1367,13 @@ public class InternalReporte extends javax.swing.JInternalFrame {
                         wb.write(new FileOutputStream(archivo));
                         Desktop.getDesktop().open(archivo);
                     } catch (Exception e) {
-
+                        JOptionPane.showMessageDialog(null, "No se pudo abrir el excel");
                     }
                 }
             };
             hilo.start();
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No se pudo exportar la tabla a excel");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -2139,7 +1404,6 @@ public class InternalReporte extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.toedter.calendar.JDateChooser btnFechaInicio;
     private javax.swing.JCheckBox checkBoxFecha;
     private javax.swing.JComboBox<String> comboBoxMaquinaria;
     private javax.swing.JComboBox<String> comboBoxMolde;
