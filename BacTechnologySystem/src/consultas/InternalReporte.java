@@ -304,11 +304,11 @@ public class InternalReporte extends javax.swing.JInternalFrame {
     
     private void llenarTablaCentralConsultas(Object datos[],ResultSet results,Connection conn) throws Exception{
         while(results.next()){
-            String n = "";
+            String n = "",idMolde="",nameMolde="";
             System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
             for(int i = 0; i<25;i++){
                 if(i==16){
-                    datos[5] = results.getObject(i+1);
+                    datos[5] = results.getObject(i+1).toString();
                     System.out.println("NOVEDAD ["+i+"] --> "+datos[5].toString());
                 }
                 if(i==1){
@@ -322,41 +322,45 @@ public class InternalReporte extends javax.swing.JInternalFrame {
                     System.out.println("USUARIO ["+i+"] --> "+datos[1].toString());
                 }
                 if(i==15){
-                    datos[8] = results.getObject(i+1);
+                    datos[8] = results.getObject(i+1).toString();
                     System.out.println("TIPO SOLUCION ["+i+"] --> "+datos[8].toString());
                 }
                 if(i==14){
-                    datos[9] = results.getObject(i+1);
+                    datos[9] = results.getObject(i+1).toString();
                     System.out.println("DESCRIPCION SOLUCION ["+i+"] --> "+datos[9].toString());
                 }
                 if(i==13){
-                    datos[6] = results.getObject(i+1);
+                    datos[6] = results.getObject(i+1).toString();
                     System.out.println("TIPO NOVEDAD ["+i+"] --> "+datos[6].toString());
                 }
                 if(i==12){
-                    datos[7] = results.getObject(i+1);
+                    datos[7] = results.getObject(i+1).toString();
                     System.out.println("DESCRIPCION NOVEDAD ["+i+"] --> "+datos[7].toString());
                 }
                 if(i==7){
-                    datos[0] = results.getObject(i+1);
+                    datos[0] = results.getObject(i+1).toString();
                     System.out.println(" ["+i+"] --> "+datos[0].toString());
                 }
                 if(i==8){
-                    datos[2] = results.getObject(i+1);
+                    datos[2] = results.getObject(i+1).toString();
                     System.out.println("FECHA ["+i+"] --> "+datos[2].toString());
                 }
                 if(i==23){
+                    idMolde = results.getObject(i+1).toString();
+                }
+                if(i == 24){
                     if(results.getObject(i+1).equals("000-000")){
                         datos[4] = "Sin Molde";
                         System.out.println("MOLDE ["+i+"] --> "+datos[4].toString());
                     }
                     else{
-                        datos[4] = results.getObject(i+1);
+                        nameMolde = results.getObject(i+1).toString();
+                        datos[4] = idMolde+" "+nameMolde;
                         System.out.println("MOLDE ["+i+"] --> "+datos[4].toString());
                     }
                 }
                 if(i==20){
-                    datos[3] = results.getObject(i+1);
+                    datos[3] = results.getObject(i+1).toString();
                     System.out.println("MAQUINA ["+i+"] --> "+datos[3].toString());
                 }
             }
@@ -384,15 +388,14 @@ public class InternalReporte extends javax.swing.JInternalFrame {
         txtMaquinaria = new javax.swing.JTextField();
         txtMolde = new javax.swing.JTextField();
         txtNovedad = new javax.swing.JTextField();
-        comboBoxMaquinaria = new javax.swing.JComboBox<String>();
-        comboBoxMolde = new javax.swing.JComboBox<String>();
-        comboBoxNovedad = new javax.swing.JComboBox<String>();
+        comboBoxMaquinaria = new javax.swing.JComboBox<>();
+        comboBoxMolde = new javax.swing.JComboBox<>();
+        comboBoxNovedad = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
-        comboBoxUsuario = new javax.swing.JComboBox<String>();
+        comboBoxUsuario = new javax.swing.JComboBox<>();
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         checkBoxFecha = new javax.swing.JCheckBox();
-        btnFechaInicio = new com.toedter.calendar.JDateChooser();
         jProgressBar1 = new javax.swing.JProgressBar();
         jPanel3 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
@@ -466,21 +469,21 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             }
         });
 
-        comboBoxMaquinaria.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboBoxMaquinaria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         comboBoxMaquinaria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboBoxMaquinariaActionPerformed(evt);
             }
         });
 
-        comboBoxMolde.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboBoxMolde.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        comboBoxNovedad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboBoxNovedad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel5.setText("Fecha");
 
-        comboBoxUsuario.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboBoxUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jButton1.setText("Consultar");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -534,10 +537,8 @@ public class InternalReporte extends javax.swing.JInternalFrame {
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                         .addComponent(comboBoxUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)))
-                                .addComponent(jLabel5)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnFechaInicio, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)))
-                        .addGap(18, 18, 18)
+                                .addComponent(jLabel5)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 175, Short.MAX_VALUE)
                         .addComponent(checkBoxFecha))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(304, 304, 304)
@@ -561,8 +562,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(txtUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(comboBoxUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jLabel5))
-                                .addComponent(btnFechaInicio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jLabel5)))
                             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(jLabel2)
@@ -1408,7 +1408,6 @@ public class InternalReporte extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.toedter.calendar.JDateChooser btnFechaInicio;
     private javax.swing.JCheckBox checkBoxFecha;
     private javax.swing.JComboBox<String> comboBoxMaquinaria;
     private javax.swing.JComboBox<String> comboBoxMolde;

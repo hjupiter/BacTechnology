@@ -335,14 +335,20 @@ public class Menu extends javax.swing.JFrame {
 
     private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
         // TODO add your handling code here:
-        try {
-            InternalReporteMolde r = new InternalReporteMolde();
-            centerJIF(r);
-            DesktopPane.add(r);
-            r.setSelected(true);
-        } catch (PropertyVetoException ex) {
-            Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+        boolean ventanaActivaReporteMolde = internalMolde.ventanaActivaMolde;
+        if(!ventanaActivaReporteMolde){
+            try {
+                InternalReporteMolde r = new InternalReporteMolde();
+                centerJIF(r);
+                DesktopPane.add(r);
+                r.setSelected(true);
+            } catch (PropertyVetoException ex) {
+                Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            JOptionPane.showMessageDialog(this, "La ventana REPORTE ya esta abierta!!");
         }
+        
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     /**

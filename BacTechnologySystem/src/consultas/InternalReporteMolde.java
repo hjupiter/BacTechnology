@@ -549,18 +549,19 @@ public class InternalReporteMolde extends javax.swing.JInternalFrame {
     
     private void llenarTablaCentralConsultas(Object datos[],ResultSet results,Connection conn) throws Exception{
         while(results.next()){
-            String name = "",idMolde="",nameMolde="";
+            String name = "",apellido="",idMolde="",nameMolde="";
             System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
             for(int i = 0; i<26;i++){
+                String a = results.getObject(i+1).toString();
+                System.out.println(" ["+i+"] --> "+a);
                 switch(i){
                     case 0:
                         break;
                     case 1:
                         name = results.getObject(i+1).toString();
-                        //System.out.println(" ["+i+"] --> "+name);
                         break;
                     case 2:
-                        String apellido = results.getObject(i+1).toString();
+                        apellido = results.getObject(i+1).toString();
                         String nombreCompleto = name+" "+apellido;
                         datos[1] = nombreCompleto;
                         System.out.println("USUARIO ["+i+"] --> "+datos[1].toString());
@@ -568,47 +569,55 @@ public class InternalReporteMolde extends javax.swing.JInternalFrame {
                     case 7:
                         datos[0] = results.getObject(i+1).toString();
                         System.out.println("ID ["+i+"] --> "+datos[0].toString());
-                        break;
                     case 8:
-                        datos[2] = results.getObject(i+1);
+                        datos[2] = results.getObject(i+1).toString();
                         System.out.println("FECHA ["+i+"] --> "+datos[2].toString());
                         break;
                     case 12:
-                        datos[8] = results.getObject(i+1);
+                        datos[8] = results.getObject(i+1).toString();
                         System.out.println("DESCRIPCION NOVEDAD ["+i+"] --> "+datos[8].toString());
                         break;
                     case 13:
-                        datos[7] = results.getObject(i+1);
+                        datos[7] = results.getObject(i+1).toString();
                         System.out.println("TIPO NOVEDAD ["+i+"] --> "+datos[7].toString());
                         break;
                     case 14:
-                        datos[10] = results.getObject(i+1);
+                        datos[10] = results.getObject(i+1).toString();
                         System.out.println("DESCRIPCION SOLUCION ["+i+"] --> "+datos[10].toString());
-                        break;    
+                        break;
                     case 15:
-                        datos[9] = results.getObject(i+1);
+                        datos[9] = results.getObject(i+1).toString();
                         System.out.println("TIPO SOLUCION ["+i+"] --> "+datos[9].toString());
                         break;
                     case 16:
-                        datos[5] = results.getObject(i+1);
+                        datos[5] = results.getObject(i+1).toString();
                         System.out.println("NOVEDAD ["+i+"] --> "+datos[5].toString());
                         break;
                     case 17:
                         //datos[i] = results.getObject(i+1);
-                        System.out.println("FOTO ["+i+"] --> "+datos[i].toString());
+                        //System.out.println("FOTO ["+i+"] --> "+datos[i].toString());
+                        System.out.println("FOTO");
                         break;
                     case 18:
-                        datos[6] = results.getObject(i+1);
+                        datos[6] = results.getObject(i+1).toString();
                         System.out.println("ARTICULO ["+i+"] --> "+datos[6].toString());
                         break;
                     case 21:
-                        datos[3] = results.getObject(i+1);
+                        datos[3] = results.getObject(i+1).toString();
                         System.out.println("MAQUINARIA ["+i+"] --> "+datos[3].toString());
                         break;
                     case 24:
                         idMolde = results.getObject(i+1).toString();
-                        System.out.println("MOLDE ["+i+"] --> "+datos[i].toString());
-                        break;
+                    case 25:
+                        if(idMolde.equals("000-000")){
+                            datos[4] = "Sin Molde";
+                            System.out.println("MOLDE ["+i+"] --> "+datos[4].toString());
+                        }else{
+                            nameMolde = results.getObject(i+1).toString();
+                            datos[4] = idMolde+" "+nameMolde;
+                            System.out.println("MOLDE ["+i+"] --> "+datos[4].toString());
+                        }
+                        
                 }
             }
             model.addRow(datos);
