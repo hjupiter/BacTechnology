@@ -21,6 +21,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Types;
 import java.text.DateFormat;
+import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -40,8 +41,8 @@ public class InternalReporte extends javax.swing.JInternalFrame {
 
     public static boolean ventanaActivaReporteUsuario = false;
     DateFormat df = DateFormat.getDateInstance();
-    private static final String rutaArchivo = "C://data//data.xlsx";
-    private static final File archivo = new File(rutaArchivo);
+    private String rutaArchivo = "C://reportes//reportes maquinaria//";
+    private File archivo;
     private String usuario;
     private String maquinaria;
     private String molde;
@@ -396,7 +397,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         checkBoxFecha = new javax.swing.JCheckBox();
-        jProgressBar1 = new javax.swing.JProgressBar();
+        barraDeProgreso = new javax.swing.JProgressBar();
         jPanel3 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
 
@@ -583,7 +584,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
                     .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
 
-        jProgressBar1.setStringPainted(true);
+        barraDeProgreso.setStringPainted(true);
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -591,7 +592,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(barraDeProgreso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -604,7 +605,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 31, Short.MAX_VALUE)
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(barraDeProgreso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -1149,9 +1150,9 @@ public class InternalReporte extends javax.swing.JInternalFrame {
         // TODO add your handling code here:
         limpiar_tabla();
         try {
-            usuario = txtUsuario.getText().toLowerCase();
-            maquinaria = txtMaquinaria.getText();
-            molde = txtMolde.getText();
+            usuario = txtUsuario.getText().toUpperCase();
+            maquinaria = txtMaquinaria.getText().toUpperCase();
+            molde = txtMolde.getText().toUpperCase();
             novedad = txtNovedad.getText();
             if(usuario.equals("") && maquinaria.equals("") && molde.equals("") && novedad.equals("")){
                 llenarTable();
@@ -1159,6 +1160,8 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             if(!usuario.equals("") && molde.equals("") && maquinaria.equals("") && novedad.equals("") && !checkBoxFecha.isSelected()){
                 limpiar_tabla();
                 String procedure = "{ ? = call CONSULTA_SOLO_USUARIO ( ? ) }";
+                System.out.println("********************************************");
+                System.out.println(usuario);
                 consultar(usuario, procedure);
             }
             if(!maquinaria.equals("") && molde.equals("") && usuario.equals("") && novedad.equals("") && !checkBoxFecha.isSelected() ){
@@ -1169,6 +1172,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             if(!molde.equals("") && usuario.equals("") && maquinaria.equals("") && novedad.equals("") && !checkBoxFecha.isSelected()){
                 limpiar_tabla();
                 String procedure = "{ ? = call CONSULTA_SOLO_MOLDE ( ? ) }";
+                System.out.println("------------------------");
                 consultar(molde, procedure);
             }
             if(!novedad.equals("") && molde.equals("") && maquinaria.equals("") && usuario.equals("") && !checkBoxFecha.isSelected()){
@@ -1233,6 +1237,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             }
             if(checkBoxFecha.isSelected()){
                 limpiar_tabla();
+                
                 String procedure = "{ ? = call CONSULTA_REPORTE_FECHA_POR_MES ( ? ) }";
                 consultar_por_fecha(fechaCorrecta(),procedure);
             }
@@ -1279,7 +1284,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             if(!maquinaria.equals("") && !novedad.equals("") && checkBoxFecha.isSelected() && usuario.equals("") && molde.equals("")){
                 limpiar_tabla();
                 String procedure = "{ ? = call CONSULTA_REPORTE_FECHA_MAQUINA_NOVEDAD ( ?, ? , ?) }";
-                consultar_fecha_maquina_novedad(fechaCorrecta(), maquinaria, molde, procedure);
+                consultar_fecha_maquina_novedad(fechaCorrecta(), maquinaria, novedad, procedure);
             }
             if(!molde.equals("") && !novedad.equals("") && checkBoxFecha.isSelected() && usuario.equals("") && maquinaria.equals("")){
                 limpiar_tabla();
@@ -1322,6 +1327,8 @@ public class InternalReporte extends javax.swing.JInternalFrame {
         try {
             Thread hilo = new Thread(){
                 public void run(){
+                    Random  rnd = new Random();
+                    int token =  (int) rnd.nextInt(999999999);
                     XSSFWorkbook wb = new XSSFWorkbook();
                     XSSFSheet hoja = wb.createSheet();
                     XSSFRow fila = hoja.createRow(0);
@@ -1348,7 +1355,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
                     hoja.setColumnWidth(10, 256*22);
                     XSSFRow filas;
                     Rectangle rect;
-                    jProgressBar1.setMaximum(jTable.getRowCount());
+                    barraDeProgreso.setMaximum(jTable.getRowCount());
                     for (int i = 0 ; i < jTable.getRowCount();i++){
                         filas = hoja.createRow(i+1);
                         rect = jTable.getCellRect(i, 0, true);
@@ -1362,14 +1369,25 @@ public class InternalReporte extends javax.swing.JInternalFrame {
                             JOptionPane.showMessageDialog(null, "no se pudo cargar la barra de exportacion");
                         }
                         jTable.setRowSelectionInterval(i, i);
-                        jProgressBar1.setValue(i+1);
+                        barraDeProgreso.setValue(i+1);
 
                     }
-                    jProgressBar1.setValue(0);
-                    jProgressBar1.setString("Abriendo Excel.....");
+                    barraDeProgreso.setValue(0);
+                    barraDeProgreso.setString("Abriendo Excel.....");
                     try {
-                        wb.write(new FileOutputStream(archivo));
-                        Desktop.getDesktop().open(archivo);
+                        File crear_carpeta = new File(rutaArchivo);
+                        if(crear_carpeta.exists()){
+                            archivo = new File(rutaArchivo+"reportesMaquina"+token+".xlsx");
+                            wb.write(new FileOutputStream(archivo));
+                            Desktop.getDesktop().open(archivo);
+                        }else{
+                            JOptionPane.showMessageDialog(null, "no esxite se va a crear...");
+                            crear_carpeta.mkdirs();
+                            archivo = new File(rutaArchivo+"reportesMaquina"+token+".xlsx");
+                            wb.write(new FileOutputStream(archivo));
+                            Desktop.getDesktop().open(archivo);
+                            //crea archivo
+                        }
                     } catch (Exception e) {
                         JOptionPane.showMessageDialog(null, "No se pudo abrir el excel");
                     }
@@ -1408,6 +1426,7 @@ public class InternalReporte extends javax.swing.JInternalFrame {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JProgressBar barraDeProgreso;
     private javax.swing.JCheckBox checkBoxFecha;
     private javax.swing.JComboBox<String> comboBoxMaquinaria;
     private javax.swing.JComboBox<String> comboBoxMolde;
@@ -1424,7 +1443,6 @@ public class InternalReporte extends javax.swing.JInternalFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable;
     private javax.swing.JTextField txtMaquinaria;

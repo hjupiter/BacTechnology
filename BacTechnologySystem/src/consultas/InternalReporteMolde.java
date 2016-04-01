@@ -7,24 +7,32 @@ package consultas;
 
 import conexion.Conexion;
 import static consultas.InternalReporte.ventanaActivaReporteUsuario;
+import java.awt.Desktop;
 import java.awt.Image;
+import java.awt.Rectangle;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Types;
 import java.text.DateFormat;
+import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
  *
@@ -34,8 +42,8 @@ public class InternalReporteMolde extends javax.swing.JInternalFrame {
 
     public static boolean ventanaActivaReporteUsuarioMolde = false;
     DateFormat df = DateFormat.getDateInstance();
-    private static final String rutaArchivo = "C://data//data.xlsx";
-    private static final File archivo = new File(rutaArchivo);
+    private String rutaArchivo = "C://reportes//reportes moldes//";
+    private File archivo;
     private String usuario;
     private String maquinaria;
     private String molde;
@@ -107,7 +115,7 @@ public class InternalReporteMolde extends javax.swing.JInternalFrame {
         btnConsultar = new javax.swing.JButton();
         btnExportarExcel = new javax.swing.JButton();
         checkBoxFecha = new javax.swing.JCheckBox();
-        jProgressBar1 = new javax.swing.JProgressBar();
+        barraDeProgreso = new javax.swing.JProgressBar();
         jPanel3 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -274,7 +282,7 @@ public class InternalReporteMolde extends javax.swing.JInternalFrame {
                 .addContainerGap(13, Short.MAX_VALUE))
         );
 
-        jProgressBar1.setStringPainted(true);
+        barraDeProgreso.setStringPainted(true);
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setPreferredSize(new java.awt.Dimension(1200, 53));
@@ -323,7 +331,7 @@ public class InternalReporteMolde extends javax.swing.JInternalFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jProgressBar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(barraDeProgreso, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jScrollPane1))
                 .addContainerGap())
         );
@@ -335,7 +343,7 @@ public class InternalReporteMolde extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 162, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jProgressBar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(barraDeProgreso, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 298, Short.MAX_VALUE)
                 .addContainerGap())
@@ -730,6 +738,369 @@ public class InternalReporteMolde extends javax.swing.JInternalFrame {
         }
     }
     
+    private void consultar_dos(String consulta,String consulta_2, String procedure){
+        Conexion conexion =  new Conexion();
+        Connection conn = conexion.Conexion();
+        try{
+            conn.setAutoCommit(false);
+            CallableStatement todas_reportes =  conn.prepareCall(procedure);
+            todas_reportes.registerOutParameter(1, Types.OTHER);
+            todas_reportes.setString(2, consulta);
+            todas_reportes.setString(3, consulta_2);
+            todas_reportes.execute();
+            ResultSet results = (ResultSet)todas_reportes.getObject(1);
+            Object datos[] = new Object[11];
+            llenarTablaCentralConsultas(datos, results, conn);
+        }
+        catch(Exception e){
+        }
+    }
+    
+    private void consultar_tres(String consulta,String consulta_2,String consulta_3, String procedure){
+        Conexion conexion =  new Conexion();
+        Connection conn = conexion.Conexion();
+        try{
+            conn.setAutoCommit(false);
+            CallableStatement todas_reportes =  conn.prepareCall(procedure);
+            todas_reportes.registerOutParameter(1, Types.OTHER);
+            System.out.println(consulta+" "+ consulta_2 + " " + consulta_3);
+            todas_reportes.setString(2, consulta);
+            todas_reportes.setString(3, consulta_2);
+            todas_reportes.setString(4, consulta_3);
+            todas_reportes.execute();
+            ResultSet results = (ResultSet)todas_reportes.getObject(1);
+            Object datos[] = new Object[11];
+            llenarTablaCentralConsultas(datos, results, conn);
+        }
+        catch(Exception e){
+        }
+    }
+    
+    private void consultar_usuario_maquinaria_molde_novedad(String usuario,String maquinaria,String molde,String novedad,String procedure){
+        Conexion conexion =  new Conexion();
+        Connection conn = conexion.Conexion();
+        try{
+            conn.setAutoCommit(false);
+            CallableStatement todas_reportes =  conn.prepareCall(procedure);
+            todas_reportes.registerOutParameter(1, Types.OTHER);
+            System.out.println(usuario+" "+ maquinaria + " " + molde + " " + novedad +" ");
+            todas_reportes.setString(2, usuario);
+            todas_reportes.setString(3, maquinaria);
+            todas_reportes.setString(4, molde);
+            todas_reportes.setString(5, novedad);
+            todas_reportes.execute();
+            ResultSet results = (ResultSet)todas_reportes.getObject(1);
+            Object datos[] = new Object[11];
+            llenarTablaCentralConsultas(datos, results, conn);
+        }
+        catch(Exception e){
+        }
+    }
+    private void consultar_por_fecha(String fecha,String procedure){
+        Conexion conexion =  new Conexion();
+        Connection conn = conexion.Conexion();
+        try{
+            System.out.println("SSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS");
+            conn.setAutoCommit(false);
+            CallableStatement todas_reportes_por_fecha =  conn.prepareCall(procedure);
+            todas_reportes_por_fecha.registerOutParameter(1, Types.OTHER);
+            todas_reportes_por_fecha.setString(2,fecha);
+            todas_reportes_por_fecha.execute();
+            ResultSet results = (ResultSet)todas_reportes_por_fecha.getObject(1);
+            Object datos[] = new Object[11];
+            llenarTablaCentralConsultas(datos, results, conn);
+        }catch(Exception e){
+            System.out.println("xxx Error en consultar_por_fecha xxx");
+        }
+    }
+    
+    private void consultar_usuario_fecha(String usuario,String fecha,String procedure){
+        Conexion conexion =  new Conexion();
+        Connection conn = conexion.Conexion();
+        try{
+            conn.setAutoCommit(false);
+            CallableStatement todas_reportes_usuario_por_fecha =  conn.prepareCall(procedure);
+            todas_reportes_usuario_por_fecha.registerOutParameter(1, Types.OTHER);
+            todas_reportes_usuario_por_fecha.setString(2,fecha);
+            todas_reportes_usuario_por_fecha.setString(3,usuario);
+            todas_reportes_usuario_por_fecha.execute();
+            ResultSet results = (ResultSet)todas_reportes_usuario_por_fecha.getObject(1);
+            Object datos[] = new Object[11];
+            llenarTablaCentralConsultas(datos, results, conn);
+        }catch(Exception e){
+            System.out.println("xxx Error en consultar_usuario_fecha xxx");
+        }
+    }
+    
+    private void consultar_fecha_maquina(String fecha,String maquina,String procedure){
+        Conexion conexion =  new Conexion();
+        Connection conn = conexion.Conexion();
+        try{
+            conn.setAutoCommit(false);
+            CallableStatement reporteFechaMaquina =  conn.prepareCall(procedure);
+            reporteFechaMaquina.registerOutParameter(1, Types.OTHER);
+            reporteFechaMaquina.setString(2,fecha);
+            reporteFechaMaquina.setString(3,maquina);
+            reporteFechaMaquina.execute();
+            ResultSet results = (ResultSet)reporteFechaMaquina.getObject(1);
+            Object datos[] = new Object[11];
+            llenarTablaCentralConsultas(datos, results, conn);
+        }catch(Exception e){
+            System.out.println("xxx Error en consultar_fecha_maquina xxx");
+        }
+    }
+    
+    private void consultar_fecha_molde(String fecha,String molde,String procedure){
+        Conexion conexion =  new Conexion();
+        Connection conn = conexion.Conexion();
+        try{
+            conn.setAutoCommit(false);
+            CallableStatement consultar_fecha_molde =  conn.prepareCall(procedure);
+            consultar_fecha_molde.registerOutParameter(1, Types.OTHER);
+            consultar_fecha_molde.setString(2,fecha);
+            consultar_fecha_molde.setString(3,molde);
+            consultar_fecha_molde.execute();
+            ResultSet results = (ResultSet)consultar_fecha_molde.getObject(1);
+            Object datos[] = new Object[11];
+            llenarTablaCentralConsultas(datos, results, conn);
+        }catch(Exception e){
+            System.out.println("xxx Error en consultar_fecha_molde xxx");
+        }
+    }
+    
+    private void consultar_fecha_novedad(String fecha,String novedad,String procedure){
+        Conexion conexion =  new Conexion();
+        Connection conn = conexion.Conexion();
+        try{
+            conn.setAutoCommit(false);
+            CallableStatement consultar_fecha_novedad =  conn.prepareCall(procedure);
+            consultar_fecha_novedad.registerOutParameter(1, Types.OTHER);
+            consultar_fecha_novedad.setString(2,fecha);
+            consultar_fecha_novedad.setString(3,novedad);
+            consultar_fecha_novedad.execute();
+            ResultSet results = (ResultSet)consultar_fecha_novedad.getObject(1);
+            Object datos[] = new Object[11];
+            llenarTablaCentralConsultas(datos, results, conn);
+        }catch(Exception e){
+            System.out.println("xxx Error en consultar_fecha_novedad xxx");
+        }
+    }
+    
+    private void consulta_reporte_fecha_molde(String usuario,String fecha,String molde ,String procedure){
+        Conexion conexion =  new Conexion();
+        Connection conn = conexion.Conexion();
+        try{
+            conn.setAutoCommit(false);
+            CallableStatement consulta_reporte_fecha_molde =  conn.prepareCall(procedure);
+            consulta_reporte_fecha_molde.registerOutParameter(1, Types.OTHER);
+            consulta_reporte_fecha_molde.setString(2,fecha);
+            consulta_reporte_fecha_molde.setString(3,usuario);
+            consulta_reporte_fecha_molde.setString(4,molde);
+            consulta_reporte_fecha_molde.execute();
+            ResultSet results = (ResultSet)consulta_reporte_fecha_molde.getObject(1);
+            Object datos[] = new Object[11];
+            llenarTablaCentralConsultas(datos, results, conn);
+        }catch(Exception e){
+            System.out.println("xxx Error en consulta_reporte_fecha_molde xxx");
+        }
+    }
+    
+    private void consultar_usuario_fecha_maquina(String usuario,String fecha,String maquina,String procedure){
+        Conexion conexion =  new Conexion();
+        Connection conn = conexion.Conexion();
+        try{
+            conn.setAutoCommit(false);
+            CallableStatement consultar_usuario_fecha_maquina =  conn.prepareCall(procedure);
+            consultar_usuario_fecha_maquina.registerOutParameter(1, Types.OTHER);
+            consultar_usuario_fecha_maquina.setString(2,fecha);
+            consultar_usuario_fecha_maquina.setString(3,usuario);
+            consultar_usuario_fecha_maquina.setString(4,maquina);
+            consultar_usuario_fecha_maquina.execute();
+            ResultSet results = (ResultSet)consultar_usuario_fecha_maquina.getObject(1);
+            Object datos[] = new Object[11];
+            llenarTablaCentralConsultas(datos, results, conn);
+        }catch(Exception e){
+            System.out.println("xxx Error en consultar_usuario_fecha_maquina xxx");
+        }
+    }
+    
+    private void consultar_usuario_fecha_novedad(String usuario,String fecha,String novedad ,String procedure){
+        Conexion conexion =  new Conexion();
+        Connection conn = conexion.Conexion();
+        try{
+            conn.setAutoCommit(false);
+            CallableStatement consultar_usuario_fecha_novedad =  conn.prepareCall(procedure);
+            consultar_usuario_fecha_novedad.registerOutParameter(1, Types.OTHER);
+            consultar_usuario_fecha_novedad.setString(2,fecha);
+            consultar_usuario_fecha_novedad.setString(3,usuario);
+            consultar_usuario_fecha_novedad.setString(4,novedad);
+            consultar_usuario_fecha_novedad.execute();
+            ResultSet results = (ResultSet)consultar_usuario_fecha_novedad.getObject(1);
+            Object datos[] = new Object[11];
+            llenarTablaCentralConsultas(datos, results, conn);
+        }catch(Exception e){
+            System.out.println("xxx Error en consultar_usuario_fecha_novedad xxx");
+        }
+    }
+    
+    private void consultar_fecha_maquina_molde(String fecha,String maquina,String molde ,String procedure){
+        Conexion conexion =  new Conexion();
+        Connection conn = conexion.Conexion();
+        try{
+            conn.setAutoCommit(false);
+            CallableStatement consultar_fecha_maquina_molde =  conn.prepareCall(procedure);
+            consultar_fecha_maquina_molde.registerOutParameter(1, Types.OTHER);
+            consultar_fecha_maquina_molde.setString(2,fecha);
+            consultar_fecha_maquina_molde.setString(3,maquina);
+            consultar_fecha_maquina_molde.setString(4,molde);
+            consultar_fecha_maquina_molde.execute();
+            ResultSet results = (ResultSet)consultar_fecha_maquina_molde.getObject(1);
+            Object datos[] = new Object[11];
+            llenarTablaCentralConsultas(datos, results, conn);
+        }catch(Exception e){
+            System.out.println("xxx Error en consultar_fecha_maquina_molde xxx");
+        }
+    }
+    
+    private void consultar_fecha_maquina_novedad(String fecha,String maquina,String novedad ,String procedure){
+        Conexion conexion =  new Conexion();
+        Connection conn = conexion.Conexion();
+        try{
+            conn.setAutoCommit(false);
+            CallableStatement consultar_fecha_maquina_novedad =  conn.prepareCall(procedure);
+            consultar_fecha_maquina_novedad.registerOutParameter(1, Types.OTHER);
+            consultar_fecha_maquina_novedad.setString(2,fecha);
+            consultar_fecha_maquina_novedad.setString(3,maquina);
+            consultar_fecha_maquina_novedad.setString(4,novedad);
+            consultar_fecha_maquina_novedad.execute();
+            ResultSet results = (ResultSet)consultar_fecha_maquina_novedad.getObject(1);
+            Object datos[] = new Object[11];
+            llenarTablaCentralConsultas(datos, results, conn);
+        }catch(Exception e){
+            System.out.println("xxx Error en consultar_fecha_maquina_novedad xxx");
+        }
+    }
+    
+    private void consultar_fecha_molde_novedad(String fecha,String molde,String novedad ,String procedure){
+        Conexion conexion =  new Conexion();
+        Connection conn = conexion.Conexion();
+        try{
+            conn.setAutoCommit(false);
+            CallableStatement consultar_fecha_molde_novedad =  conn.prepareCall(procedure);
+            consultar_fecha_molde_novedad.registerOutParameter(1, Types.OTHER);
+            consultar_fecha_molde_novedad.setString(2,fecha);
+            consultar_fecha_molde_novedad.setString(3,molde);
+            consultar_fecha_molde_novedad.setString(4,novedad);
+            consultar_fecha_molde_novedad.execute();
+            ResultSet results = (ResultSet)consultar_fecha_molde_novedad.getObject(1);
+            Object datos[] = new Object[11];
+            llenarTablaCentralConsultas(datos, results, conn);
+        }catch(Exception e){
+            System.out.println("xxx Error en consultar_fecha_molde_novedad xxx");
+        }
+    }
+    
+    private void consultar_fecha_usuario_maquina_molde(String fecha,String usuario,String maquina,String molde,String procedure){
+        Conexion conexion =  new Conexion();
+        Connection conn = conexion.Conexion();
+        try{
+            conn.setAutoCommit(false);
+            CallableStatement consultar_fecha_usuario_maquina_molde =  conn.prepareCall(procedure);
+            consultar_fecha_usuario_maquina_molde.registerOutParameter(1, Types.OTHER);
+            consultar_fecha_usuario_maquina_molde.setString(2,fecha);
+            consultar_fecha_usuario_maquina_molde.setString(3,usuario);
+            consultar_fecha_usuario_maquina_molde.setString(4,maquina);
+            consultar_fecha_usuario_maquina_molde.setString(5,molde);
+            consultar_fecha_usuario_maquina_molde.execute();
+            ResultSet results = (ResultSet)consultar_fecha_usuario_maquina_molde.getObject(1);
+            Object datos[] = new Object[11];
+            llenarTablaCentralConsultas(datos, results, conn);
+        }catch(Exception e){
+            System.out.println("xxx Error en consultar_fecha_usuario_maquina_molde xxx");
+        }
+    }
+    
+    private void consultar_fecha_usuario_molde_novedad(String fecha,String usuario,String molde,String novedad,String procedure){
+        Conexion conexion =  new Conexion();
+        Connection conn = conexion.Conexion();
+        try{
+            conn.setAutoCommit(false);
+            CallableStatement consultar_fecha_usuario_molde_novedad =  conn.prepareCall(procedure);
+            consultar_fecha_usuario_molde_novedad.registerOutParameter(1, Types.OTHER);
+            consultar_fecha_usuario_molde_novedad.setString(2,fecha);
+            consultar_fecha_usuario_molde_novedad.setString(3,usuario);
+            consultar_fecha_usuario_molde_novedad.setString(4,molde);
+            consultar_fecha_usuario_molde_novedad.setString(5,novedad);
+            consultar_fecha_usuario_molde_novedad.execute();
+            ResultSet results = (ResultSet)consultar_fecha_usuario_molde_novedad.getObject(1);
+            Object datos[] = new Object[11];
+            llenarTablaCentralConsultas(datos, results, conn);
+        }catch(Exception e){
+            System.out.println("xxx Error en consultar_fecha_usuario_molde_novedad xxx");
+        }
+    }
+    
+    private void consultar_fecha_usuario_maquina_novedad(String fecha,String usuario,String maquinaria,String novedad,String procedure){
+        Conexion conexion =  new Conexion();
+        Connection conn = conexion.Conexion();
+        try{
+            conn.setAutoCommit(false);
+            CallableStatement consultar_fecha_usuario_maquina_novedad =  conn.prepareCall(procedure);
+            consultar_fecha_usuario_maquina_novedad.registerOutParameter(1, Types.OTHER);
+            consultar_fecha_usuario_maquina_novedad.setString(2,fecha);
+            consultar_fecha_usuario_maquina_novedad.setString(3,usuario);
+            consultar_fecha_usuario_maquina_novedad.setString(4,maquinaria);
+            consultar_fecha_usuario_maquina_novedad.setString(5,novedad);
+            consultar_fecha_usuario_maquina_novedad.execute();
+            ResultSet results = (ResultSet)consultar_fecha_usuario_maquina_novedad.getObject(1);
+            Object datos[] = new Object[11];
+            llenarTablaCentralConsultas(datos, results, conn);
+        }catch(Exception e){
+            System.out.println("xxx Error en consultar_fecha_usuario_maquina_novedad xxx");
+        }
+    }
+    
+    private void consultar_fecha_maquina_molde_novedad(String fecha,String maquina,String molde,String novedad,String procedure){
+        Conexion conexion =  new Conexion();
+        Connection conn = conexion.Conexion();
+        try{
+            conn.setAutoCommit(false);
+            CallableStatement consultar_fecha_maquina_molde_novedad =  conn.prepareCall(procedure);
+            consultar_fecha_maquina_molde_novedad.registerOutParameter(1, Types.OTHER);
+            consultar_fecha_maquina_molde_novedad.setString(2,fecha);
+            consultar_fecha_maquina_molde_novedad.setString(3,maquina);
+            consultar_fecha_maquina_molde_novedad.setString(4,molde);
+            consultar_fecha_maquina_molde_novedad.setString(5,novedad);
+            consultar_fecha_maquina_molde_novedad.execute();
+            ResultSet results = (ResultSet)consultar_fecha_maquina_molde_novedad.getObject(1);
+            Object datos[] = new Object[11];
+            llenarTablaCentralConsultas(datos, results, conn);
+        }catch(Exception e){
+            System.out.println("xxx Error en consultar_fecha_maquina_molde_novedad xxx");
+        }
+    }
+    
+    private void consultar_reporte_fecha_usuario_maquina_molde_novedad(String fecha,String usuario,String maquinaria,String molde,String novedad,String procedure){
+        Conexion conexion =  new Conexion();
+        Connection conn = conexion.Conexion();
+        try{
+            conn.setAutoCommit(false);
+            CallableStatement consultar_reporte_fecha_usuario_maquina_molde_novedad =  conn.prepareCall(procedure);
+            consultar_reporte_fecha_usuario_maquina_molde_novedad.registerOutParameter(1, Types.OTHER);
+            consultar_reporte_fecha_usuario_maquina_molde_novedad.setString(2,fecha);
+            consultar_reporte_fecha_usuario_maquina_molde_novedad.setString(3,usuario);
+            consultar_reporte_fecha_usuario_maquina_molde_novedad.setString(4,maquinaria);
+            consultar_reporte_fecha_usuario_maquina_molde_novedad.setString(5,molde);
+            consultar_reporte_fecha_usuario_maquina_molde_novedad.setString(6,novedad);
+            consultar_reporte_fecha_usuario_maquina_molde_novedad.execute();
+            ResultSet results = (ResultSet)consultar_reporte_fecha_usuario_maquina_molde_novedad.getObject(1);
+            Object datos[] = new Object[11];
+            llenarTablaCentralConsultas(datos, results, conn);
+        }catch(Exception e){
+            System.out.println("xxx Error en consultar_reporte_fecha_usuario_maquina_molde_novedad xxx");
+        }
+    }
+    
     private void txtUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtUsuarioActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtUsuarioActionPerformed
@@ -774,158 +1145,156 @@ public class InternalReporteMolde extends javax.swing.JInternalFrame {
                 System.out.println(usuario);
                 consultar(usuario, procedure);
             }
-//            if(!maquinaria.equals("") && molde.equals("") && usuario.equals("") && novedad.equals("") && !checkBoxFecha.isSelected() ){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_SOLO_MAQUINARIA ( ? ) }";
-//                consultar(maquinaria, procedure);
-//            }
-//            if(!molde.equals("") && usuario.equals("") && maquinaria.equals("") && novedad.equals("") && !checkBoxFecha.isSelected()){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_SOLO_MOLDE ( ? ) }";
-//                System.out.println("------------------------");
-//                consultar(molde, procedure);
-//            }
-//            if(!novedad.equals("") && molde.equals("") && maquinaria.equals("") && usuario.equals("") && !checkBoxFecha.isSelected()){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_SOLO_NOVEDAD ( ? ) }";
-//                consultar(novedad, procedure);
-//            }
-//            if(!usuario.equals("") && !maquinaria.equals("") && molde.equals("") && novedad.equals("") && !checkBoxFecha.isSelected()){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_USUARIO_MAQUINARIA ( ? , ?) }";
-//                consultar_dos(usuario,maquinaria, procedure);
-//            }
-//            if(!usuario.equals("") && !molde.equals("") && maquinaria.equals("") && novedad.equals("") && !checkBoxFecha.isSelected()){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_USUARIO_MOLDE ( ? , ?) }";
-//                consultar_dos(usuario,molde, procedure); 
-//            }
-//            if(!usuario.equals("") && !novedad.equals("") && maquinaria.equals("") && molde.equals("") && !checkBoxFecha.isSelected()){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_USUARIO_NOVEDAD ( ? , ?) }";
-//                consultar_dos(txtUsuario.getText(),txtNovedad.getText(), procedure);
-//            }
-//            if(!usuario.equals("") && !maquinaria.equals("") && !molde.equals("") && novedad.equals("") && !checkBoxFecha.isSelected()){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_USUARIO_MAQUINARIA_MOLDE ( ? , ? , ?) }";
-//                consultar_tres(usuario,maquinaria,molde, procedure);
-//            }
-//            if(!usuario.equals("") && !maquinaria.equals("") && !novedad.equals("") && molde.equals("") && !checkBoxFecha.isSelected()){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_USUARIO_MAQUINARIA_NOVEDAD ( ? , ? , ? ) }";
-//                consultar_tres(usuario,maquinaria,novedad, procedure);
-//            }
-//            if(!usuario.equals("") && !molde.equals("") && !novedad.equals("") && maquinaria.equals("") && !checkBoxFecha.isSelected()){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_USUARIO_MOLDE_NOVEDAD ( ? , ? , ?) }";
-//                consultar_tres(usuario,maquinaria,novedad, procedure);
-//            }
-//            if(!maquinaria.equals("") && !molde.equals("") && novedad.equals("") && usuario.equals("") && !checkBoxFecha.isSelected()){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_MAQUINARIA_MOLDE ( ? , ? ) }";
-//                consultar_dos(maquinaria,molde, procedure);
-//            }
-//            if(!maquinaria.equals("") && !novedad.equals("") && molde.equals("") && usuario.equals("") && !checkBoxFecha.isSelected()){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_MAQUINARIA_NOVEDAD ( ? , ? ) }";
-//                consultar_dos(maquinaria,novedad, procedure);
-//            }
-//            if(!maquinaria.equals("") && !molde.equals("") && !novedad.equals("") && usuario.equals("") && !checkBoxFecha.isSelected()){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_MAQUINARIA_MOLDE_NOVEDAD ( ? , ? ,?) }";
-//                consultar_tres(maquinaria,molde,novedad, procedure);
-//            }
-//            if(!molde.equals("") && !novedad.equals("") && usuario.equals("") && maquinaria.equals("") && !checkBoxFecha.isSelected()){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_MOLDE_NOVEDAD ( ? , ? ) }";
-//                consultar_dos(molde,novedad, procedure);
-//            }
-//            if(!usuario.equals("") && !maquinaria.equals("") && !molde.equals("") && !novedad.equals("") && !checkBoxFecha.isSelected()){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_USUARIO_MAQUINARIA_MOLDE_NOVEDAD ( ? , ? , ? , ?) }";
-//                consultar_usuario_maquinaria_molde_novedad(usuario,maquinaria,molde,novedad,procedure);
-//            }
-//            if(checkBoxFecha.isSelected()){
-//                limpiar_tabla();
-//                
-//                String procedure = "{ ? = call CONSULTA_REPORTE_FECHA_POR_MES ( ? ) }";
-//                consultar_por_fecha(fechaCorrecta(),procedure);
-//            }
-//            if(!usuario.equals("") && checkBoxFecha.isSelected() && molde.equals("") && maquinaria.equals("") && novedad.equals("")){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_REPORTE_USUARIO_FECHA_POR_MES ( ?, ? ) }";
-//                consultar_usuario_fecha(usuario,fechaCorrecta(),procedure);
-//            }
-//            if(!maquinaria.equals("") && checkBoxFecha.isSelected() && molde.equals("") && usuario.equals("") && novedad.equals("")){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_REPORTE_FECHA_MAQUINA_POR_MES ( ?, ? ) }";
-//                consultar_fecha_maquina(fechaCorrecta(),maquinaria, procedure);
-//            }
-//            if(!molde.equals("") && checkBoxFecha.isSelected() && novedad.equals("") && molde.equals("") && maquinaria.equals("")){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_REPORTE_FECHA_MOLDE_POR_MES ( ?, ? ) }";
-//                consultar_fecha_molde(fechaCorrecta(), molde, procedure);
-//            }
-//            if(!novedad.equals("") && checkBoxFecha.isSelected() && usuario.equals("") && molde.equals("") && maquinaria.equals("")){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_REPORTE_FECHA_NOVEDAD_POR_MES ( ?, ? ) }";
-//                consultar_fecha_novedad(fechaCorrecta(), novedad, procedure);
-//            }
-//            if(!usuario.equals("") && !molde.equals("") && checkBoxFecha.isSelected() && maquinaria.equals("") && novedad.equals("")){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_REPORTE_FECHA_USUARIO_MOLDE ( ? , ? , ?) }";
-//                consulta_reporte_fecha_molde(usuario,fechaCorrecta(),molde,procedure);
-//            }
-//            if(!usuario.equals("") && !maquinaria.equals("") && checkBoxFecha.isSelected() && molde.equals("") && novedad.equals("") ){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_REPORTE_USUARIO_FECHA_MAQUINA_POR_MES ( ?, ? , ?) }";
-//                consultar_usuario_fecha_maquina(usuario,fechaCorrecta(),maquinaria,procedure);
-//            }
-//            if(!usuario.equals("") && !novedad.equals("") && checkBoxFecha.isSelected() && molde.equals("") && maquinaria.equals("")){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_REPORTE_FECHA_USUARIO_NOVEDAD ( ?, ? , ?) }";
-//                consultar_usuario_fecha_novedad(usuario,fechaCorrecta(),novedad,procedure);
-//            }
-//            if(!maquinaria.equals("") && !molde.equals("") && checkBoxFecha.isSelected() && usuario.equals("") && novedad.equals("")){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_REPORTE_FECHA_MAQUINA_MOLDE ( ?, ? , ?) }";
-//                consultar_fecha_maquina_molde(fechaCorrecta(), maquinaria, molde, procedure);
-//            }
-//            if(!maquinaria.equals("") && !novedad.equals("") && checkBoxFecha.isSelected() && usuario.equals("") && molde.equals("")){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_REPORTE_FECHA_MAQUINA_NOVEDAD ( ?, ? , ?) }";
-//                consultar_fecha_maquina_novedad(fechaCorrecta(), maquinaria, molde, procedure);
-//            }
-//            if(!molde.equals("") && !novedad.equals("") && checkBoxFecha.isSelected() && usuario.equals("") && maquinaria.equals("")){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_REPORTE_FECHA_MOLDE_NOVEDAD ( ?, ? , ?) }";
-//                consultar_fecha_molde_novedad(fechaCorrecta(), molde, novedad, procedure);
-//            }
-//            if(!usuario.equals("") && !maquinaria.equals("") && !molde.equals("") && checkBoxFecha.isSelected() && novedad.equals("")){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_REPORTE_FECHA_USUARIO_MAQUINA_MOLDE ( ?, ? , ? ,?) }";
-//                consultar_fecha_usuario_maquina_molde(fechaCorrecta(), usuario, maquinaria, molde, procedure);
-//            }
-//            if(!usuario.equals("") && !molde.equals("") && !novedad.equals("") && checkBoxFecha.isSelected() && maquinaria.equals("")){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_REPORTE_FECHA_USUARIO_MOLDE_NOVEDAD ( ?, ? , ? ,?) }";
-//                consultar_fecha_usuario_molde_novedad(fechaCorrecta(), usuario, molde, novedad, procedure);
-//            }
-//            if(!usuario.equals("") && !maquinaria.equals("") && !novedad.equals("") && checkBoxFecha.isSelected() && molde.equals("")){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_REPORTE_FECHA_USUARIO_MAQUINA_NOVEDAD ( ?, ? , ? ,?) }";
-//                consultar_fecha_usuario_maquina_novedad(fechaCorrecta(), usuario, maquinaria, novedad, procedure);
-//            }
-//            if(!maquinaria.equals("") && !molde.equals("") && !novedad.equals("") && checkBoxFecha.isSelected() && usuario.equals("")){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_REPORTE_FECHA_MAQUINA_MOLDE_NOVEDAD ( ?, ? , ? ,?) }";
-//                consultar_fecha_maquina_molde_novedad(fechaCorrecta(), maquinaria, molde, novedad, procedure);
-//            }
-//            if(!usuario.equals("") && !maquinaria.equals("") && !molde.equals("") && !novedad.equals("") && checkBoxFecha.isSelected()){
-//                limpiar_tabla();
-//                String procedure = "{ ? = call CONSULTA_REPORTE_FECHA_USUARIO_MAQUINA_MOLDE_NOVEDAD ( ? , ? , ? , ? , ?) }";
-//                consultar_reporte_fecha_usuario_maquina_molde_novedad(fechaCorrecta(),usuario,maquinaria,molde,novedad,procedure);
-//            }
+            if(!maquinaria.equals("") && molde.equals("") && usuario.equals("") && novedad.equals("") && !checkBoxFecha.isSelected() ){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_SOLO_MAQUINARIA ( ? ) }";
+                consultar(maquinaria, procedure);
+            }
+            if(!molde.equals("") && usuario.equals("") && maquinaria.equals("") && novedad.equals("") && !checkBoxFecha.isSelected()){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_SOLO_MOLDE ( ? ) }";
+                consultar(molde, procedure);
+            }
+            if(!novedad.equals("") && molde.equals("") && maquinaria.equals("") && usuario.equals("") && !checkBoxFecha.isSelected()){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_SOLO_NOVEDAD ( ? ) }";
+                consultar(novedad, procedure);
+            }
+            if(!usuario.equals("") && !maquinaria.equals("") && molde.equals("") && novedad.equals("") && !checkBoxFecha.isSelected()){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_USUARIO_MAQUINARIA ( ? , ?) }";
+                consultar_dos(usuario,maquinaria, procedure);
+            }
+            if(!usuario.equals("") && !molde.equals("") && maquinaria.equals("") && novedad.equals("") && !checkBoxFecha.isSelected()){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_USUARIO_MOLDE ( ? , ?) }";
+                consultar_dos(usuario,molde, procedure); 
+            }
+            if(!usuario.equals("") && !novedad.equals("") && maquinaria.equals("") && molde.equals("") && !checkBoxFecha.isSelected()){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_USUARIO_NOVEDAD ( ? , ?) }";
+                consultar_dos(txtUsuario.getText(),txtNovedad.getText(), procedure);
+            }
+            if(!usuario.equals("") && !maquinaria.equals("") && !molde.equals("") && novedad.equals("") && !checkBoxFecha.isSelected()){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_USUARIO_MAQUINARIA_MOLDE ( ? , ? , ?) }";
+                consultar_tres(usuario,maquinaria,molde, procedure);
+            }
+            if(!usuario.equals("") && !maquinaria.equals("") && !novedad.equals("") && molde.equals("") && !checkBoxFecha.isSelected()){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_USUARIO_MAQUINARIA_NOVEDAD ( ? , ? , ? ) }";
+                consultar_tres(usuario,maquinaria,novedad, procedure);
+            }
+            if(!usuario.equals("") && !molde.equals("") && !novedad.equals("") && maquinaria.equals("") && !checkBoxFecha.isSelected()){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_USUARIO_MOLDE_NOVEDAD ( ? , ? , ?) }";
+                consultar_tres(usuario,maquinaria,novedad, procedure);
+            }
+            if(!maquinaria.equals("") && !molde.equals("") && novedad.equals("") && usuario.equals("") && !checkBoxFecha.isSelected()){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_MAQUINARIA_MOLDE ( ? , ? ) }";
+                consultar_dos(maquinaria,molde, procedure);
+            }
+            if(!maquinaria.equals("") && !novedad.equals("") && molde.equals("") && usuario.equals("") && !checkBoxFecha.isSelected()){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_MAQUINARIA_NOVEDAD ( ? , ? ) }";
+                consultar_dos(maquinaria,novedad, procedure);
+            }
+            if(!maquinaria.equals("") && !molde.equals("") && !novedad.equals("") && usuario.equals("") && !checkBoxFecha.isSelected()){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_MAQUINARIA_MOLDE_NOVEDAD ( ? , ? ,?) }";
+                consultar_tres(maquinaria,molde,novedad, procedure);
+            }
+            if(!molde.equals("") && !novedad.equals("") && usuario.equals("") && maquinaria.equals("") && !checkBoxFecha.isSelected()){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_MOLDE_NOVEDAD ( ? , ? ) }";
+                consultar_dos(molde,novedad, procedure);
+            }
+            if(!usuario.equals("") && !maquinaria.equals("") && !molde.equals("") && !novedad.equals("") && !checkBoxFecha.isSelected()){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_USUARIO_MAQUINARIA_MOLDE_NOVEDAD ( ? , ? , ? , ?) }";
+                consultar_usuario_maquinaria_molde_novedad(usuario,maquinaria,molde,novedad,procedure);
+            }
+            if(checkBoxFecha.isSelected()){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_REPORTE_FECHA_POR_MES ( ? ) }";
+                consultar_por_fecha(fechaCorrecta(),procedure);
+            }
+            if(!usuario.equals("") && checkBoxFecha.isSelected() && molde.equals("") && maquinaria.equals("") && novedad.equals("")){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_REPORTE_USUARIO_FECHA_POR_MES ( ?, ? ) }";
+                consultar_usuario_fecha(usuario,fechaCorrecta(),procedure);
+            }
+            if(!maquinaria.equals("") && checkBoxFecha.isSelected() && molde.equals("") && usuario.equals("") && novedad.equals("")){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_REPORTE_FECHA_MAQUINA_POR_MES ( ?, ? ) }";
+                consultar_fecha_maquina(fechaCorrecta(),maquinaria, procedure);
+            }
+            if(!molde.equals("") && checkBoxFecha.isSelected() && novedad.equals("") && molde.equals("") && maquinaria.equals("")){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTA_REPORTE_FECHA_MOLDE_POR_MES ( ?, ? ) }";
+                consultar_fecha_molde(fechaCorrecta(), molde, procedure);
+            }
+            if(!novedad.equals("") && checkBoxFecha.isSelected() && usuario.equals("") && molde.equals("") && maquinaria.equals("")){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_REPORTE_FECHA_NOVEDAD_POR_MES ( ?, ? ) }";
+                consultar_fecha_novedad(fechaCorrecta(), novedad, procedure);
+            }
+            if(!usuario.equals("") && !molde.equals("") && checkBoxFecha.isSelected() && maquinaria.equals("") && novedad.equals("")){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_REPORTE_FECHA_USUARIO_MOLDE ( ? , ? , ?) }";
+                consulta_reporte_fecha_molde(usuario,fechaCorrecta(),molde,procedure);
+            }
+            if(!usuario.equals("") && !maquinaria.equals("") && checkBoxFecha.isSelected() && molde.equals("") && novedad.equals("") ){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_REPORTE_USUARIO_FECHA_MAQUINA_POR_MES ( ?, ? , ?) }";
+                consultar_usuario_fecha_maquina(usuario,fechaCorrecta(),maquinaria,procedure);
+            }
+            if(!usuario.equals("") && !novedad.equals("") && checkBoxFecha.isSelected() && molde.equals("") && maquinaria.equals("")){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_REPORTE_FECHA_USUARIO_NOVEDAD ( ?, ? , ?) }";
+                consultar_usuario_fecha_novedad(usuario,fechaCorrecta(),novedad,procedure);
+            }
+            if(!maquinaria.equals("") && !molde.equals("") && checkBoxFecha.isSelected() && usuario.equals("") && novedad.equals("")){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_REPORTE_FECHA_MAQUINA_MOLDE ( ?, ? , ?) }";
+                consultar_fecha_maquina_molde(fechaCorrecta(), maquinaria, molde, procedure);
+            }
+            if(!maquinaria.equals("") && !novedad.equals("") && checkBoxFecha.isSelected() && usuario.equals("") && molde.equals("")){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_REPORTE_FECHA_MAQUINA_NOVEDAD ( ?, ? , ?) }";
+                consultar_fecha_maquina_novedad(fechaCorrecta(), maquinaria, novedad, procedure);
+            }
+            if(!molde.equals("") && !novedad.equals("") && checkBoxFecha.isSelected() && usuario.equals("") && maquinaria.equals("")){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_REPORTE_FECHA_MOLDE_NOVEDAD ( ?, ? , ?) }";
+                consultar_fecha_molde_novedad(fechaCorrecta(), molde, novedad, procedure);
+            }
+            if(!usuario.equals("") && !maquinaria.equals("") && !molde.equals("") && checkBoxFecha.isSelected() && novedad.equals("")){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_REPORTE_FECHA_USUARIO_MAQUINA_MOLDE ( ?, ? , ? ,?) }";
+                consultar_fecha_usuario_maquina_molde(fechaCorrecta(), usuario, maquinaria, molde, procedure);
+            }
+            if(!usuario.equals("") && !molde.equals("") && !novedad.equals("") && checkBoxFecha.isSelected() && maquinaria.equals("")){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_REPORTE_FECHA_USUARIO_MOLDE_NOVEDAD ( ?, ? , ? ,?) }";
+                consultar_fecha_usuario_molde_novedad(fechaCorrecta(), usuario, molde, novedad, procedure);
+            }
+            if(!usuario.equals("") && !maquinaria.equals("") && !novedad.equals("") && checkBoxFecha.isSelected() && molde.equals("")){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_REPORTE_FECHA_USUARIO_MAQUINA_NOVEDAD ( ?, ? , ? ,?) }";
+                consultar_fecha_usuario_maquina_novedad(fechaCorrecta(), usuario, maquinaria, novedad, procedure);
+            }
+            if(!maquinaria.equals("") && !molde.equals("") && !novedad.equals("") && checkBoxFecha.isSelected() && usuario.equals("")){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_REPORTE_FECHA_MAQUINA_MOLDE_NOVEDAD ( ?, ? , ? ,?) }";
+                consultar_fecha_maquina_molde_novedad(fechaCorrecta(), maquinaria, molde, novedad, procedure);
+            }
+            if(!usuario.equals("") && !maquinaria.equals("") && !molde.equals("") && !novedad.equals("") && checkBoxFecha.isSelected()){
+                limpiar_tabla();
+                String procedure = "{ ? = call CONSULTAMOLDE_REPORTE_FECHA_USUARIO_MAQUINA_MOLDE_NOVEDAD ( ? , ? , ? , ? , ?) }";
+                consultar_reporte_fecha_usuario_maquina_molde_novedad(fechaCorrecta(),usuario,maquinaria,molde,novedad,procedure);
+            }
 
         } catch (Exception e) {
             //JOptionPane.showMessageDialog(null, "Eliga un Campo de Busqueda");
@@ -934,11 +1303,86 @@ public class InternalReporteMolde extends javax.swing.JInternalFrame {
 
     private void btnExportarExcelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExportarExcelActionPerformed
         // TODO add your handling code here:
-        
+        try {
+            Thread hilo = new Thread(){
+                public void run(){
+                    Random  rnd = new Random();
+                    int token =  (int) rnd.nextInt(999999999);
+                    XSSFWorkbook wb = new XSSFWorkbook();
+                    XSSFSheet hoja = wb.createSheet();
+                    XSSFRow fila = hoja.createRow(0);
+                    fila.createCell(0).setCellValue("ID");
+                    fila.createCell(1).setCellValue("USUARIO");//
+                    fila.createCell(2).setCellValue("FECHA");
+                    fila.createCell(3).setCellValue("MAQUINARIA");//
+                    fila.createCell(4).setCellValue("MOLDE");//
+                    fila.createCell(5).setCellValue("NOVEDAD DETECTADA");
+                    fila.createCell(6).setCellValue("ARTICULO");//
+                    fila.createCell(7).setCellValue("TIPO DE NOVEDAD");
+                    fila.createCell(8).setCellValue("DESCRIPCIÓN NOVEDAD");
+                    fila.createCell(9).setCellValue("TIPO DE SOLUCIÓN");
+                    fila.createCell(10).setCellValue("DESCRIPCIÓN SOLUCIÓN");
+                    hoja.setColumnWidth(0, 256*5);
+                    hoja.setColumnWidth(1, 256*15);
+                    hoja.setColumnWidth(2, 256*10);
+                    hoja.setColumnWidth(3, 256*23);
+                    hoja.setColumnWidth(4, 256*37);
+                    hoja.setColumnWidth(5, 256*22);
+                    hoja.setColumnWidth(6, 256*15);
+                    hoja.setColumnWidth(7, 256*18);
+                    hoja.setColumnWidth(8, 256*22);
+                    hoja.setColumnWidth(9, 256*18);
+                    hoja.setColumnWidth(10, 256*22);
+                    XSSFRow filas;
+                    Rectangle rect;
+                    barraDeProgreso.setMaximum(jTable.getRowCount());
+                    for (int i = 0 ; i < jTable.getRowCount();i++){
+                        filas = hoja.createRow(i+1);
+                        rect = jTable.getCellRect(i, 0, true);
+                        jTable.scrollRectToVisible(rect);
+                        for(int j = 0 ; j <= 10 ; j++){
+                            filas.createCell(j).setCellValue(jTable.getValueAt(i, j).toString());
+                        }
+                        try {
+                            Thread.sleep(50);
+                        } catch (Exception e) {
+                            JOptionPane.showMessageDialog(null, "no se pudo cargar la barra de exportacion");
+                        }
+                        jTable.setRowSelectionInterval(i, i);
+                        barraDeProgreso.setValue(i+1);
+
+                    }
+                    barraDeProgreso.setValue(0);
+                    barraDeProgreso.setString("Abriendo Excel.....");
+                    try {
+                        File crear_carpeta = new File(rutaArchivo);
+                        if(crear_carpeta.exists()){
+                            archivo = new File(rutaArchivo+"reportesMolde"+token+".xlsx");
+                            wb.write(new FileOutputStream(archivo));
+                            Desktop.getDesktop().open(archivo);
+                        }else{
+                            JOptionPane.showMessageDialog(null, "no esxite se va a crear...");
+                            crear_carpeta.mkdirs();
+                            archivo = new File(rutaArchivo+"reportesMolde"+token+".xlsx");
+                            wb.write(new FileOutputStream(archivo));
+                            Desktop.getDesktop().open(archivo);
+                            //crea archivo
+                        }
+                        
+                    } catch (Exception e) {
+                        JOptionPane.showMessageDialog(null, "No se pudo abrir el excel");
+                    }
+                }
+            };
+            hilo.start();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, "No se pudo exportar la tabla a excel");
+        }
     }//GEN-LAST:event_btnExportarExcelActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JProgressBar barraDeProgreso;
     private javax.swing.JButton btnConsultar;
     private javax.swing.JButton btnExportarExcel;
     private javax.swing.JCheckBox checkBoxFecha;
@@ -954,7 +1398,6 @@ public class InternalReporteMolde extends javax.swing.JInternalFrame {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
-    private javax.swing.JProgressBar jProgressBar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable;
     private javax.swing.JTextField txtMaquinaria;
