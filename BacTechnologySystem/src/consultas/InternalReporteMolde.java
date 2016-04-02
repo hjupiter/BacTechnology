@@ -1150,7 +1150,6 @@ public class InternalReporteMolde extends javax.swing.JInternalFrame {
 
     private void btnConsultarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultarActionPerformed
         // TODO add your handling code here:
-        // TODO add your handling code here:
         limpiar_tabla();
         try {
             usuario = txtUsuario.getText().toUpperCase();
