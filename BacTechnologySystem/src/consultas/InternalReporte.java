@@ -140,15 +140,15 @@ public class InternalReporte extends javax.swing.JInternalFrame {
             //{
                //cadena=cadena + " " +  model.getValueAt(row,i).toString();
                 id = model.getValueAt(row,0).toString();
-                fecha = model.getValueAt(row,2).toString();
-                maquinaria = model.getValueAt(row,3).toString();
-                molde = model.getValueAt(row,4).toString();
-                Usuario = model.getValueAt(row,1).toString();
-                descripcion = model.getValueAt(row,9).toString();
+                fecha = model.getValueAt(row,1).toString();
+                maquinaria = model.getValueAt(row,2).toString();
+                molde = model.getValueAt(row,3).toString();
+                Usuario = model.getValueAt(row,4).toString();
+                descripcion = model.getValueAt(row,5).toString();
                 tipo_novedad = model.getValueAt(row,6).toString();
                 descripcion_novedad = model.getValueAt(row,7).toString();
                 solucion = model.getValueAt(row,8).toString();
-                novedad = model.getValueAt(row,5).toString();
+                novedad = model.getValueAt(row,9).toString();
                 System.out.println(descripcion+" "+descripcion_novedad);
                 InternalData d = new InternalData(id, fecha, maquinaria, molde, Usuario, descripcion, tipo_novedad, descripcion_novedad, solucion, novedad);
                 
