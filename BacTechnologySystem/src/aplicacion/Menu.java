@@ -39,6 +39,10 @@ public class Menu extends javax.swing.JFrame {
     private InternalMolde internalMolde;
     private InternalMaquinaria internalMaquinaria;
     private InternalUsuario InternalUsuario;
+    
+    private Acerca ac;
+    private InternalReporte r;
+    private InternalReporteMolde rMolde;
 
     /**
      * Creates new form Menu
@@ -301,53 +305,57 @@ public class Menu extends javax.swing.JFrame {
         
     }//GEN-LAST:event_itemMaquinariaConsultarActionPerformed
 
+    
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         // TODO add your handling code here:
-        boolean ventanaActivaAcerca = Acerca.ventanaActivaAcerca;
-        if(!ventanaActivaAcerca){
-            try{
-            Acerca ac = new Acerca();
-            centerJIF(ac);
-            DesktopPane.add(ac);
-            ac.setSelected(true);
-            }catch(Exception e){}
-        }else{
-            JOptionPane.showMessageDialog(this, "La ventana ACERCA ya esta abierta!!");
-        }
+        try{
+            if(!validacion.VentanasActivas.Acerca){
+                ac = new Acerca();
+                centerJIF(ac);
+                DesktopPane.add(ac);
+                ac.setSelected(true);
+                validacion.VentanasActivas.Acerca = true;
+            }else{
+                //JOptionPane.showMessageDialog(this, "La ventana ACERCA ya esta abierta!!");
+                ac.setSelected(true);
+            }
+        }catch(Exception e){}
         
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
+    
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
         // TODO add your handling code here:
         // TODO add your handling code here:
-        boolean ventanaActivaReporteUsuario = InternalReporte.ventanaActivaReporteUsuario;
-        if(!ventanaActivaReporteUsuario){
-            try{
-            InternalReporte r = new InternalReporte();
-            centerJIF(r);
-            DesktopPane.add(r);
-            r.setSelected(true);
-            }catch(Exception e){}
-        }else{
-            JOptionPane.showMessageDialog(this, "La ventana REPORTE ya esta abierta!!");
-        }
-    }//GEN-LAST:event_jMenuItem5ActionPerformed
-
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
-        // TODO add your handling code here:
-        boolean ventanaActivaReporteMolde = internalMolde.ventanaActivaMolde;
-        if(!ventanaActivaReporteMolde){
-            try {
-                InternalReporteMolde r = new InternalReporteMolde();
+        try{
+            if(!validacion.VentanasActivas.InternalReporte){
+                r = new InternalReporte();
                 centerJIF(r);
                 DesktopPane.add(r);
                 r.setSelected(true);
-            } catch (PropertyVetoException ex) {
-                Logger.getLogger(Menu.class.getName()).log(Level.SEVERE, null, ex);
+                validacion.VentanasActivas.InternalReporte = true;
+            }else{
+                //JOptionPane.showMessageDialog(this, "La ventana REPORTE ya esta abierta!!");
+                r.setSelected(true);
             }
-        }else{
-            JOptionPane.showMessageDialog(this, "La ventana REPORTE ya esta abierta!!");
-        }
+        }catch(Exception e){}
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
+
+    
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        // TODO add your handling code here:
+        try{
+            if(!validacion.VentanasActivas.InternalReporteMolde){
+                rMolde = new InternalReporteMolde();
+                centerJIF(rMolde);
+                DesktopPane.add(rMolde);
+                rMolde.setSelected(true);
+                validacion.VentanasActivas.InternalReporteMolde = true;
+            }else{
+                //JOptionPane.showMessageDialog(this, "La ventana REPORTE ya esta abierta!!");
+                rMolde.setSelected(true);
+            }
+        }catch(Exception e){}
         
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 

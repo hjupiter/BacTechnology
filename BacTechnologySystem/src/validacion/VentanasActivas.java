@@ -18,4 +18,9 @@ public class VentanasActivas {
     public static boolean cMolde = false;
     public static boolean cUsuario = false;
     
+    public static boolean Acerca = false;
+    
+    public static boolean InternalReporte = false;
+    public static boolean InternalReporteMolde = false;
+    
 }

@@ -34,8 +34,6 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ConsultaUsuario extends javax.swing.JInternalFrame implements ActionListener{
     
-    public static boolean ventanaActivaConsultaUsuario = false;
-    
     private Conexion conn;
     private DefaultTableModel model;
     private JScrollPane scroll;
@@ -59,7 +57,6 @@ public class ConsultaUsuario extends javax.swing.JInternalFrame implements Actio
      * Creates new form ConsultaUsuario
      */
     public ConsultaUsuario() {
-        ventanaActivaConsultaUsuario = true;
         conn = new Conexion();
         initComponents();
         llenarTable();

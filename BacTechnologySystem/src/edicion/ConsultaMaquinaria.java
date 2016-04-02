@@ -30,7 +30,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ConsultaMaquinaria extends javax.swing.JInternalFrame implements ActionListener {
 
-    public static boolean ventanaActivaMaquina;
+    
     private DefaultTableModel model;
     private JScrollPane scroll;
     
@@ -47,7 +47,7 @@ public class ConsultaMaquinaria extends javax.swing.JInternalFrame implements Ac
      * Creates new form CosultaMaquinaria
      */
     public ConsultaMaquinaria() {
-        ventanaActivaMaquina = false;
+        
         initComponents();
         llenarTable();
         setVisible(true);

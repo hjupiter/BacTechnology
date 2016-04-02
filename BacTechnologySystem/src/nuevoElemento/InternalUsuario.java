@@ -22,12 +22,12 @@ import validacion.General;
 public class InternalUsuario extends javax.swing.JInternalFrame {
     private General val;
     private ValidacionUsuario valUsu;
-    public static boolean ventanaActivaUsuario = false;
+    
     /**
      * Creates new form Usuario
      */
     public InternalUsuario() {
-        ventanaActivaUsuario = true;
+        
         val = new General();
         valUsu =  new ValidacionUsuario();
         initComponents();

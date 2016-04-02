@@ -20,13 +20,13 @@ import validacion.ValidacionMaquinaria;
  */
 public class InternalMaquinaria extends javax.swing.JInternalFrame {
 
-    public static boolean ventanaActivaMaquinaria;
+    
     private ValidacionMaquinaria valMaquinaria;
     /**
      * Creates new form InternalMaquinaria
      */
     public InternalMaquinaria() {
-        ventanaActivaMaquinaria = true;
+        
         valMaquinaria = new ValidacionMaquinaria();
         initComponents();
         setVisible(true);

@@ -31,7 +31,7 @@ import javax.swing.table.DefaultTableModel;
  */
 public class ConsultaMolde extends javax.swing.JInternalFrame implements ActionListener{
 
-    public static boolean ventanaActivaMolde = false;
+    
     private DefaultTableModel model;
     private JScrollPane scroll;
     
@@ -48,7 +48,7 @@ public class ConsultaMolde extends javax.swing.JInternalFrame implements ActionL
      * Creates new form CosultaMaquinaria
      */
     public ConsultaMolde() {
-        ventanaActivaMolde = true;
+        
         initComponents();
         llenarTable();
         setVisible(true);

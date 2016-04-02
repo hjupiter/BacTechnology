@@ -11,13 +11,12 @@ package aplicacion;
  */
 public class Acerca extends javax.swing.JInternalFrame {
 
-    static boolean ventanaActivaAcerca = false;
-
+    
     /**
      * Creates new form Acerca
      */
     public Acerca() {
-        ventanaActivaAcerca = true;
+        
         initComponents();
         setVisible(true);
     }
@@ -127,7 +126,7 @@ public class Acerca extends javax.swing.JInternalFrame {
 
     private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
         // TODO add your handling code here:
-        ventanaActivaAcerca = false;
+        validacion.VentanasActivas.Acerca = false;
     }//GEN-LAST:event_formInternalFrameClosing
 
 

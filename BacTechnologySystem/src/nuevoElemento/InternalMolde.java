@@ -19,13 +19,13 @@ import validacion.ValidacionMolde;
  */
 public class InternalMolde extends javax.swing.JInternalFrame {
 
-    public static boolean ventanaActivaMolde = false;
+    
     private ValidacionMolde valMolde;
     /**
      * Creates new form InternalMolde
      */
     public InternalMolde() {
-        ventanaActivaMolde = true;
+        
         valMolde =  new ValidacionMolde();
         initComponents();
         setVisible(true);

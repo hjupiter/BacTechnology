@@ -6,7 +6,6 @@
 package consultas;
 
 import conexion.Conexion;
-import static consultas.InternalReporte.ventanaActivaReporteUsuario;
 import java.awt.Desktop;
 import java.awt.Image;
 import java.awt.Rectangle;
@@ -54,7 +53,6 @@ public class InternalReporteMolde extends javax.swing.JInternalFrame {
      * Creates new form InternalReporteMolde
      */
     public InternalReporteMolde() {
-        ventanaActivaReporteUsuario = true;
         initComponents();
         llenarTable();
         llenarComboMolde();
@@ -107,11 +105,11 @@ public class InternalReporteMolde extends javax.swing.JInternalFrame {
         txtMaquinaria = new javax.swing.JTextField();
         txtMolde = new javax.swing.JTextField();
         txtNovedad = new javax.swing.JTextField();
-        comboBoxMaquinaria = new javax.swing.JComboBox<>();
-        comboBoxMolde = new javax.swing.JComboBox<>();
-        comboBoxNovedad = new javax.swing.JComboBox<>();
+        comboBoxMaquinaria = new javax.swing.JComboBox<String>();
+        comboBoxMolde = new javax.swing.JComboBox<String>();
+        comboBoxNovedad = new javax.swing.JComboBox<String>();
         jLabel5 = new javax.swing.JLabel();
-        comboBoxUsuario = new javax.swing.JComboBox<>();
+        comboBoxUsuario = new javax.swing.JComboBox<String>();
         btnConsultar = new javax.swing.JButton();
         btnExportarExcel = new javax.swing.JButton();
         checkBoxFecha = new javax.swing.JCheckBox();
@@ -121,7 +119,25 @@ public class InternalReporteMolde extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable = new javax.swing.JTable();
 
+        setClosable(true);
         setPreferredSize(new java.awt.Dimension(1200, 600));
+        addInternalFrameListener(new javax.swing.event.InternalFrameListener() {
+            public void internalFrameActivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosed(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameClosing(javax.swing.event.InternalFrameEvent evt) {
+                formInternalFrameClosing(evt);
+            }
+            public void internalFrameDeactivated(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameDeiconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameIconified(javax.swing.event.InternalFrameEvent evt) {
+            }
+            public void internalFrameOpened(javax.swing.event.InternalFrameEvent evt) {
+            }
+        });
 
         jPanel1.setMaximumSize(new java.awt.Dimension(40000, 40000));
         jPanel1.setPreferredSize(new java.awt.Dimension(1200, 149));
@@ -167,21 +183,21 @@ public class InternalReporteMolde extends javax.swing.JInternalFrame {
             }
         });
 
-        comboBoxMaquinaria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboBoxMaquinaria.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         comboBoxMaquinaria.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 comboBoxMaquinariaActionPerformed(evt);
             }
         });
 
-        comboBoxMolde.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboBoxMolde.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
-        comboBoxNovedad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboBoxNovedad.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel5.setText("Fecha");
 
-        comboBoxUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        comboBoxUsuario.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnConsultar.setText("Consultar");
         btnConsultar.addActionListener(new java.awt.event.ActionListener() {
@@ -353,7 +369,11 @@ public class InternalReporteMolde extends javax.swing.JInternalFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void llenarTable(){
-        model = new DefaultTableModel(null,getColumnas());
+        model = new DefaultTableModel(null,getColumnas()){
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         setFilas();
         jTable.setModel(model);
         setEventoMouseClicked(jTable);
@@ -401,18 +421,20 @@ public class InternalReporteMolde extends javax.swing.JInternalFrame {
             //{
                //cadena=cadena + " " +  model.getValueAt(row,i).toString();
                 id = model.getValueAt(row,0).toString();
-                fecha = model.getValueAt(row,1).toString();
-                maquinaria = model.getValueAt(row,2).toString();
-                molde = model.getValueAt(row,3).toString();
-                Usuario = model.getValueAt(row,4).toString();
-                descripcion = model.getValueAt(row,5).toString();
-                tipo_novedad = model.getValueAt(row,6).toString();
-                articulo = model.getValueAt(row, 7).toString();
-                descripcion_novedad = model.getValueAt(row,8).toString();
+                Usuario = model.getValueAt(row,1).toString();
+                fecha = model.getValueAt(row,2).toString();
+                maquinaria = model.getValueAt(row,3).toString();
+                molde = model.getValueAt(row,4).toString();
+                novedad = model.getValueAt(row,5).toString();
+                articulo = model.getValueAt(row, 6).toString();
+                tipo_novedad = model.getValueAt(row,7).toString();
+                
+                descripcion_novedad = model.getValueAt(row,10).toString();
                 solucion = model.getValueAt(row,9).toString();
-                novedad = model.getValueAt(row,10).toString();
+                descripcion = model.getValueAt(row,8).toString();
+                
                 System.out.println(descripcion+" "+descripcion_novedad);
-                //InternalData d = new InternalData(id, fecha, maquinaria, molde, Usuario, descripcion, tipo_novedad, descripcion_novedad, solucion, novedad);
+                InternalDataMolde d = new InternalDataMolde(id, fecha, maquinaria, molde, Usuario, descripcion, tipo_novedad, descripcion_novedad, solucion, novedad,articulo);
                 
             //}
         }
@@ -1379,6 +1401,11 @@ public class InternalReporteMolde extends javax.swing.JInternalFrame {
             JOptionPane.showMessageDialog(null, "No se pudo exportar la tabla a excel");
         }
     }//GEN-LAST:event_btnExportarExcelActionPerformed
+
+    private void formInternalFrameClosing(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameClosing
+        // TODO add your handling code here:
+        validacion.VentanasActivas.InternalReporteMolde = false;
+    }//GEN-LAST:event_formInternalFrameClosing
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
