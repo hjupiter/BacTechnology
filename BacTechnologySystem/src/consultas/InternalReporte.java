@@ -21,7 +21,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Types;
 import java.text.DateFormat;
-import java.util.Random;
+import java.util.Calendar;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
@@ -39,7 +39,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class InternalReporte extends javax.swing.JInternalFrame {
 
-    
+    private final Calendar c = Calendar.getInstance();
+    private String dia,mes,annio,fecha;
     DateFormat df = DateFormat.getDateInstance();
     private String rutaArchivo = "C://reportes//reportes maquinaria//";
     private File archivo;
@@ -1332,8 +1333,10 @@ public class InternalReporte extends javax.swing.JInternalFrame {
         try {
             Thread hilo = new Thread(){
                 public void run(){
-                    Random  rnd = new Random();
-                    int token =  (int) rnd.nextInt(999999999);
+                    dia = Integer.toString(c.get(Calendar.DATE));
+                    mes = Integer.toString(c.get(Calendar.MONTH)+1);
+                    annio = Integer.toString(c.get(Calendar.YEAR));
+                    fecha = ""+annio+"-"+mes+"-"+dia;
                     XSSFWorkbook wb = new XSSFWorkbook();
                     XSSFSheet hoja = wb.createSheet();
                     XSSFRow fila = hoja.createRow(0);
@@ -1373,26 +1376,27 @@ public class InternalReporte extends javax.swing.JInternalFrame {
                         } catch (Exception e) {
                             JOptionPane.showMessageDialog(null, "no se pudo cargar la barra de exportacion");
                         }
-                        jTable.setRowSelectionInterval(i, i);
                         barraDeProgreso.setValue(i+1);
 
                     }
                     barraDeProgreso.setValue(0);
                     barraDeProgreso.setString("Abriendo Excel.....");
                     try {
+                        rutaArchivo = "C://reportes//reportes maquinaria//"+fecha+"//";
                         File crear_carpeta = new File(rutaArchivo);
                         if(crear_carpeta.exists()){
-                            archivo = new File(rutaArchivo+"reportesMaquina"+token+".xlsx");
+                            archivo = new File(rutaArchivo+c.get(Calendar.HOUR)+"."+c.get(Calendar.MINUTE)+"."+c.get(Calendar.MINUTE)+"."+"reportesMaquina"+".xlsx");
                             wb.write(new FileOutputStream(archivo));
                             Desktop.getDesktop().open(archivo);
                         }else{
-                            JOptionPane.showMessageDialog(null, "no esxite se va a crear...");
+                            //JOptionPane.showMessageDialog(null, "no esxite se va a crear...");
                             crear_carpeta.mkdirs();
-                            archivo = new File(rutaArchivo+"reportesMaquina"+token+".xlsx");
+                            archivo = new File(rutaArchivo+c.get(Calendar.HOUR)+"."+c.get(Calendar.MINUTE)+"."+c.get(Calendar.MINUTE)+"."+"reportesMaquina"+".xlsx");
                             wb.write(new FileOutputStream(archivo));
                             Desktop.getDesktop().open(archivo);
                             //crea archivo
                         }
+                        jTable.setEnabled(true);
                     } catch (Exception e) {
                         JOptionPane.showMessageDialog(null, "No se pudo abrir el excel");
                     }

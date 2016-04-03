@@ -21,6 +21,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Types;
 import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -38,7 +39,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  * @author bakamedi
  */
 public class InternalReporteMolde extends javax.swing.JInternalFrame {
-
+    
+    private final Calendar c = Calendar.getInstance();
+    private String dia,mes,annio,fecha;
     public static boolean ventanaActivaReporteUsuarioMolde = false;
     DateFormat df = DateFormat.getDateInstance();
     private String rutaArchivo = "C://reportes//reportes moldes//";
@@ -1327,8 +1330,6 @@ public class InternalReporteMolde extends javax.swing.JInternalFrame {
         try {
             Thread hilo = new Thread(){
                 public void run(){
-                    Random  rnd = new Random();
-                    int token =  (int) rnd.nextInt(999999999);
                     XSSFWorkbook wb = new XSSFWorkbook();
                     XSSFSheet hoja = wb.createSheet();
                     XSSFRow fila = hoja.createRow(0);
@@ -1376,20 +1377,21 @@ public class InternalReporteMolde extends javax.swing.JInternalFrame {
                     barraDeProgreso.setValue(0);
                     barraDeProgreso.setString("Abriendo Excel.....");
                     try {
+                        rutaArchivo = "C://reportes//reportes moldes//"+fecha+"//";
                         File crear_carpeta = new File(rutaArchivo);
                         if(crear_carpeta.exists()){
-                            archivo = new File(rutaArchivo+"reportesMolde"+token+".xlsx");
+                            archivo = new File(rutaArchivo+c.get(Calendar.HOUR)+"."+c.get(Calendar.MINUTE)+"."+c.get(Calendar.MINUTE)+"."+"reportesMaquina"+".xlsx");
                             wb.write(new FileOutputStream(archivo));
                             Desktop.getDesktop().open(archivo);
                         }else{
-                            JOptionPane.showMessageDialog(null, "no esxite se va a crear...");
+                            //JOptionPane.showMessageDialog(null, "no esxite se va a crear...");
                             crear_carpeta.mkdirs();
-                            archivo = new File(rutaArchivo+"reportesMolde"+token+".xlsx");
+                            archivo = new File(rutaArchivo+c.get(Calendar.HOUR)+"."+c.get(Calendar.MINUTE)+"."+c.get(Calendar.MINUTE)+"."+"reportesMaquina"+".xlsx");
                             wb.write(new FileOutputStream(archivo));
                             Desktop.getDesktop().open(archivo);
                             //crea archivo
                         }
-                        
+                        jTable.setEnabled(true);
                     } catch (Exception e) {
                         JOptionPane.showMessageDialog(null, "No se pudo abrir el excel");
                     }
