@@ -1330,6 +1330,10 @@ public class InternalReporteMolde extends javax.swing.JInternalFrame {
         try {
             Thread hilo = new Thread(){
                 public void run(){
+                    dia = Integer.toString(c.get(Calendar.DATE));
+                    mes = Integer.toString(c.get(Calendar.MONTH)+1);
+                    annio = Integer.toString(c.get(Calendar.YEAR));
+                    fecha = ""+annio+"-"+mes+"-"+dia;
                     XSSFWorkbook wb = new XSSFWorkbook();
                     XSSFSheet hoja = wb.createSheet();
                     XSSFRow fila = hoja.createRow(0);
