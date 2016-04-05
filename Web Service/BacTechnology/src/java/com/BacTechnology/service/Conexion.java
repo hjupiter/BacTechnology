@@ -5,34 +5,28 @@
  */
 package com.BacTechnology.service;
 
-import java.sql.CallableStatement;
+package com.BacTechnology.service;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-import java.sql.Types;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.SQLException;
+
 
 /**
  *
  * @author Angel
  */
 public class Conexion {
-    
-    
+    private Connection conexion = null;
+    private static final String cadena = "jdbc:postgresql://192.168.1.104:5432/BACTECHNOLOGY";
+    private static final String user = "postgres";
+    private static final String pass = "root";
     public Connection Conexion(){
-        List resultData =  new ArrayList();
-        Connection conexion = null;
         try{
-            String cadena = "jdbc:postgresql://192.168.1.6:5432/BACTECHNOLOGY";
-            String user = "postgres";
-            String pass = "root";
             Class.forName("org.postgresql.Driver");
             conexion = DriverManager.getConnection(cadena,user,pass);
             return conexion;
-        }catch(Exception e){
+        }catch(ClassNotFoundException | SQLException e){
             return conexion;
         }
-    }
+    }  
 }
