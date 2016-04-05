@@ -6,10 +6,10 @@
 package consultas;
 
 import conexion.Conexion;
+import imagenes.Icono;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.InputStream;
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,16 +25,17 @@ public class InternalData extends javax.swing.JFrame {
     /**
      * Creates new form InternalData
      */
-    String id;
-    String fecha;
-    String maquinaria;
-    String molde;
-    String Usuario;
-    String descripcion;
-    String tipo_novedad;
-    String descripcion_novedad;
-    String solucion;
-    String novedad;
+    private String id;
+    private String fecha;
+    private String maquinaria;
+    private String molde;
+    private String Usuario;
+    private String descripcion;
+    private String tipo_novedad;
+    private String descripcion_novedad;
+    private String solucion;
+    private String novedad;
+    Icono icono = Icono.getInstance();
     
     public InternalData(String a,String b,String c, String d, String e, String f, String g,String h, String i, String j) {
         id = a;
@@ -62,6 +63,7 @@ public class InternalData extends javax.swing.JFrame {
         txtDescripcionNovedad.setText(descripcion);
         cargarImagen(id);
         this.setResizable(false);
+        icono.setIcono(this);
         setVisible(true);
     }
     

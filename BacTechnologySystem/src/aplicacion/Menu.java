@@ -10,17 +10,9 @@ import consultas.InternalReporteMolde;
 import edicion.ConsultaMaquinaria;
 import edicion.ConsultaMolde;
 import edicion.ConsultaUsuario;
-import java.awt.Desktop;
+import imagenes.Icono;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.beans.PropertyVetoException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JInternalFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 import nuevoElemento.InternalMaquinaria;
 import nuevoElemento.InternalMolde;
 
@@ -32,23 +24,23 @@ import nuevoElemento.InternalUsuario;
  */
 public class Menu extends javax.swing.JFrame {
     
-    
     private ConsultaMolde molde;
     private ConsultaMaquinaria maquinaria;
     private ConsultaUsuario usuario;
     private InternalMolde internalMolde;
     private InternalMaquinaria internalMaquinaria;
     private InternalUsuario InternalUsuario;
-    
     private Acerca ac;
     private InternalReporte r;
     private InternalReporteMolde rMolde;
-
+    Icono icono = Icono.getInstance();
+    
     /**
      * Creates new form Menu
      */
     public Menu() {
         initComponents();
+        icono.setIcono(this);
     }
 
     /**

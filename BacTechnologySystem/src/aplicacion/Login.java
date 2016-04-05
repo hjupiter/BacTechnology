@@ -6,6 +6,7 @@
 package aplicacion;
 
 import conexion.Conexion;
+import imagenes.Icono;
 import java.awt.event.KeyEvent;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -20,12 +21,14 @@ public class Login extends javax.swing.JFrame {
     private final Conexion conexion = new Conexion();
     private final Connection conn = conexion.Conexion();
     private Boolean verifica = false;
+    Icono icono = Icono.getInstance();
     /**
      * Creates new form Main
      */
     public Login() {
         initComponents();
         this.setResizable(false);
+        icono.setIcono(this);
         clearTxtFields();
     }
     

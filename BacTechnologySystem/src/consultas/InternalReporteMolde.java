@@ -22,7 +22,6 @@ import java.sql.ResultSet;
 import java.sql.Types;
 import java.text.DateFormat;
 import java.util.Calendar;
-import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
