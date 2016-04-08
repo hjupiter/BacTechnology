@@ -242,8 +242,29 @@ public class MantenimientoMolde extends AppCompatActivity {
         }
 
         protected void onPostExecute(Object result) {
-            progressDialog.dismiss();
-            super.onPostExecute(result);
+            try {
+                AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                alert.setTitle("Envio Exitoso");
+                alert.setMessage("Se jan enviado los datos exitsamente");
+                alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                progressDialog.dismiss();
+                MantenimientoMolde.this.finish();
+                super.onPostExecute(result);
+            }catch (Exception e){
+                AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                alert.setTitle("Hubo problemas al enviar el reporte");
+                alert.setMessage("Intentelo Nuevamente");
+                alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
+                alert.show();
+            }
         }
     }
 }

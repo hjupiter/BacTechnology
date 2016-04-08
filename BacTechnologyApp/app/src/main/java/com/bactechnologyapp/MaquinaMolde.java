@@ -262,6 +262,14 @@ public class MaquinaMolde extends AppCompatActivity {
 
         protected void onPostExecute(Object result){
             try {
+                AlertDialog.Builder alert = new AlertDialog.Builder(context);
+                alert.setTitle("Envio Exitoso");
+                alert.setMessage("Se jan enviado los datos exitsamente");
+                alert.setPositiveButton("OK", new DialogInterface.OnClickListener(){
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
                 progressDialog.dismiss();
                 MaquinaMolde.this.finish();
                 super.onPostExecute(result);

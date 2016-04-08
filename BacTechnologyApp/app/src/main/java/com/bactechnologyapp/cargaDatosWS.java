@@ -8,8 +8,6 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapPrimitive;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +16,7 @@ import java.util.List;
  */
 
 public class cargaDatosWS {
-    private String conexion =  "http://192.168.1.103:8080/BacTechnology/BacTechnologyService?WSDL";
+    private String conexion =  "http://192.168.1.106:8080/BacTechnology/BacTechnologyService?WSDL";
 
     public Boolean getAutenticacion(String usuario,String contraseña){
         Boolean res = null;
@@ -39,7 +37,7 @@ public class cargaDatosWS {
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.setOutputSoapObject(rpc);
-        HttpTransportSE androidHttpTransport = null;
+        HttpTransportSE androidHttpTransport;
         try{
             androidHttpTransport =  new HttpTransportSE(conexion);
 
@@ -65,7 +63,7 @@ public class cargaDatosWS {
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.setOutputSoapObject(rpc);
-        HttpTransportSE androidHttpTransport = null;
+        HttpTransportSE androidHttpTransport;
         try{
             androidHttpTransport =  new HttpTransportSE(conexion);
 
@@ -89,7 +87,7 @@ public class cargaDatosWS {
         rpc = new SoapObject("http://service.BacTechnology.com/","CargarMaquinarias");
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.setOutputSoapObject(rpc);
-        HttpTransportSE androidHttpTransport = null;
+        HttpTransportSE androidHttpTransport;
         try{
             androidHttpTransport =  new HttpTransportSE(conexion);
             androidHttpTransport.call("http://service.BacTechnology.com/CargarMaquinarias", envelope);
@@ -111,7 +109,7 @@ public class cargaDatosWS {
         rpc = new SoapObject("http://service.BacTechnology.com/","CargarMoldes");
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.setOutputSoapObject(rpc);
-        HttpTransportSE androidHttpTransport = null;
+        HttpTransportSE androidHttpTransport;
         try{
             androidHttpTransport =  new HttpTransportSE(conexion);
             androidHttpTransport.call("http://service.BacTechnology.com/CargarMoldes", envelope);
@@ -292,7 +290,7 @@ public class cargaDatosWS {
 
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.setOutputSoapObject(rpc);
-        HttpTransportSE androidHttpTransport = null;
+        HttpTransportSE androidHttpTransport;
 
         try{
             System.out.println("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");

@@ -121,7 +121,7 @@ public class ListaMaquina extends AppCompatActivity  {
             ventanaMoldes.putExtra("usuario",usuario);
             ventanaMoldes.putExtra("posicion", posMenu);
             startActivity(ventanaMoldes);
-            //ListaMaquina.this.finish();
+            ListaMaquina.this.finish();
             super.onPostExecute(result);
         }
     }

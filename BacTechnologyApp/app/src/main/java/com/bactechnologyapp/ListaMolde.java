@@ -42,14 +42,11 @@ public class ListaMolde extends AppCompatActivity {
         posMenu = getIntent().getExtras().getInt("posicion");
         idLayoutSinMolde = (View)findViewById(R.id.ID_LAYOUT_SIN_MOLDE);
         if(posMenu == 0){
-            Toast.makeText(getApplicationContext(), "presiono " + posMenu, Toast.LENGTH_SHORT).show();
             idLayoutSinMolde.setEnabled(true);
             Button idbtn = (Button)findViewById(R.id.id_btn_sin_molde);
             idbtn.setEnabled(true);
         }
         if(posMenu == 1){
-            Toast.makeText(getApplicationContext(), "presiono " + posMenu, Toast.LENGTH_SHORT).show();
-
             idLayoutSinMolde.setVisibility(View.GONE);
             Button idbtn = (Button)findViewById(R.id.id_btn_sin_molde);
             idbtn.setEnabled(false);
@@ -102,7 +99,7 @@ public class ListaMolde extends AppCompatActivity {
             ventanaMaquinaMolde.putExtra("idMaquina", idMaquina);
             ventanaMaquinaMolde.putExtra("usuario", usuario);
             startActivity(ventanaMaquinaMolde);
-            //ListaMolde.this.finish();
+            ListaMolde.this.finish();
         }
 
         if(posMenu == 1){
@@ -111,7 +108,7 @@ public class ListaMolde extends AppCompatActivity {
             ventanaMantenimientoMolde.putExtra("idMaquina", idMaquina);
             ventanaMantenimientoMolde.putExtra("usuario", usuario);
             startActivity(ventanaMantenimientoMolde);
-            //ListaMolde.this.finish();
+            ListaMolde.this.finish();
         }
     }
 }
