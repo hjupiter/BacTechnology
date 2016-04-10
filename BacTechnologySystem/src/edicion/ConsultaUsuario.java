@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -53,6 +54,8 @@ public class ConsultaUsuario extends javax.swing.JInternalFrame implements Actio
     private JButton btnEliminar;
     private JButton btnEditar;
     private JButton btnGuardar;
+    
+    private JCheckBox ch;
     /**
      * Creates new form ConsultaUsuario
      */
@@ -163,6 +166,7 @@ public class ConsultaUsuario extends javax.swing.JInternalFrame implements Actio
         JLabel lblContrasena =  new JLabel("Contrasena");
         JLabel lblTipo = new JLabel("Tipo");
         
+        ch = new JCheckBox();
         txtId =  new JTextField();
         txtNombre =  new JTextField();
         txtApellido =  new JTextField();
@@ -232,6 +236,8 @@ public class ConsultaUsuario extends javax.swing.JInternalFrame implements Actio
         txtContrasena.setFont(font1);
         txtContrasena.setBounds(200,350,220,30);
         txtContrasena.setEditable(false);
+        ch.setBounds(433,353,25,25);
+        ch.addActionListener(this);
         cmbTipo.setFont(font1);
         cmbTipo.setBounds(200,420,220,30);
         cmbTipo.setEditable(false);
@@ -261,6 +267,7 @@ public class ConsultaUsuario extends javax.swing.JInternalFrame implements Actio
         jPanelDatos.add(txtCedula);
         jPanelDatos.add(txtUsuario);
         jPanelDatos.add(txtContrasena);
+        jPanelDatos.add(ch);
         jPanelDatos.add(cmbTipo);
         jPanelDatos.add(btnEditar);
         jPanelDatos.add(btnEliminar);
@@ -321,6 +328,13 @@ public class ConsultaUsuario extends javax.swing.JInternalFrame implements Actio
     
     
     public void actionPerformed(ActionEvent e) {
+        if(e.getSource() == ch){
+            if(ch.isSelected()){
+                txtContrasena.setEchoChar((char) 0);
+            }
+            else
+                txtContrasena.setEchoChar('*');
+        }
         if(e.getSource()==btnEliminar) {
             jPanelDatos.removeAll();
             jPanelDatos.revalidate();
@@ -519,7 +533,7 @@ public class ConsultaUsuario extends javax.swing.JInternalFrame implements Actio
         int keyCode = evt.getKeyCode();
         switch( keyCode ) { 
             case KeyEvent.VK_UP:
-                if(jTable.getSelectedRow()-1>0)
+                if(jTable.getSelectedRow()-1>=0)
                     cargarDatosPanel(jTable.getSelectedRow()-1);
                 break;
             case KeyEvent.VK_DOWN:

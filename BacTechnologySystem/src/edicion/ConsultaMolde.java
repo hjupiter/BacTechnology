@@ -411,7 +411,7 @@ public class ConsultaMolde extends javax.swing.JInternalFrame implements ActionL
         int keyCode = evt.getKeyCode();
         switch( keyCode ) { 
             case KeyEvent.VK_UP:
-                if(jTable.getSelectedRow()-1>0)
+                if(jTable.getSelectedRow()-1>=0)
                     cargarDatosPanel(jTable.getSelectedRow()-1);
                 break;
             case KeyEvent.VK_DOWN:
