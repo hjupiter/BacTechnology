@@ -1713,3 +1713,31 @@ BEGIN
 END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
+  -----------------------------------------------------------------------------------------
+  CREATE OR REPLACE FUNCTION verifica_reportes_maquina_fechas(character varying)
+  RETURNS refcursor AS
+$BODY$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR SELECT COUNT(*) FROM reporte 
+	WHERE reporte.fecha = cast($1 as DATE);
+	RETURN MYCURS;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE
+
+
+
+CREATE OR REPLACE FUNCTION verifica_reportes_molde_fechas(character varying)
+  RETURNS refcursor AS
+$BODY$
+DECLARE
+	MYCURS REFCURSOR;
+BEGIN
+	OPEN MYCURS FOR SELECT COUNT(*) FROM reporte_molde
+	WHERE reporte_molde.fecha = cast($1 as DATE);
+	RETURN MYCURS;
+END;
+$BODY$
+  LANGUAGE plpgsql VOLATILE

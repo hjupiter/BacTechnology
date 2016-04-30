@@ -1,26 +1,16 @@
 package Email;
 
-
-
 import Conexion.Conexion;
-import java.awt.Desktop;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
-import java.text.DateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -37,14 +27,14 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
  */
 public class Proceso extends Thread{
     private Email email;
-    private static Conexion conexion =  new Conexion();
-    private static Connection conn = conexion.Conexion();
+    private static final Conexion conexion =  new Conexion();
+    private static final Connection conn = conexion.Conexion();
     private int hora;
     private int min;
     private int sec;
     private String dia,mes,annio,fecha;
     private final Calendar c = Calendar.getInstance();
-    private String ruta = "C://data//";
+    private final String ruta = "C://data//";
     private String nombreArchivo;
     private String nombreArchivoMolde;
     private String rutaArchivo;
@@ -57,30 +47,121 @@ public class Proceso extends Thread{
     @Override
     public void run(){
         while(true){
-            Date fecha = new Date();
-            hora = fecha.getHours();
-            min = fecha.getMinutes();
-            sec = fecha.getSeconds();
-            if(hora == 18 && min == 48 && sec == 0 && obtenerDatosBase() && obtenerDatosBaseMolde()){
-                email = new Email("reportes.bactechnology.2016@gmail.com", 
-                                  "reportes.bactechnology.2016@gmail.com",
+            Date fechaInterna;
+            fechaInterna = new Date();
+            hora = fechaInterna.getHours();
+            min = fechaInterna.getMinutes();
+            sec = fechaInterna.getSeconds();
+            if(hora == 16 && min == 50 && sec == 0){
+                if(verificarReportes()){
+                    obtenerDatosBase();
+                    email = new Email("reportes.bactechnology.2016@gmail.com", 
+                                  "bakamedi12@gmail.com",
                                   getNombreArchivo(),getRutaArchivo(),
                                   "Reportes BacTechnology",
                                   "Por favor no responda a este mensaje");
-                //System.out.println(count);
-                email.sendMail();
-                email = new Email("reportes.bactechnology.2016@gmail.com", 
-                                  "reportes.bactechnology.2016@gmail.com",
+                    email.sendMail();
+                }
+                if(verificarReportesMoldes()){
+                    obtenerDatosBaseMolde();
+                    email = new Email("reportes.bactechnology.2016@gmail.com", 
+                                  "bakamedi12@gmail.com",
                                   getNombreArchivoMolde(),getRutaArchivoMolde(),
                                   "Reportes BacTechnology",
                                   "Por favor no responda a este mensaje");
-                email.sendMail();
+                    email.sendMail();
+                }
+                if(!verificarReportes() && !verificarReportesMoldes()){
+                    email = new Email("reportes.bactechnology.2016@gmail.com", 
+                                  "bakamedi12@gmail.com",
+                                  "No hay Reportes Reportes BacTechnology",
+                                  "Por favor no responda a este mensaje");
+                    email.sendMailVacio();
+                }
+                
+                
             }
             else{
                 //System.out.println("no hay datos");
             }
                 
         }
+    }
+    
+    @SuppressWarnings("empty-statement")
+    private boolean verificarReportesMoldes(){
+        Conexion ConInterna;
+        Connection connInterna;
+        ConInterna = new Conexion();
+        connInterna = ConInterna.Conexion();
+        dia = Integer.toString(c.get(Calendar.DATE));
+        mes = Integer.toString(c.get(Calendar.MONTH)+1);
+        annio = Integer.toString(c.get(Calendar.YEAR));
+        fecha = ""+annio+"-"+mes+"-"+dia;
+        try{
+            connInterna.setAutoCommit(false);
+            try (
+                CallableStatement verifica_reportes = connInterna.prepareCall("{ ? = CALL verifica_reportes_maquina_fechas ( ? ) }")) {
+                verifica_reportes.registerOutParameter(1, Types.OTHER);
+                verifica_reportes.setString(2, fecha);
+                verifica_reportes.execute();
+                ResultSet results = (ResultSet)verifica_reportes.getObject(1);
+                Object datos[] = new Object[13];
+                while(results.next()){
+                    datos[0] = results.getObject(1);
+                    //System.out.println("--> "+datos[0].toString()+" <--");
+                    int num = Integer.parseInt(datos[0].toString());
+                    if(num > 0){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+            }
+            connInterna.close();
+            return true;
+        }catch(SQLException | NumberFormatException e){
+            System.out.println("NO SE REALIZO LA CONSULTA verificarReportesMoldes");
+        };
+        return false;
+    }
+    
+    @SuppressWarnings("empty-statement")
+    private boolean verificarReportes(){
+        Conexion ConInterna;
+        Connection connInterna;
+        ConInterna = new Conexion();
+        connInterna = ConInterna.Conexion();
+        dia = Integer.toString(c.get(Calendar.DATE));
+        mes = Integer.toString(c.get(Calendar.MONTH)+1);
+        annio = Integer.toString(c.get(Calendar.YEAR));
+        fecha = ""+annio+"-"+mes+"-"+dia;
+        try{
+            connInterna.setAutoCommit(false);
+            try (
+                CallableStatement verifica_reportes = connInterna.prepareCall("{ ? = CALL verifica_reportes_molde_fechas ( ? ) }")) {
+                verifica_reportes.registerOutParameter(1, Types.OTHER);
+                verifica_reportes.setString(2, fecha);
+                verifica_reportes.execute();
+                ResultSet results = (ResultSet)verifica_reportes.getObject(1);
+                Object datos[] = new Object[13];
+                while(results.next()){
+                    datos[0] = results.getObject(1);
+                    //System.out.println("--> "+datos[0].toString()+" <--");
+                    int num = Integer.parseInt(datos[0].toString());
+                    if(num > 0){
+                        return true;
+                    }else{
+                        return false;
+                    }
+                }
+            }
+            connInterna.close();
+            return true;
+        }catch(SQLException | NumberFormatException e){
+            System.out.println("NO SE REALIZO LA CONSULTA verficar_reporte_maquina");
+        };
+        return false;
     }
     
     @SuppressWarnings("empty-statement")
@@ -126,10 +207,6 @@ public class Proceso extends Thread{
             int j = 1;
             while(results.next()){
                 filas = hoja.createRow(j);
-                //System.out.println(" "+i+" RRRRR "+datos[1].toString());
-                //fecha = verificarFormatoFecha(fecha,c,dia,mes,annio);
-                //System.out.println("PPPP "+fecha);
-                //if(datoFinal.equals(fecha)){
                 System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
                 for(int i = 0; i<11;i++){
                     switch(i){
@@ -152,8 +229,6 @@ public class Proceso extends Thread{
                             String maquina = buscar1.getString(1);
                             buscar1.close();
                             datos[i] = maquina;
-                            //datos[i] = results.getObject(i+1);
-                            //System.out.println("--> id_maquinaria ["+i+"] "+results.getObject(i+1));
                             System.out.println("MAQUINA --> "+maquina);
                             filas.createCell(3).setCellValue(datos[i].toString());
                             break;
@@ -166,13 +241,11 @@ public class Proceso extends Thread{
                             buscar2.setInt(2, id_molde);
                             buscar2.execute();
                             String molde = buscar2.getString(1);
-                            //System.out.println("2 "+molde);
                             buscar2.close();
                             datos[i] = molde;
                             System.out.println("MOLDE --> "+molde);
                             filas.createCell(4).setCellValue(datos[i].toString());
                             datos[i] = results.getObject(i+1);
-                            //System.out.println("--> id_molde ["+i+"] "+results.getObject(i+1));
                             break;
                         case 4:
                             //usuario
@@ -183,13 +256,10 @@ public class Proceso extends Thread{
                             buscar.setInt(2, id_usu);
                             buscar.execute();
                             String usuario = buscar.getString(1);
-                            //System.out.println("3 "+usuario);
                             buscar.close();
                             datos[i] = usuario;
                             System.out.println("USUARIO --> "+usuario);
                             filas.createCell(1).setCellValue(datos[i].toString());
-                            //datos[i] = results.getObject(i+1);
-                            //System.out.println("--> id_usuario ["+i+"] "+results.getObject(i+1));
                             break;
                         case 5:
                             //descripcion novedad
@@ -240,24 +310,24 @@ public class Proceso extends Thread{
         return false;
     }
     
+    @SuppressWarnings("empty-statement")
     public boolean obtenerDatosBaseMolde(){
         Random  rnd = new Random();
         int token =  (int) rnd.nextInt(999999999);
-        //System.out.println("WWWWWWWWWWWWWWWWWWWWWW");
-        Conexion conexion =  new Conexion();
-        //System.out.println("EEEEEEEEEEEEEEEEEEEEEEEEE");
-        Connection conn = conexion.Conexion();
-        //System.out.println("DDDDDDDDDDDDDDDDDDDDDDDD");
+        Conexion ConInterna;
+        Connection connInterna;
+        ConInterna = new Conexion();
+        connInterna = ConInterna.Conexion();
         XSSFWorkbook wb = new XSSFWorkbook();
         XSSFSheet hoja = wb.createSheet();
         XSSFRow fila = hoja.createRow(0);
         fila.createCell(0).setCellValue("ID");
-        fila.createCell(1).setCellValue("USUARIO");//
+        fila.createCell(1).setCellValue("USUARIO");
         fila.createCell(2).setCellValue("FECHA");
-        fila.createCell(3).setCellValue("MAQUINARIA");//
-        fila.createCell(4).setCellValue("MOLDE");//
+        fila.createCell(3).setCellValue("MAQUINARIA");
+        fila.createCell(4).setCellValue("MOLDE");
         fila.createCell(5).setCellValue("NOVEDAD DETECTADA");
-        fila.createCell(6).setCellValue("ARTICULO");//
+        fila.createCell(6).setCellValue("ARTICULO");
         fila.createCell(7).setCellValue("TIPO DE NOVEDAD");
         fila.createCell(8).setCellValue("DESCRIPCIÓN NOVEDAD");
         fila.createCell(9).setCellValue("TIPO DE SOLUCIÓN");
@@ -274,144 +344,109 @@ public class Proceso extends Thread{
         hoja.setColumnWidth(9, 256*18);
         hoja.setColumnWidth(10, 256*22);
         XSSFRow filas;
-        //String fechaObtenida = df.format(btnFechaInicio.getDate());
-        //String fechaCorrecta;
-        //String procedure = "{ ? = call CONSULTA_REPORTE_FECHA_POR_MES ( ? ) }";
-        //fechaCorrecta = ponerFechaFormatoCorrecto(fechaObtenida);
-        //System.out.println(fechaCorrecta);
         dia = Integer.toString(c.get(Calendar.DATE));
         mes = Integer.toString(c.get(Calendar.MONTH)+1);
         annio = Integer.toString(c.get(Calendar.YEAR));
-        fecha = ""+annio+"-"+mes+"-"+dia;
-        //fecha = ""+2016+"-"+03+"-"+23;
+        fecha = ""+"2016"+"-"+4+"-"+8;
         System.out.println(fecha);
-        //consultar_por_fecha(fecha,procedure);
         try{
-            conn.setAutoCommit(false);
-            //System.out.println("SSSSSSSSSSSSSSSSSSSSSSSS");
-            CallableStatement todas_reportes =  conn.prepareCall("{ ? = CALL todos_reportesmoldes_fechas ( ? ) }");
-            todas_reportes.registerOutParameter(1, Types.OTHER);
-            todas_reportes.setString(2, fecha);
-            todas_reportes.execute();
-            ResultSet results = (ResultSet)todas_reportes.getObject(1);
-            Object datos[] = new Object[13];
-            int j = 1;
-            while(results.next()){
-                filas = hoja.createRow(j);
-                //datos[1] = results.getObject(2);
-                //String datoFinal = datos[1].toString();
-                //System.out.println(" "+j+" RRRRR "+datos[1].toString());
-                //fecha = verificarFormatoFecha(fecha,c,dia,mes,annio);
-                //System.out.println("PPPP "+fecha);
-                //if(datoFinal.equals(fecha)){
-                System.out.println("XXXXXXXXXXXXXXXXXXXXXX");
-                for(int i = 0; i<12;i++){
-                    switch(i){
-                        case 0:
-                            //datos[i] = results.getObject(i+1);
-                            //System.out.println("--> id_reporte ["+i+"] "+results.getObject(i+1));
-                            filas.createCell(0).setCellValue(j);
-                            break;
-                        case 1:
-                            //fecha
-                            datos[i] = results.getObject(i+1);
-                            //System.out.println("FECHA "+results.getObject(i+1));
-                            filas.createCell(2).setCellValue(datos[i].toString());
-                            break;
-                        case 2:
-                            //maquina
-                            String id_maquina_string = results.getObject(i+1).toString();
-                            int id_maquina = Integer.parseInt(id_maquina_string);
-                            CallableStatement buscar1 = conn.prepareCall("{ ? = call buscar_maquina_id (?) }");
-                            buscar1.registerOutParameter(1, Types.VARCHAR);
-                            buscar1.setInt(2, id_maquina);
-                            buscar1.execute();
-                            String maquina = buscar1.getString(1);
-                            buscar1.close();
-                            datos[i] = maquina;
-                            //datos[i] = results.getObject(i+1);
-                            //System.out.println("--> id_maquinaria ["+i+"] "+results.getObject(i+1));
-                            //System.out.println("MAQUINA --> "+maquina);
-                            filas.createCell(3).setCellValue(datos[i].toString());
-                            break;
-                        case 3:
-                            //molde
-                            String id_molde_string = results.getObject(i+1).toString();
-                            int id_molde = Integer.parseInt(id_molde_string);
-                            CallableStatement buscar2 = conn.prepareCall("{ ? = call buscar_molde_id (?) }");
-                            buscar2.registerOutParameter(1, Types.VARCHAR);
-                            buscar2.setInt(2, id_molde);
-                            buscar2.execute();
-                            String molde = buscar2.getString(1);
-                            //System.out.println("2 "+molde);
-                            buscar2.close();
-                            datos[i] = molde;
-                            //System.out.println("MOLDE --> "+molde);
-                            filas.createCell(4).setCellValue(datos[i].toString());
-                            //datos[i] = results.getObject(i+1);
-                            //System.out.println("--> id_molde ["+i+"] "+results.getObject(i+1));
-                            break;
-                        case 4:
-                            //usuario
-                            String id_usu_string = results.getObject(i+1).toString();
-                            int id_usu = Integer.parseInt(id_usu_string);
-                            CallableStatement buscar = conn.prepareCall("{ ? = call buscar_usuario_id (?) }");
-                            buscar.registerOutParameter(1, Types.VARCHAR);
-                            buscar.setInt(2, id_usu);
-                            buscar.execute();
-                            String usuario = buscar.getString(1);
-                            //System.out.println("3 "+usuario);
-                            buscar.close();
-                            datos[i] = usuario;
-                            //System.out.println("USUARIO --> "+usuario);
-                            filas.createCell(1).setCellValue(datos[i].toString());
-                            //datos[i] = results.getObject(i+1);
-                            //System.out.println("--> id_usuario ["+i+"] "+results.getObject(i+1));
-                            break;
-                        case 5:
-                            //descripcion novedad
-                            datos[i] = results.getObject(i+1);
-                            //System.out.println("DESCRIPCION NOVEDAD --> "+results.getObject(i+1));
-                            filas.createCell(8).setCellValue(datos[i].toString());
-                            break;
-                        case 6:
-                            //tipo nocedad
-                            datos[i] = results.getObject(i+1);
-                            //System.out.println("TIPO NOVEDAD --> "+results.getObject(i+1));
-                            filas.createCell(7).setCellValue(datos[i].toString());
-                            
-                            break;
-                        case 7:
-                            datos[i] = results.getObject(i+1);
-                            //System.out.println("DESCRIPCION SOLUCION --> "+results.getObject(i+1));
-                            filas.createCell(10).setCellValue(datos[i].toString());
-                            break;
-                        case 8:
-                            datos[i] = results.getObject(i+1);
-                            //System.out.println("TIPO SOLUCION --> "+results.getObject(i+1));
-                            filas.createCell(9).setCellValue(datos[i].toString());
-                            break;
-                        case 9:
-                            datos[i] = results.getObject(i+1);
-                            //System.out.println("NOVEDAD --> "+results.getObject(i+1));
-                            filas.createCell(5).setCellValue(datos[i].toString());
-                            break;
-                        case 10:
-                            datos[i] = results.getObject(i+1);
-                            //System.out.println("FOTO --> "+results.getObject(i+1));
-                            break;
-                        case 11:
-                            datos[i] = results.getObject(i+1);
-                            //System.out.println("ARTICULO --> "+results.getObject(i+1));
-                            filas.createCell(6).setCellValue(datos[i].toString());
-                            break;
-                    } 
+            connInterna.setAutoCommit(false);
+            try (
+                CallableStatement todas_reportes = connInterna.prepareCall("{ ? = CALL todos_reportesmoldes_fechas ( ? ) }")) {
+                todas_reportes.registerOutParameter(1, Types.OTHER);
+                todas_reportes.setString(2, fecha);
+                todas_reportes.execute();
+                ResultSet results = (ResultSet)todas_reportes.getObject(1);
+                Object datos[] = new Object[13];
+                int j = 1;
+                while(results.next()){
+                    filas = hoja.createRow(j);
+                    System.out.println("XXXXXXXXXXXXXXXXXXXXXX");
+                    for(int i = 0; i<12;i++){
+                        switch(i){
+                            case 0:
+                                filas.createCell(0).setCellValue(j);
+                                break;
+                            case 1:
+                                datos[i] = results.getObject(i+1);
+                                filas.createCell(2).setCellValue(datos[i].toString());
+                                break;
+                            case 2:
+                                //maquina
+                                String id_maquina_string = results.getObject(i+1).toString();
+                                int id_maquina = Integer.parseInt(id_maquina_string);
+                                CallableStatement buscar1 = connInterna.prepareCall("{ ? = call buscar_maquina_id (?) }");
+                                buscar1.registerOutParameter(1, Types.VARCHAR);
+                                buscar1.setInt(2, id_maquina);
+                                buscar1.execute();
+                                String maquina = buscar1.getString(1);
+                                buscar1.close();
+                                datos[i] = maquina;
+                                filas.createCell(3).setCellValue(datos[i].toString());
+                                break;
+                            case 3:
+                                //molde
+                                String id_molde_string = results.getObject(i+1).toString();
+                                int id_molde = Integer.parseInt(id_molde_string);
+                                CallableStatement buscar2 = connInterna.prepareCall("{ ? = call buscar_molde_id (?) }");
+                                buscar2.registerOutParameter(1, Types.VARCHAR);
+                                buscar2.setInt(2, id_molde);
+                                buscar2.execute();
+                                String molde = buscar2.getString(1);
+                                buscar2.close();
+                                datos[i] = molde;
+                                filas.createCell(4).setCellValue(datos[i].toString());
+                                break;
+                            case 4:
+                                //usuario
+                                String id_usu_string = results.getObject(i+1).toString();
+                                int id_usu = Integer.parseInt(id_usu_string);
+                                CallableStatement buscar = connInterna.prepareCall("{ ? = call buscar_usuario_id (?) }");
+                                buscar.registerOutParameter(1, Types.VARCHAR);
+                                buscar.setInt(2, id_usu);
+                                buscar.execute();
+                                String usuario = buscar.getString(1);
+                                buscar.close();
+                                datos[i] = usuario;
+                                filas.createCell(1).setCellValue(datos[i].toString());
+                                break;
+                            case 5:
+                                //descripcion novedad
+                                datos[i] = results.getObject(i+1);
+                                filas.createCell(8).setCellValue(datos[i].toString());
+                                break;
+                            case 6:
+                                //tipo nocedad
+                                datos[i] = results.getObject(i+1);
+                                filas.createCell(7).setCellValue(datos[i].toString());
+                                
+                                break;
+                            case 7:
+                                datos[i] = results.getObject(i+1);
+                                filas.createCell(10).setCellValue(datos[i].toString());
+                                break;
+                            case 8:
+                                datos[i] = results.getObject(i+1);
+                                filas.createCell(9).setCellValue(datos[i].toString());
+                                break;
+                            case 9:
+                                datos[i] = results.getObject(i+1);
+                                filas.createCell(5).setCellValue(datos[i].toString());
+                                break;
+                            case 10:
+                                datos[i] = results.getObject(i+1);
+                                break;
+                            case 11:
+                                datos[i] = results.getObject(i+1);
+                                filas.createCell(6).setCellValue(datos[i].toString());
+                                break;
+                        } 
+                    }
+                    j++;
+                    
                 }
-                j++;
-                
             }
-            todas_reportes.close();
-            conn.close();
+            connInterna.close();
             try {
                 setRutaArchivoMolde(ruta+fecha+"reportesMolde"+token+".xlsx");
                 setNombreArchivoMolde(fecha+"reportesMolde"+token+".xlsx");
@@ -419,7 +454,7 @@ public class Proceso extends Thread{
                 return true;
             } catch (Exception e) {
             }
-        }catch(Exception e){
+        }catch(SQLException | NumberFormatException e){
             System.out.println("NO SE REALIZO LA CONSULTA");
         };
         
@@ -457,7 +492,5 @@ public class Proceso extends Thread{
     private void setNombreArchivo(String nombreArchivo) {
         this.nombreArchivo = nombreArchivo;
     }
-    
-    
     
 }

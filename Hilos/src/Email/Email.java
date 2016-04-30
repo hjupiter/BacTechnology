@@ -1,11 +1,9 @@
 package Email;
 
-
 import java.util.Properties;
 import javax.activation.DataHandler;
 import javax.activation.DataSource;
 import javax.activation.FileDataSource;
-import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
 import javax.mail.Multipart;
@@ -36,7 +34,15 @@ public class Email {
     private String mensaje;
     private static String clave = "kayjqlvwdkhxqltb";
 
-    public Email(String usuarioCorreo, String destinatario, String nombreArchivo, String rutaArchivo, String asunto, String mensaje) {
+    public Email(String usuarioCorreo, String destinatario, String asunto, String mensaje) {
+        this.usuarioCorreo = usuarioCorreo;
+        this.destinatario = destinatario;
+        this.asunto = asunto;
+        this.mensaje = mensaje;
+    }
+    
+    public Email(String usuarioCorreo, String destinatario,
+            String nombreArchivo,String rutaArchivo, String asunto, String mensaje) {
         this.usuarioCorreo = usuarioCorreo;
         this.destinatario = destinatario;
         this.nombreArchivo = nombreArchivo;
@@ -44,12 +50,34 @@ public class Email {
         this.asunto = asunto;
         this.mensaje = mensaje;
     }
+    
+    public void sendMailVacio(){
+        Properties props = new Properties();
+        props.put("mail.smtp.host", "smtp.gmail.com");
+        props.put("mail.smtp.socketFactory.port", "465");
+        props.put("mail.smtp.socketFactory.class","javax.net.ssl.SSLSocketFactory");
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.port", "465");
+        Session session = Session.getDefaultInstance(props,new javax.mail.Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(usuarioCorreo,clave);
+            }
+        });
+        try {
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(usuarioCorreo));
+            message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(destinatario));
+            message.setSubject(this.asunto);
+            message.setText("No responda a este mensaje");
+            System.out.println("Enviando.... ");
+            Transport.send(message);
+            System.out.println("EMAIL ENVIADO");
 
-    public Email(String usuarioCorreo, String destinatario, String asunto, String mensaje) {
-        this.usuarioCorreo = usuarioCorreo;
-        this.destinatario = destinatario;
-        this.asunto = asunto;
-        this.mensaje = mensaje;
+        } catch (MessagingException e) {
+            System.out.println("EMAIL NO ENVIADO");
+            throw new RuntimeException(e);
+        }
     }
     
     public void sendMail(){
@@ -69,8 +97,9 @@ public class Email {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(usuarioCorreo));
             message.setRecipients(Message.RecipientType.TO,InternetAddress.parse(destinatario));
-            message.setSubject(asunto);
-            message.setText(mensaje);
+            message.setSubject(this.asunto);
+            message.setText("No responda a este mensaje");
+            
             MimeBodyPart messageBodyPart = new MimeBodyPart();
             Multipart multipart = new MimeMultipart();
             messageBodyPart = new MimeBodyPart();
@@ -87,6 +116,5 @@ public class Email {
             System.out.println("EMAIL NO ENVIADO");
             throw new RuntimeException(e);
         }
-       
     }
 }

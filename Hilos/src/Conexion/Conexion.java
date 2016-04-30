@@ -3,23 +3,21 @@ package Conexion;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.util.ArrayList;
-import java.util.List;
+import java.sql.SQLException;
 
 public class Conexion {
     
+    private static final String cadena = "jdbc:postgresql://192.168.1.107:5432/BACTECHNOLOGY";
+    private static final String user = "postgres";
+    private static final String pass = "root";
+    private static Connection conexion = null;
     
     public Connection Conexion(){
-        List resultData =  new ArrayList();
-        Connection conexion = null;
         try{
-            String cadena = "jdbc:postgresql://192.168.0.105:5432/BACTECHNOLOGY";
-            String user = "postgres";
-            String pass = "root";
             Class.forName("org.postgresql.Driver");
             conexion = DriverManager.getConnection(cadena,user,pass);
             return conexion;
-        }catch(Exception e){
+        }catch(ClassNotFoundException | SQLException e){
             return conexion;
         }
     }
